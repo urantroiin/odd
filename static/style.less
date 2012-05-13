@@ -1,0 +1,55 @@
+.box-shadow(@style, @c) when (iscolor(@c)) {
+  box-shadow:         @style @c;
+  -webkit-box-shadow: @style @c;
+  -moz-box-shadow:    @style @c;
+}
+
+.box-shadow(@style, @alpha: 50%) when (isnumber(@alpha)) {
+  .box-shadow(@style, rgba(0, 0, 0, @alpha));
+}
+
+.rounded-corners (@radius: 5px) {
+  border-radius: @radius;
+  -webkit-border-radius: @radius;
+  -moz-border-radius: @radius;
+}
+
+.title (@size) {
+  font-weight: bold;
+  font-size: @size;
+}
+
+.text (@size) {
+  font-size: @size;
+}
+
+.alt {
+  color: #666;
+  font-family: "Warnock Pro", "Goudy Old Style","Palatino","Book Antiqua", Georgia, serif;
+  font-style: italic;
+  font-weight: normal;
+}
+
+.open-header {
+  margin-bottom: 30px;
+}
+
+.open-header .logo{
+  font-size: 54px;
+}
+
+.open-header .desc{
+  margin-top: 20px;
+}
+
+.topic p{
+  font-size:5px;
+}
+
+.question {
+	background: #fef;
+}
+
+.comment1 {
+	background: #fef;
+}
