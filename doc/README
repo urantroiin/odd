@@ -1,0 +1,6 @@
+=servers=
+nginx server
+
+=packages=
+==python==
+deploy/pip.list
