@@ -1,0 +1,32 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<section>
+    <video class="well" style="width:260px;" controls="controls">
+        <source src="static/movie.ogg">
+        <object data="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0">
+        <a href="static/movie.ogg">download</a>
+        </object>
+    </video>
+</section>
+
+<section class="span4">
+    <a class="well btn btn-primary" style="width:90%" href="register.html"><h1>注册</h1></a>
+</section>
+
+<section class="span4">
+   <form class="well" action="" method="post">
+       <label>邮箱地址</label>
+       <input type="email" name="email"/>
+       <label>密码</label>
+       <input type="password" name="password"/>
+       <label></label>
+       <input class="btn btn-primary" type="submit" value="登录"/>
+       <input style="margin-left:10px;" name="auto" type="checkbox" value="1" checked="checked"/>
+       自动登录
+       <hr>
+       <a>忘记密码？</a> 
+   </form>
+</section>
+
+{% endblock %}
