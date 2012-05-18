@@ -7,19 +7,20 @@
 <link rel="stylesheet/less" type="text/css" href="static/style.less">
 <script src="static/jquery-1.7.2.min.js"></script>
 <script src="static/less-1.3.0.min.js" ></script>
+<script src="static/bootstrap/js/bootstrap.min.js" ></script>
 </head>
 
 
 <body>
 <article>
 
-<header class="navbar navbar-fixed-top">
+<header class="header navbar navbar-fixed-top">
 	<div class="navbar-inner" style="background-color:#3C5999">
 		<div class="container">
 		<div class="row">
 		<div class="nav-collapse collapse">
-			<h2 class="span8">Offer多多</h2>
-			<h5	class="span4" style="padding-top:10px">
+			<a href="index.html"><h2 class="span8 logo" style="color:#999">Offer多多</h2></a>
+			<h5	class="span4 desc" style="padding-top:10px">
 				留学领域的社交问答
 				<span class="label label-important">Hot</span>
 			</h5>
@@ -31,7 +32,7 @@
 
 <div class="container" style="margin-top:70px">
 <div class="row">
-<div class="span8">
+<div class="span4" style="display:none">
 	<section class="hot-topics">
 		<section class="topic">
         	<section class="question thumbnail">
@@ -101,10 +102,16 @@
         <hr>
     </section>
 </div>
-<div class="span4">
-		<video class="well" src="static/movie.ogg" style="width:260px;" controls="controls"></video>
-		<a class="well btn btn-primary" style="width:90%"><h1>注册</h1></a>
-        <hr>
+<div class="span4"  style="display:none">
+<video class="well" style="width:260px;" controls="controls">
+        <source src="static/movie.ogg">
+        <object data="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0">
+        <a href="static/movie.ogg">download</a>
+        </object>
+        </video>
+</div>
+<div class="span4 offset4">
+		
 		<form class="well" action="" method="post">
             <label>邮箱地址</label>
 			<input type="email" name="email"/>
@@ -116,6 +123,8 @@
             自动登录
             <hr>
             <a>忘记密码？</a> 
+            <hr>
+            <a class="well btn btn-primary" style="width:90%" href="register.html"><h1>注册</h1></a>
 		</form>
 </div>
 	
