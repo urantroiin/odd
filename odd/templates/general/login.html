@@ -1,20 +1,22 @@
 {% extends 'layout.html' %}
 
-{% block content %}
-<section>
-    <video class="well" style="width:260px;" controls="controls">
+{% block top %}
+<section id="culture-wall">
+    <video controls="controls">
         <source src="static/movie.ogg">
         <object data="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0">
         <a href="static/movie.ogg">download</a>
         </object>
     </video>
 </section>
+{% endblock %}
 
-<section class="span4">
+{% block content %}
+<section class="span6">
     <a class="well btn btn-primary" style="width:90%" href="register.html"><h1>注册</h1></a>
 </section>
 
-<section class="span4">
+<section class="span6">
    <form class="well" action="" method="post">
        <label>邮箱地址</label>
        <input type="email" name="email"/>

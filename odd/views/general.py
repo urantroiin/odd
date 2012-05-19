@@ -7,7 +7,7 @@ mod = Blueprint("general", __name__)
 
 @mod.route('/')
 def index():
-    return render_template("general/index.html")
+    return render_template("general/login.html")
 
 @mod.route('/wiki')
 def wiki():
