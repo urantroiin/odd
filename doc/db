@@ -3,6 +3,7 @@ id
 email
 nickname
 passwd
+create_time
 
 uk:email
 
@@ -10,6 +11,7 @@ uk:email
 id
 name
 description
+create_time
 
 uk:name
 
@@ -25,7 +27,7 @@ id
 user_id
 title
 content
-time
+create_time
 
 k:user_id
 
@@ -41,7 +43,7 @@ id
 que_id
 user_id
 content
-time
+create_time
 up
 
 k:que_id
@@ -50,7 +52,6 @@ k:que_id
 id
 ans_id
 user_id
-time
 
 uk:(ans_id,user_id)
 
@@ -60,6 +61,6 @@ ans_id
 comm_id
 user_id
 content
-time
+create_time
 
 k:ans_id

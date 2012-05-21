@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
+
 from sqlalchemy.engine import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
-from gitcorp import app
+
+from odd import app
 
 db_engine = create_engine(app.config['DATABASE_URI'],
                           convert_unicode=True,
