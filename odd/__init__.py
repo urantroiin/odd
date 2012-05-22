@@ -11,9 +11,11 @@ app.config.from_object("websiteconfig")
 #
 from odd.views import general
 from odd.views import user
+from odd.views import question
 
 app.register_blueprint(general.mod)
 app.register_blueprint(user.mod)
+app.register_blueprint(question.mod)
 
 #
 # Login

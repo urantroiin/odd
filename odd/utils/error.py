@@ -9,6 +9,9 @@ USER_EDIT_OK = u'信息修改成功'
 USER_REGISTER_OK = u'注册成功'
 USER_LOGOUT_OK = u'注销成功'
 
+QUESTION_ADD_OK = u'问题发布成功'
+QUESTION_TAG_ADD_OK = u'tag添加成功'
+
 def success(error):
     flash(error, 'success')
 

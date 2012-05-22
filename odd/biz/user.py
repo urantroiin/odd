@@ -25,6 +25,9 @@ def register_user(user):
     if get_user_by_email(user.email):
         return USER_DUPLICATE
 
+    if get_user_by_name(user.nickname):
+        return USER_DUPLICATE
+
     db_session.add(user)
     db_session.commit()
     return USER_REGISTER_OK

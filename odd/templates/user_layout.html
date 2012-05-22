@@ -2,13 +2,13 @@
 
 {% block rheader %}
 <li>
-    <a>
+    <a href="{{ url_for('user.index', nickname=current_user.nickname)}}">
         <img src="http://www.gravatar.com/avatar/{{ current_user.email_hash() }}?s=20" />
         {{ current_user.nickname }}
     </a>
 </li>
 <li class="dropdown">
-    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Account<b class="caret"></b></a>
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">帐号<b class="caret"></b></a>
     <ul class="dropdown-menu">
         <a href="{{ url_for('general.logout') }}">注销</a>
     </ul>
@@ -18,10 +18,11 @@
 
 {% block top %}
 
-<section id="search-row">
-<form class="form-search thumbnail" action="" method="get">
-    <input type="search" placeholder="小组，问题">
-    <input class="btn" type="submit" value="Go">
+<section id="search-row" class="thumbnail">
+<form class="form-search" action="" method="get">
+    <input type="search" placeholder="Tag">
+    <input class="btn btn-warning" type="submit" value="搜索">
+    <a class="btn" href="{{ url_for('question.new') }}">提问</a>
 </form>
 </section>
 

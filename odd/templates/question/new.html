@@ -1,0 +1,27 @@
+{% extends 'user_layout.html' %}
+
+{% block content %}
+<form class="well" action="{{ url_for('question.new') }}" method='post'>
+    {% from 'import/tools.html' import flashed_msg,error %}
+
+    <h3 class="alert alert-info">提问</h3>
+
+    {{ form.hidden_tag() }}
+    {{ form.csrf }}
+
+    {{ form.title.label }}
+    {{ form.title() }}
+    {{ error(form.errors['title']) }}
+
+    {{ form.tags.label }}
+    {{ form.tags() }}
+    {{ error(form.errors['tags']) }}
+
+    {{ form.content.label }}
+    {{ form.content() }}
+    {{ error(form.errors['content']) }}
+
+    <label></label>
+    <input class="btn btn-primary" type="submit" value="发布"/>
+</form>
+{% endblock %}

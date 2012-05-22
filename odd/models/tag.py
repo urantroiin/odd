@@ -7,8 +7,8 @@ from sqlalchemy.types import INT, VARCHAR, TIMESTAMP, TEXT
 
 from datetime import datetime
 
-class Group(Model):
-    __tablename__ = 'groups'
+class Tag(Model):
+    __tablename__ = 'tags'
     
     id = Column('id', INT, primary_key=True)
     name = Column('name', VARCHAR(32), unique=True, nullable=False)
@@ -21,18 +21,18 @@ class Group(Model):
         self.create_time = datetime.now()
 
     def __repr__(self):
-        return '<Group %r>' % self.name
+        return '<Tag %r>' % self.name
 
-class Group_User(Model):
-    __tablename__ = 'group_users'
+class Tag_User(Model):
+    __tablename__ = 'tag_users'
     
     id = Column('id', INT, primary_key=True)
-    group_id = Column('group_id', INT, nullable=False)
+    tag_id = Column('tag_id', INT, nullable=False)
     user_id = Column('user_id', INT, nullable=False)
 
-    def __init__(self, group_id, user_id):
-        self.group_id = group_id
+    def __init__(self, tag_id, user_id):
+        self.tag_id = tag_id
         self.user_id = user_id
 
     def __repr__(self):
-        return '<Group_User %d %d>' % (self.group_id,self.user_id)
+        return '<Tag_User %d %d>' % (self.tag_id,self.user_id)
