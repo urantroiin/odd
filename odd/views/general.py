@@ -3,16 +3,24 @@
 from flask import Blueprint
 from flask import  url_for, redirect, render_template 
 from flaskext.login import login_required, current_user
-from flaskext.wtf import Form, TextField, PasswordField, Required
+from flaskext.wtf import Form, TextField, PasswordField, BooleanField, Required, Email, EqualTo, ValidationError
 
-from odd.util.error import *
+from odd.utils.error import *
 
 from odd.biz.user import *
 
 mod = Blueprint('general', __name__)
 
 @mod.route('/')
-@mod.route('/login', methods=['GET', 'POST'])
+def index():
+    '''
+    首页
+    '''
+    form = LoginForm()
+    return render_template('general/login.html', form=form)
+
+
+@mod.route('/login', methods=['GET','POST'])
 def login():
     '''
     登录
@@ -24,10 +32,13 @@ def login():
 
     email = form.email.data
     passwd = form.passwd.data
+    auto = form.auto.data
 
     user = User(email, passwd)
-    ret = login(user)
+    ret = user_login(user, auto)
 
+    user.id = 1
+    ret = USER_LOGIN_OK
     if ret != USER_LOGIN_OK:
         fail(ret);
         return redirect(url_for('.login'))
@@ -41,7 +52,7 @@ def logout():
     '''
     登出
     '''
-    logout()
+    user_logout()
     return redirect(url_for('.index'))
 
 @mod.route('/register', methods=['GET', 'POST'])
@@ -59,7 +70,7 @@ def register():
     passwd = form.passwd.data
 
     user = User(email, passwd, nickname)
-    ret = register(user)
+    ret = register_user(user)
 
     if ret != USER_REGISTER_OK:
         fail(ret);
@@ -69,11 +80,20 @@ def register():
     return redirect(url_for('user.index', id=user.id))
 
 # forms
+def BeTrue(msg):
+        def _BeTrue(form, field):
+            if not field.data:
+                raise ValidationError(msg)
+        return _BeTrue
+
 class LoginForm(Form):
-    email = TextField(u'邮箱地址', validators=[Required()])
+    email = TextField(u'邮箱地址', validators=[Required(), Email()])
     passwd = PasswordField(u'密码', validators=[Required()])
+    auto = BooleanField(u'自动登录', default=True)
 
 class RegisterForm(Form):
-    email = TextField(u'邮箱地址', validators=[Required()])
-    nickname = TextField(u'昵称', validators=[Required()])
-    passwd = PasswordField(u'密码', validators=[Required()])
+    email = TextField(u'邮箱地址*', validators=[Required(), Email()])
+    nickname = TextField(u'昵称*', validators=[Required()])
+    passwd = PasswordField(u'密码*', validators=[Required()])
+    confirm = PasswordField(u'确认密码*', validators=[Required(), EqualTo('passwd', message=u'密码不一致')])
+    agree = BooleanField(u'我已经认真阅读并同意', default=True, validators=[BeTrue(u'同意此协议才能注册')])

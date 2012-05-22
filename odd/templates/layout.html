@@ -35,18 +35,13 @@
     {% block top %}{% endblock %}
 
     <div class="container" style="margin-top:70px">
+        {% block head %}
+        <header>
+        {% from 'import/tools.html' import flashed_msg %}
+        {{ flashed_msg() }}
+        </header>
+        {% endblock %}
         <div class="row">
-            <header id="header">
-                {% with messages = get_flashed_messages(with_categories=true) %}
-                {% for category, message in messages %}
-                <div class="alert {{ 'alert-'+category }}">
-                    <a class="close" data-dismiss="alert">x</a>
-                        {{ message }}
-                </div>    
-                {% endfor %}
-                {% endwith %}
-            </header>
-
             {% block content %}{% endblock %}
         </div>
         

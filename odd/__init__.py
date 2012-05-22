@@ -9,8 +9,8 @@ app.config.from_object("websiteconfig")
 #
 # Blueprints
 #
-from odd.view import general
-from odd.view import user
+from odd.views import general
+from odd.views import user
 
 app.register_blueprint(general.mod)
 app.register_blueprint(user.mod)

@@ -1,0 +1,49 @@
+{% extends 'layout.html' %}
+
+{% block top %}
+<section id="culture-wall">
+    <video controls="controls">
+        <source src="static/movie.ogg">
+        <object data="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0">
+        <a href="static/movie.ogg">download</a>
+        </object>
+    </video>
+</section>
+{% endblock %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block content %}
+<section class="span6">
+<a class="well btn btn-primary" style="width:90%" href="{{ url_for('general.register') }}"><h1>注册</h1></a>
+</section>
+
+<section class="span6">
+<form class="well" action="{{ url_for('general.login') }}" method="post">
+    {% from 'import/tools.html' import flashed_msg,error %}
+    {{ flashed_msg() }}
+
+    {{ form.hidden_tag() }}
+    {{ form.csrf }}
+
+    {{ form.email.label }}
+    {{ form.email(class="span4") }}
+    {{ error(form.errors['email']) }}
+    
+    {{ form.passwd.label }}
+    {{ form.passwd(class="span4") }}
+    {{ error(form.errors['passwd']) }}
+
+    <label></label>
+    <input type="submit" value="登录" class="btn btn-primary">
+    {{ form.auto() }} 
+    {{ form.auto.label(style='display:inline-block')  }}
+
+    <hr>
+    <a>忘记密码？</a> 
+   </form>
+</section>
+
+{% endblock %}

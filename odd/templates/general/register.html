@@ -1,0 +1,78 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<script>
+    $(function(){
+        var options = {
+            'placement' : 'top',
+            'trigger' : 'focus'
+        }
+        $('#register-form input').tooltip(options)
+    })
+</script>
+
+
+<section class="register-wrapper">
+<form id="register-form" class="well form-horizontal" method="post">
+    {% from 'import/tools.html' import error %}
+
+    {{ form.hidden_tag() }}
+    {{ form.csrf }}
+
+    <h3 class="alert alert-info">欢迎注册</h3>
+
+    <div class="control-group">
+        {{ form.email.label(class="control-label") }}
+        <div class="controls">
+            {{ form.email(title="请输入有效地邮箱地址") }}
+            {{ error(form.errors['email']) }}
+        </div>
+    </div>
+
+    <div class="control-group">
+        {{ form.nickname.label(class="control-label") }}
+        <div class="controls">
+            {{ form.nickname(title="长度5至12位，字母数字或以下字符@_-") }}
+            {{ error(form.errors['nickname']) }}
+        </div>
+    </div>
+
+    <div class="control-group">
+        {{ form.passwd.label(class="control-label") }}
+        <div class="controls">
+            {{ form.passwd(title="长度5至12位，字母数字或以下字符@_-") }}
+            {{ error(form.errors['passwd']) }}
+        </div>
+    </div>
+
+    <div class="control-group">
+        {{ form.confirm.label(class="control-label") }}
+        <div class="controls">
+            {{ form.confirm(title="确保密码一致") }}
+            {{ error(form.errors['confirm']) }}
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label"></label>
+        <div class="controls">
+            <label class="checkbox">
+                {{ form.agree }}
+                我已经认真阅读并同意
+                <a href="">《Offer多多协议》</a>
+                {{ error(form.errors['agree']) }}
+            </label>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="control-group">
+        <div class="controls">
+            <input class="btn btn-primary" type="submit" value="确认提交"/>
+            <a href="{{ url_for('general.index') }}" class="btn">取消</a>
+        </div>
+    </div>
+</form>
+</section>	
+{% endblock %}
