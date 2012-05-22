@@ -33,12 +33,23 @@
 }
 
 /**custom**/
-#header .desc {
-    text-align: center;
+#header{
+    .logo {
+        a {
+            color: #999;
+            }     
+    }
+    .desc {
+        padding-top:10px;
+        text-align: center;
+    }
 }
 
+#top {
+    margin-top: 40px;
+    }
+
 #culture-wall {
-    //margin-top: 70px;
     height: 300px;
     text-align: center;
     background: #171717 url("/static/img/flashBg.jpg");
@@ -48,6 +59,10 @@
         background: #171717;
         }
 }
+
+#content {
+    margin-top: 60px;
+    }
 
 .topic p{
     font-size:13px;
@@ -69,8 +84,26 @@
     padding: 0px 150px;
 }
 
-.side-box header {
-    border-bottom: 1px solid #171717; 
-    margin-bottom: 5px;    
-}
+.hr-small {
+    margin: 0;
+    margin-bottom: 5px;
+    border: 0;
+    border-top: 1px solid #171717;
+    border-bottom: 1px solid white;
+    }
 
+.hr-large {
+    margin: 0;
+    margin-bottom: 10px;
+    border: 0;
+    border-top: 2px solid #171717;
+    border-bottom: 1px solid white;
+    }
+
+
+#search-row {
+    text-align: center;
+    form {
+        margin: 0px;
+        }
+}

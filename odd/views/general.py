@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from flask import Blueprint
-from flask import  url_for, redirect, render_template 
+from flask import Blueprint, url_for, redirect, render_template, abort
 from flaskext.login import login_required, current_user
-from flaskext.wtf import Form, TextField, PasswordField, BooleanField, Required, Email, EqualTo, ValidationError
+from flaskext.wtf import Form, TextField, PasswordField, BooleanField, Required, Email, EqualTo, Regexp, ValidationError
 
 from odd.utils.error import *
 
@@ -37,16 +36,14 @@ def login():
     user = User(email, passwd)
     ret = user_login(user, auto)
 
-    user.id = 1
-    ret = USER_LOGIN_OK
     if ret != USER_LOGIN_OK:
         fail(ret);
-        return redirect(url_for('.login'))
+        return render_template('general/login.html', form=form)
     
     success(ret);
-    return redirect(url_for('user.index', id=user.id))
+    return redirect(url_for('user.index', nickname=user.nickname))
 
-@mod.route('/logout', methods=['POST'])
+@mod.route('/logout', methods=['GET','POST'])
 @login_required
 def logout():
     '''
@@ -74,10 +71,10 @@ def register():
 
     if ret != USER_REGISTER_OK:
         fail(ret);
-        return redirect(url_for('.register'))
+        return render_template('general/register.html', form=form)
     
     success(ret);
-    return redirect(url_for('user.index', id=user.id))
+    return redirect(url_for('user.index', nickname=user.nickname))
 
 # forms
 def BeTrue(msg):
@@ -88,12 +85,12 @@ def BeTrue(msg):
 
 class LoginForm(Form):
     email = TextField(u'邮箱地址', validators=[Required(), Email()])
-    passwd = PasswordField(u'密码', validators=[Required()])
+    passwd = PasswordField(u'密码', validators=[Required(),Regexp('[\w\d-]{5,20}')])
     auto = BooleanField(u'自动登录', default=True)
 
 class RegisterForm(Form):
     email = TextField(u'邮箱地址*', validators=[Required(), Email()])
-    nickname = TextField(u'昵称*', validators=[Required()])
-    passwd = PasswordField(u'密码*', validators=[Required()])
+    nickname = TextField(u'昵称*', validators=[Required(),Regexp('[\w\d-]{2,20}')])
+    passwd = PasswordField(u'密码*', validators=[Required(),Regexp('[\w\d-]{5,20}')])
     confirm = PasswordField(u'确认密码*', validators=[Required(), EqualTo('passwd', message=u'密码不一致')])
     agree = BooleanField(u'我已经认真阅读并同意', default=True, validators=[BeTrue(u'同意此协议才能注册')])

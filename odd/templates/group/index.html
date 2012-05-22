@@ -1,0 +1,22 @@
+{% extends 'user_layout.html' %}
+
+{% block content %}
+
+{% from 'user/import/topic.html' import topic,question %}
+
+<section class="row">
+
+<div class="span1">
+    <span class="label label-info">{{ group.name }}</span>
+</div>
+
+<div class="span7">
+{{ question() }}
+</div>
+
+</section>
+
+<hr>
+</section>
+
+{% endblock %}

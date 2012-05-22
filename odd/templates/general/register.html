@@ -24,7 +24,7 @@
     <div class="control-group">
         {{ form.email.label(class="control-label") }}
         <div class="controls">
-            {{ form.email(title="请输入有效地邮箱地址") }}
+            {{ form.email(title="需要常用邮箱地址") }}
             {{ error(form.errors['email']) }}
         </div>
     </div>
@@ -32,7 +32,7 @@
     <div class="control-group">
         {{ form.nickname.label(class="control-label") }}
         <div class="controls">
-            {{ form.nickname(title="长度5至12位，字母数字或以下字符@_-") }}
+            {{ form.nickname(title="2至20个字符，支持中英文，数字，_和-") }}
             {{ error(form.errors['nickname']) }}
         </div>
     </div>
@@ -40,7 +40,7 @@
     <div class="control-group">
         {{ form.passwd.label(class="control-label") }}
         <div class="controls">
-            {{ form.passwd(title="长度5至12位，字母数字或以下字符@_-") }}
+            {{ form.passwd(title="5至20个字符，支持中英文，数字，_和-") }}
             {{ error(form.errors['passwd']) }}
         </div>
     </div>
@@ -48,7 +48,7 @@
     <div class="control-group">
         {{ form.confirm.label(class="control-label") }}
         <div class="controls">
-            {{ form.confirm(title="确保密码一致") }}
+            {{ form.confirm(title="请再次输入您的密码") }}
             {{ error(form.errors['confirm']) }}
         </div>
     </div>
