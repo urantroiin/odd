@@ -5,22 +5,28 @@
             <p>
             来自：
             {% for tag in q.tags %}
-                <a href="{{ url_for('tag.index', tag=tag) }}"><span class="label label-warning">{{ tag }}</span></a>
+                <a href="{{ url_for('tag.index', tag=tag.tag) }}"><span class="label label-warning">{{ tag.tag }}</span></a>
             {% endfor %}
             </p>
         </header>
         {% if content %}
             <blockquote>
                 <p>{{ q.content }}</p>
-                <small><a href="{{ url_for('user.index', nickname=q.user.nickname) }}">{{ q.user.nickname }}</a></small>
+                <small>
+                    <a href="{{ url_for('user.index', nickname=q.user.nickname) }}">
+                        <img src="http://www.gravatar.com/avatar/{{ q.user.email_hash()}}?s=20" />
+                        {{ q.user.nickname }}
+                    </a>
+                    <span class="pull-right">{{ q.create_time }}</span>
+                </small>
             </blockquote>
         {% endif %}
 
-        {% if footer %}
             <footer>
-            <a href="{{ url_for('question.index', id=q.id) }}">2个答案</a>
+            {% if footer %}
+            <a href="{{ url_for('question.index', id=q.id) }}">{{ q.answers|length }}个答案</a>
+            {% endif %}
             </footer>
-        {% endif %}
     </section>
 {% endmacro %}
 
@@ -54,9 +60,18 @@
 
 {% macro normal_answer(a) %}
     <section class="answer thumbnail">
+        <button class="label label-info" style="font-size:20px;padding:5px;position:absolute;right:-50px;">
+            <div>顶</div>
+        </button>
         <blockquote>
-            <p>还是马里兰好一点吧 地址位置比较重要</p>
-            <small>陈超平</small>
+            <p>{{ a.content }}</p>
+            <small>
+                <a href="{{ url_for('user.index', nickname=a.user.nickname) }}">
+                    <img src="http://www.gravatar.com/avatar/{{ a.user.email_hash()}}?s=20" />
+                    {{ a.user.nickname }}
+                </a> 
+                <span class="pull-right">{{ a.create_time }}</span>
+            </small>
         </blockquote>
         <footer>
             <p>
@@ -71,17 +86,47 @@
 <script>
     $(function(){
         $(".collapse").collapse()
+        
+        $(".answer-form").submit(function(){
+            question_id = $("input[name=question_id]", this).val() 
+            if(!question_id){
+                alert("问题ID不能为空")
+                return false
+            }
+            content = $("textarea[name=content]", this).val()
+            if(!content){
+                alert("内容不能为空")
+                return false
+            }
 
+            $.ajax({
+                url:"{{ url_for('question.answer') }}",
+                type: "POST",
+                data: $(this).serialize(),
+                error: function(request){alert("fail")},
+                success: function(data){window.location.reload(true);}
+            })
+            return false
+        })
 
     })
 </script>
 <section class="topic">
     {{ normal_question(q, True, False, True) }}
+
     <hr>
-    <p>2个答案</p>
+    
+    <p>{{ q.answers|length }}个答案</p>
     <hr>
-    {{ normal_answer() }}
-    <hr>
-    {{ normal_answer() }}
+    {% for a in q.answers %}
+        {{ normal_answer(a) }}
+        <hr>
+    {% endfor %}
+    
+    <form class="answer-form well" action="" method="post">
+        <input name="question_id" type="hidden" value="{{ q.id }}"/>
+        <textarea class="span6" name="content" rows="5"></textarea>
+        <input class="btn btn-primary" type="submit" value="回答"/>
+    </form>
 </section>
 {% endmacro %}

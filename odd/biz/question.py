@@ -15,40 +15,26 @@ def get_question_by_ids(ids):
     输出问题数组
     '''
     questions = db_session.query(Question).filter(Question.id.in_(ids)).all()
-    if not questions:
-        return []
-
-    uids = [q.user_id for q in questions]
-    users = db_session.query(User).filter(User.id.in_(uids)).all()
-    tags = db_session.query(Question_Tag).filter(Question_Tag.question_id.in_(ids)).all()
-    for q in questions:
-        for u in users:
-            if u.id == q.user_id:
-                q.user = u
-                break
-        q.tags = [tag.tag for tag in tags if tag.question_id==q.id]
     return questions
 
 def get_question_by_id(id):
-    questions = get_question_by_ids([id])
-    if not questions:
-        return None
-    
-    return questions[0]
+    question = db_session.query(Question).filter_by(id=id).first()
+    return question
 
 def get_question_by_tags(tags):
     tags = db_session.query(Question_Tag).filter(Question_Tag.tag.in_(tags)).all()
-    if not tags:
-        return []
-
-    ids = [t.question_id for t in tags]
-    questions = get_question_by_ids(ids)
-    return questions
+    return [t.question for t in tags]
 
 def get_question_by_tag(tag):
-    return get_question_by_tags([tag])
+    tags = db_session.query(Question_Tag).filter_by(tag=tag).all()
+    return [t.question for t in tags]
 
 def new_question(question):
     db_session.add(question)
+    db_session.commit()
+    return QUESTION_ADD_OK
+
+def new_answer(answer):
+    db_session.add(answer)
     db_session.commit()
     return QUESTION_ADD_OK

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from flask import Blueprint, url_for, redirect, render_template, abort, request
+from flask import Blueprint, url_for, redirect, render_template, abort, request, jsonify
 from flaskext.login import login_required, current_user
-from flaskext.wtf import Form, TextField, TextAreaField, PasswordField, Required
+from flaskext.wtf import Form, TextField, TextAreaField, HiddenField, Required
 
 from odd.utils.error import *
 
@@ -10,6 +10,8 @@ from odd.models.question import *
 from odd.biz.question import *
 
 from functools import wraps
+
+from re import match
 
 def check_load_question(func):
     @wraps(func)
@@ -34,6 +36,20 @@ def index(id):
         abort(404)
     return render_template('question/index.html', question=question)
 
+@mod.route('/answer', methods=['POST'])
+def answer():
+    form = request.form
+    question_id = form.getlist('question_id')
+    content = form.getlist('content')
+    if not question_id or not content:
+        return jsonify(errno='FAIL')
+
+    answer = Answer(current_user.id, question_id[0], content[0])
+    ret = new_answer(answer)
+    if ret != ANSWER_ADD_OK:
+        return jsonify(errno='FAIL')
+
+    return jsonify(errno='SUCCESS')
 
 @mod.route('/new', methods=['GET','POST'])
 @login_required
@@ -66,3 +82,7 @@ class NewQueForm(Form):
     title = TextField(u'标题', validators=[Required()])
     content = TextAreaField(u'内容', validators=[Required()])
     tags = TextField(u'标签', validators=[Required()])
+
+class AnswerForm(Form):
+    question_id = HiddenField(validators=[Required])
+    content = TextAreaField(u'内容', validators=[Required()])

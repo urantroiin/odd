@@ -15,6 +15,8 @@ QUESTION_TAG_ADD_OK = u'tag添加成功'
 
 TAG_FOLLOW_ADD_OK = u'关注成功'
 
+ANSWER_ADD_OK = u'回答成功'
+
 def success(error):
     flash(error, 'success')
 
