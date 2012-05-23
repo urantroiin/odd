@@ -1,72 +1,87 @@
-{% macro simple_question() %}
-    <section class="question thumbnail">
+{% macro normal_question(q, content=True, footer=True, focus=False) %}
+<section class="question {{ 'focus' if focus }} thumbnail">
         <header>
-            <a href=""><h4>各位童鞋，UMD马里兰大学帕克分校是个什么情况？和UIUC比呢？</h4></a>
-            <p>
-                来自：
-                <span class="label label-warning">马里兰大学</span>
-                <span class="label label-warning">UIUC</span>
-                <span class="label label-warning">经济学</span>
-            </p>
-        </header>
-    </section>
-{% endmacro %}
-
-{% macro question(q, tags) %}
-    <section class="question thumbnail">
-        <header>
-        <a href=""><h4>{{ q.title }}</h4></a>
+        <a href="{{ url_for('question.index', id=q.id) }}"><h4>{{ q.title }}</h4></a>
             <p>
             来自：
-            {% for tag in tags %}
-            <span class="label label-warning">{{ tag }}</span>
+            {% for tag in q.tags %}
+                <a href="{{ url_for('tag.index', tag=tag) }}"><span class="label label-warning">{{ tag }}</span></a>
             {% endfor %}
             </p>
         </header>
+        {% if content %}
+            <blockquote>
+                <p>{{ q.content }}</p>
+                <small><a href="{{ url_for('user.index', nickname=q.user.nickname) }}">{{ q.user.nickname }}</a></small>
+            </blockquote>
+        {% endif %}
 
-        <blockquote>
-            <p>{{ q.content }}</p>
-            <small>xys</small>
-        </blockquote>
+        {% if footer %}
+            <footer>
+            <a href="{{ url_for('question.index', id=q.id) }}">2个答案</a>
+            </footer>
+        {% endif %}
     </section>
- 
 {% endmacro %}
 
-{% macro topic() %}
-<section class="topic">
-    <section class="question thumbnail">
-        <header>
-            <a href=""><h4>各位童鞋，UMD马里兰大学帕克分校是个什么情况？和UIUC比呢？</h4></a>
-            <p>
-                来自：<span class="label label-warning">马里兰大学</span>
-                转发：<span class="label label-warning">UIUC</span>&nbsp;<span class="label label-warning">经济学</span>
-            </p>
-        </header>
+{% macro normal_comment(c) %}
+    <section id="demo" class="comment collapse in thumbnail" style="height: 0px;">
+    `   <div class="row">
+            <img class="thumbnail pull-left" src="http://www.gravatar.com/avatar/1?s=20" />
+            <div class="pull-left">
+                <p>
+                    <a href="">xys</a>
+                    ：shit
+                </p>
+                <p>
+                    <small>2012-05-23</small>
+                    <a class="reply" href="">回复</a>
+                </p>
+            </div>
+        </div>
 
-        <blockquote>
-            <p>本科经济学，收了两个AD，UMD貌似地理位置不错，但网上那个学校的信息略少啊，求助！还有大家觉得UIUC好还是UMD好呢？谢谢谢啦！（^_^）        </p>
-            <small>xys</small>
-        </blockquote>
-    </section>
-    
-    <section class="comment thumbnail">
-        <header>共2条评论</header>
         <hr>
-        
+
+        <div class="row">
+            <img class="thumbnail pull-left" src="http://www.gravatar.com/avatar/1?s=20" />
+            <form class="comm-form form-inline">
+                <input name="comm" type="text">
+                <input type="submit" value="评论">
+            </form>
+        </div>
+    </section>
+{% endmacro %}
+
+{% macro normal_answer(a) %}
+    <section class="answer thumbnail">
         <blockquote>
             <p>还是马里兰好一点吧 地址位置比较重要</p>
             <small>陈超平</small>
         </blockquote>
-        
-        <blockquote>
-            <p>同意~</p>
-            <small>李白</small>
-        </blockquote>
-        
-        <hr>
         <footer>
-            <input type="text" value="登录后可添加你的评论" disabled="disabled" style="width:98%"/>
+            <p>
+            <a href="javascript:;" data-toggle="collapse" data-target="#demo">1条评论</a>
+            </p>
+            {{ normal_comment() }}
         </footer>
     </section>
+{% endmacro %}
+
+{% macro topic(q) %}
+<script>
+    $(function(){
+        $(".collapse").collapse()
+
+
+    })
+</script>
+<section class="topic">
+    {{ normal_question(q, True, False, True) }}
+    <hr>
+    <p>2个答案</p>
+    <hr>
+    {{ normal_answer() }}
+    <hr>
+    {{ normal_answer() }}
 </section>
 {% endmacro %}

@@ -3,36 +3,18 @@
 from odd.data.db import Model
 
 from sqlalchemy.schema import Column
-from sqlalchemy.types import INT, VARCHAR, TIMESTAMP, TEXT
+from sqlalchemy.types import INT, VARCHAR
 
-from datetime import datetime
-
-class Tag(Model):
-    __tablename__ = 'tags'
+class Question_Tag(Model):
+    __tablename__ = 'question_tags'
     
     id = Column('id', INT, primary_key=True)
-    name = Column('name', VARCHAR(32), unique=True, nullable=False)
-    desc = Column('description', TEXT, nullable=False)
-    create_time = Column('create_time', TIMESTAMP, nullable=False)
+    question_id = Column('question_id', INT, nullable=False)
+    tag = Column('tag', VARCHAR(50), nullable=False)
 
-    def __init__(self, name, desc=''):
-        self.name = name
-        self.desc = desc
-        self.create_time = datetime.now()
+    def __init__(self, question_id, tag):
+        self.question_id = question_id
+        self.tag = tag
 
     def __repr__(self):
-        return '<Tag %r>' % self.name
-
-class Tag_User(Model):
-    __tablename__ = 'tag_users'
-    
-    id = Column('id', INT, primary_key=True)
-    tag_id = Column('tag_id', INT, nullable=False)
-    user_id = Column('user_id', INT, nullable=False)
-
-    def __init__(self, tag_id, user_id):
-        self.tag_id = tag_id
-        self.user_id = user_id
-
-    def __repr__(self):
-        return '<Tag_User %d %d>' % (self.tag_id,self.user_id)
+        return '<Question_Tag %d %s>' % (self.question_id,self.tag)

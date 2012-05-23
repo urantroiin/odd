@@ -1,61 +1,95 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="utf-8">
-<title>Offer多多</title>
+    <head>
+        <meta charset="utf-8">
+        <title>Offer多多</title>
 
-<link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}"/>
-<link rel="stylesheet/less" type="text/css" href="{{ url_for('static', filename='style.less') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}"/>
+        <link rel="stylesheet/less" type="text/css" href="{{ url_for('static', filename='style.less') }}">
 
-<script src="{{ url_for('static', filename='jquery-1.7.2.min.js') }}"></script>
-<script src="{{ url_for('static', filename='less-1.3.0.min.js') }}" ></script>
-<script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}" ></script>
+        <script src="{{ url_for('static', filename='jquery-1.7.2.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='less-1.3.0.min.js') }}" ></script>
+        <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}" ></script>
 
-</head>
+    </head>
 
 
-<body>
-<article>
-    <header id="article-header" class="navbar navbar-fixed-top">
+    <body>
+        <article>
+        <header id="article-header" class="navbar navbar-fixed-top">
         <div class="navbar-inner">
             <div class="container">
                 <a class="brand" href="{{ url_for('general.index') }}">Offer多多</a>
-                
-                <ul class="nav pull-right">
-                {% block rheader %}
+                {% if current_user.is_authenticated() %}
+                <ul id="mheader" class="nav pull-left">
+                    <li>
+
+                    <script>
+                        $(function(){
+                            $('.navbar-search').submit(function(){
+                                tag = $('input[name=tag]', this).val()
+                                if(tag) return true
+                                return false
+                            })
+                        })
+                    </script>
+                    <form class="navbar-search" action="{{ url_for('search.index') }}" method="get">
+                        <input class="search-query" name="tag" type="search" placeholder="标签">
+                        <input class="btn" type="submit" value="搜索">
+                        <a class="btn" href="{{ url_for('question.new') }}">提问</a>
+                    </form>
+                    </li>
+                </ul>
+                <ul id="rheader" class="nav pull-right">
+                    <li>
+                    <a href="{{ url_for('user.index', nickname=current_user.nickname)}}">
+                        <img src="http://www.gravatar.com/avatar/{{ current_user.email_hash() }}?s=20" />
+                        {{ current_user.nickname }}
+                    </a>
+                    </li>
+                    <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">帐号<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <a href="{{ url_for('general.logout') }}">注销</a>
+                    </ul>
+                    </li>
+
+                </ul>
+                {% else %}
+                <ul id="rheader" class="nav pull-right">
                     <li class="navbar-text">
                     留学领域的社交问答
                     <span class="label label-important">Hot</span>
                     </li>
-                {% endblock %}
                 </ul>
+                {% endif %}
             </div>
         </div>
-    </header>
+        </header>
 
-    <div id="article-top">
-        {% block top %}{% endblock %}
-    </div>
-
-    <div id="article-content" class="container">
-        {% block head %}
-            <header>
-                {% from 'import/tools.html' import flashed_msg %}
-                {{ flashed_msg() }}
-            </header>
-        {% endblock %}
-
-        <div class="row">
-            {% block content %}{% endblock %}
+        <div id="article-top">
+            {% block top %}{% endblock %}
         </div>
-        
-        <hr>
 
-        <footer>
+        <div id="article-content" class="container">
+            {% block head %}
+            <header>
+            {% from 'import/tools.html' import flashed_msg %}
+            {{ flashed_msg() }}
+            </header>
+            {% endblock %}
+
+            <div class="row">
+                {% block content %}{% endblock %}
+            </div>
+
+            <hr>
+
+            <footer>
             ©copyright
-        </footer>
-    </div>
+            </footer>
+        </div>
 
-</article>
-</body>
+        </article>
+    </body>
 </html>

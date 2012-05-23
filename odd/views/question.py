@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from flask import Blueprint, url_for, redirect, render_template, abort 
+from flask import Blueprint, url_for, redirect, render_template, abort, request
 from flaskext.login import login_required, current_user
-from flaskext.wtf import Form, TextField, PasswordField, Required
+from flaskext.wtf import Form, TextField, TextAreaField, PasswordField, Required
 
 from odd.utils.error import *
 
@@ -28,10 +28,12 @@ mod = Blueprint('question', __name__, url_prefix='/question')
 
 @mod.route('/<id>')
 @login_required
-@check_load_question
-def index(question, **kv):
-    question_tags = get_question_tags(question.id)
-    return render_template('question/index.html', question=question, question_tags=question_tags)
+def index(id):
+    question = get_question_by_id(id)
+    if not question:
+        abort(404)
+    return render_template('question/index.html', question=question)
+
 
 @mod.route('/new', methods=['GET','POST'])
 @login_required
@@ -52,7 +54,7 @@ def new():
 
     tags = set(form.tags.data.split(' '))
 
-    question_tags = [Question_Tag(question.id, tag) for tag in tags]
+    question_tags = [Question_Tag(question.id, tag) for tag in tags if tag]
     ret = new_question_tags(question_tags)
     if ret != QUESTION_TAG_ADD_OK:
         fail(ret)
@@ -62,5 +64,5 @@ def new():
 
 class NewQueForm(Form):
     title = TextField(u'标题', validators=[Required()])
-    content = TextField(u'内容', validators=[Required()])
-    tags = TextField(u'Tags', validators=[Required()])
+    content = TextAreaField(u'内容', validators=[Required()])
+    tags = TextField(u'标签', validators=[Required()])

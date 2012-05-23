@@ -1,16 +1,18 @@
-{% extends 'user_layout.html' %}
+{% extends 'layout.html' %}
 
 {% block content %}
 
-{% from 'import/topic.html' import simple_question %}
+{% from 'import/topic.html' import normal_question %}
 
 <section id="tag-news" class="span8">
-<header><h3>Tag动态</h3></header>
+<header><h3>问题动态</h3></header>
 <hr>
 
-{{ simple_question() }}
+{% for q in questions %}
+    {{ normal_question(q, False) }}
+    <hr>
+{% endfor %}
 
-<hr>
 </section>
 
 <section class="span4">
@@ -18,13 +20,13 @@
 <section class="user-info side-box thumbnail">
 <header><h5>本大爷</h5></header>
 <hr class="hr-small">
-<img class="thumbnail" src="http://www.gravatar.com/avatar/{{ user.email_hash() if user }}?s=80" />
+<img class="thumbnail" src="http://www.gravatar.com/avatar/{{ current_user.email_hash()}}?s=80" />
+<h5 style="text-align:center">{{ current_user.nickname }}</h5>
 </section>
-
 <hr>
 
 <section class="fav-tags side-box thumbnail">
-<header><h5>珍藏的Tag</h5></header>
+<header><h5>珍藏的标签</h5></header>
 <hr class="hr-small">
 <a href=""><span class="label label-info">Linux</span></a>
 <a href=""><span class="label label-warning">CSS</span></a>

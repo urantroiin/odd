@@ -4,16 +4,14 @@
 <script>
     $(function(){
         var options = {
-            'placement' : 'top',
+            'placement' : 'right',
             'trigger' : 'focus'
         }
         $('#register-form input').tooltip(options)
     })
 </script>
 
-
-<section class="register-wrapper">
-<form id="register-form" class="well form-horizontal" method="post">
+<form id="register-form" class="well form-horizontal span8 offset2" method="post">
     {% from 'import/tools.html' import error %}
 
     {{ form.hidden_tag() }}
@@ -74,5 +72,4 @@
         </div>
     </div>
 </form>
-</section>	
 {% endblock %}

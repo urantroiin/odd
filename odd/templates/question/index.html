@@ -1,8 +1,11 @@
-{% extends 'user_layout.html' %}
+{% extends 'layout.html' %}
 
 {% block content %}
-{% from 'import/topic.html' import question %}
-<section class="span8">
-{{ question(question, question_tags) }}
+
+{% from 'import/topic.html' import topic %}
+
+<section class="span12">
+{{ topic(question) }}
 </section>
+
 {% endblock %}

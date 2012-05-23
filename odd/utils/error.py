@@ -10,7 +10,10 @@ USER_REGISTER_OK = u'注册成功'
 USER_LOGOUT_OK = u'注销成功'
 
 QUESTION_ADD_OK = u'问题发布成功'
+
 QUESTION_TAG_ADD_OK = u'tag添加成功'
+
+TAG_FOLLOW_ADD_OK = u'关注成功'
 
 def success(error):
     flash(error, 'success')

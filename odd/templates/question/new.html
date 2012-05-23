@@ -1,7 +1,7 @@
-{% extends 'user_layout.html' %}
+{% extends 'layout.html' %}
 
 {% block content %}
-<form class="well" action="{{ url_for('question.new') }}" method='post'>
+<form class="well span8 offset2" action="{{ url_for('question.new') }}" method='post'>
     {% from 'import/tools.html' import flashed_msg,error %}
 
     <h3 class="alert alert-info">提问</h3>
@@ -12,16 +12,19 @@
     {{ form.title.label }}
     {{ form.title() }}
     {{ error(form.errors['title']) }}
+    <span class="help-block">问题的主题</span>
 
     {{ form.tags.label }}
     {{ form.tags() }}
     {{ error(form.errors['tags']) }}
+    <span class="help-block">问题涉及的领域，便于搜索, 多个标签以空格分开</span>
 
     {{ form.content.label }}
-    {{ form.content() }}
+    {{ form.content(rows=5,cols=5) }}
     {{ error(form.errors['content']) }}
+    <span class="help-block">问题的详细内容</span>
 
-    <label></label>
+    <hr>
     <input class="btn btn-primary" type="submit" value="发布"/>
 </form>
 {% endblock %}

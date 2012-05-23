@@ -1,17 +1,22 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-
 <section class="span12">
+<header>
+<h2 class="alert alert-info">搜索结果</h2>
+</header>
+
+<section>
 <span class="label label-info">{{ tag }}</span>
 </section>
 
 {% from 'import/topic.html' import normal_question %}
-<section class="span12">
+<section>
 {% for q in questions %}
     <hr>
     {{ normal_question(q) }}
 {% endfor %}
 </section>
 
+</section>
 {% endblock %}

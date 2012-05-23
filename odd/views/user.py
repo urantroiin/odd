@@ -7,28 +7,22 @@ from flaskext.wtf import Form, TextField, PasswordField, Required
 from odd.utils.error import *
 
 from odd.biz.user import *
+from odd.biz.question import *
 
 from functools import wraps
 
-def check_load_user(func):
-    @wraps(func)
-    def wrapper(**kv):
-        if 'nickname' in kv.keys():
-            user = get_user_by_name(kv['nickname'])
-        else:
-            user = current_user
-       
-        if user:
-            return func(user=user, **kv)
-        else:
-            return abort(404)
-
-    return wrapper
-
-mod = Blueprint('user', __name__)
+mod = Blueprint('user', __name__, url_prefix='/user')
 
 @mod.route('/<nickname>')
 @login_required
-@check_load_user
-def index(user, **kv):
-    return render_template('user/index.html', user=user)
+def index(nickname):
+    if current_user.nickname == nickname:
+        questions = get_question_by_tags(['UIUC'])
+        return render_template('user/index.html', questions=questions)
+
+    user = get_user_by_name(nickname)
+    if not user:
+        abort(404)
+
+
+    return render_template('user/main.html', user=user)
