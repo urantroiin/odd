@@ -30,29 +30,33 @@
     </section>
 {% endmacro %}
 
-{% macro normal_comment(c) %}
-    <section id="demo" class="comment collapse in thumbnail" style="height: 0px;">
-    `   <div class="row">
-            <img class="thumbnail pull-left" src="http://www.gravatar.com/avatar/1?s=20" />
+{% macro normal_comment(a) %}
+    <section id="comments-{{ a.id }}" class="comments collapse in thumbnail" style="height: 0px;">
+    `   {% for c in a.comments %}
+        <div id="comment-{{ c.id }}" class="comment row">
+            <img class="thumbnail pull-left" src="http://www.gravatar.com/avatar/{{ c.user.email_hash() }}?s=20" />
             <div class="pull-left">
                 <p>
-                    <a href="">xys</a>
-                    ：shit
+                <a class="nickname" href="">{{ c.user.nickname }}</a>
+                ：{{ c.content }}
                 </p>
                 <p>
-                    <small>2012-05-23</small>
-                    <a class="reply" href="">回复</a>
+                    <small>{{ c.create_time }}</small>
+                    <a class="reply" href="javascript:;">回复</a>
                 </p>
             </div>
         </div>
-
         <hr>
-
+        {% endfor %}
+        
         <div class="row">
             <img class="thumbnail pull-left" src="http://www.gravatar.com/avatar/1?s=20" />
-            <form class="comm-form form-inline">
-                <input name="comm" type="text">
-                <input type="submit" value="评论">
+            <form class="comment-form form-inline">
+                <input name="answer_id" type="hidden" value="{{ a.id }}">
+                <input name="comment_id" type="hidden" value="-1">
+                <input name="content" type="text">
+                <input class="btn btn-primary" type="submit" value="评论">
+                <a class="cancel btn" href="javascript:;">取消</a>
             </form>
         </div>
     </section>
@@ -60,9 +64,10 @@
 
 {% macro normal_answer(a) %}
     <section class="answer thumbnail">
-        <button class="label label-info" style="font-size:20px;padding:5px;position:absolute;right:-50px;">
-            <div>顶</div>
-        </button>
+        <div id="up-{{ a.id }}" class="up thumbnail">
+            <span>{{ a.up }}</span>
+            <button>顶</button>
+        </div>
         <blockquote>
             <p>{{ a.content }}</p>
             <small>
@@ -75,9 +80,9 @@
         </blockquote>
         <footer>
             <p>
-            <a href="javascript:;" data-toggle="collapse" data-target="#demo">1条评论</a>
+            <a href="javascript:;" data-toggle="collapse" data-target="#comments-{{ a.id }}">{{ a.comments|length }}条评论</a>
             </p>
-            {{ normal_comment() }}
+            {{ normal_comment(a) }}
         </footer>
     </section>
 {% endmacro %}
@@ -87,7 +92,7 @@
     $(function(){
         $(".collapse").collapse()
         
-        $(".answer-form").submit(function(){
+        $(".topic .answer-form").submit(function(){
             question_id = $("input[name=question_id]", this).val() 
             if(!question_id){
                 alert("问题ID不能为空")
@@ -101,6 +106,58 @@
 
             $.ajax({
                 url:"{{ url_for('question.answer') }}",
+                type: "POST",
+                data: $(this).serialize(),
+                error: function(request){alert("fail")},
+                success: function(data){window.location.reload(true);}
+            })
+            return false
+        })
+
+        $('.answer .up').click(function(){
+            aid = $(this).attr('id').split('-')[1]
+            $.ajax({
+                url:"{{ url_for('question.up') }}",
+                type: "POST",
+                data: {"answer_id":aid},
+                error: function(request){alert("fail")},
+                success: function(data){window.location.reload(true);}
+            })
+        })
+
+        $('.comment .reply').click(function(){
+            comment = $(this).parents('.comment')
+            cid = comment.attr('id').split('-')[1]
+            nickname = comment.find('.nickname').text()
+            form = comment.parent('.comments').find('.comment-form')
+            $('input[name=comment_id]',form).val(cid)
+            $('input[name=content]',form).val('回复'+nickname+'：')
+        })
+
+        $('.comments .comment-form .cancel').click(function(){
+            $(this).siblings('input[name=comment_id]').val(-1)
+            $(this).siblings('input[name=content]').val('')
+        })
+
+        $('.comments .comment-form').submit(function(){
+            answer_id = $("input[name=answer_id]", this).val() 
+            if(!answer_id){
+                alert("答案ID不能为空")
+                return false
+            }
+            comment_id = $("input[name=comment_id]", this).val() 
+            if(!comment_id){
+                alert("评论ID不能为空")
+                return false
+            }
+            content = $("input[name=content]", this).val()
+            if(!content){
+                alert("内容不能为空")
+                return false
+            }
+
+            $.ajax({
+                url:"{{ url_for('question.comment') }}",
                 type: "POST",
                 data: $(this).serialize(),
                 error: function(request){alert("fail")},

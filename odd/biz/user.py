@@ -10,7 +10,7 @@ from odd.models.user import User
 from odd.utils.error import *
 
 def get_user_by_id(id):
-    user = db_session.query(User).filter_by(id=id).first()
+    user = db_session.query(User).get(id)
     return user
 
 def get_user_by_email(email):

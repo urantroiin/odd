@@ -37,6 +37,7 @@ def index(id):
     return render_template('question/index.html', question=question)
 
 @mod.route('/answer', methods=['POST'])
+@login_required
 def answer():
     form = request.form
     question_id = form.getlist('question_id')
@@ -50,6 +51,40 @@ def answer():
         return jsonify(errno='FAIL')
 
     return jsonify(errno='SUCCESS')
+
+@mod.route('/up', methods=['POST'])
+@login_required
+def up():
+    form = request.form
+    answer_id = form.getlist('answer_id')
+    if not answer_id:
+        return jsonify(errno='FAIL')
+
+    up = Up(current_user.id, answer_id[0])
+    ret = new_up(up)
+    if ret != UP_ADD_OK:
+        return jsonify(errno='FAIL')
+
+    return jsonify(errno='SUCCESS')
+
+@mod.route('/comment', methods=['POST'])
+@login_required
+def comment():
+    form = request.form
+    answer_id = form.getlist('answer_id')
+    comment_id = form.getlist('comment_id')
+    content = form.getlist('content')
+    if not answer_id or not comment_id or not content:
+        return jsonify(errno='FAIL')
+
+    comm = Comment(current_user.id, answer_id[0], comment_id[0], content[0])
+    ret = new_comment(comm)
+    if ret != COMMENT_ADD_OK:
+        return jsonify(errno='FAIL')
+
+    return jsonify(errno='SUCCESS')
+
+
 
 @mod.route('/new', methods=['GET','POST'])
 @login_required

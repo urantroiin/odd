@@ -14,11 +14,11 @@ def get_question_by_ids(ids):
     输入问题ID数组
     输出问题数组
     '''
-    questions = db_session.query(Question).filter(Question.id.in_(ids)).all()
+    questions = db_session.query(Question).get(set(ids))
     return questions
 
 def get_question_by_id(id):
-    question = db_session.query(Question).filter_by(id=id).first()
+    question = db_session.query(Question).get(id)
     return question
 
 def get_question_by_tags(tags):
@@ -38,3 +38,24 @@ def new_answer(answer):
     db_session.add(answer)
     db_session.commit()
     return QUESTION_ADD_OK
+
+def new_up(up):
+    try:
+        db_session.add(up)
+        db_session.commit()
+    
+        anwser = db_session.query(Answer).get(up.answer_id)
+        anwser.up += 1
+        db_session.commit()
+        
+        return UP_ADD_OK
+    except:
+        db_session.rollback()
+        return UP_DUPLICATE
+
+def new_comment(comment):
+    db_session.add(comment)
+    db_session.commit()
+    return COMMENT_ADD_OK
+
+
