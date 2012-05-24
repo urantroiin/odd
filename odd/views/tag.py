@@ -5,7 +5,6 @@ from flaskext.login import login_required, current_user
 
 from odd.utils.error import *
 
-from odd.biz.tag import *
 from odd.biz.question import *
 
 mod = Blueprint('tag', __name__, url_prefix='/tag')
@@ -15,5 +14,3 @@ mod = Blueprint('tag', __name__, url_prefix='/tag')
 def index(tag):
     questions = get_question_by_tag(tag)
     return render_template('tag/index.html', tag=tag, questions=questions)
-
-

@@ -2,16 +2,14 @@
 
 from odd.data.db import Model
 
-from sqlalchemy.schema import Column
+from sqlalchemy.schema import Column, ForeignKey
 from sqlalchemy.types import INT, VARCHAR, TIMESTAMP, TEXT
-
-from datetime import datetime
 
 class Tag_Follow(Model):
     __tablename__ = 'tag_follows'
     
     id = Column('id', INT, primary_key=True)
-    user_id = Column('user_id', INT, nullable=False)
+    user_id = Column('user_id', INT, ForeignKey('users.id'), nullable=False)
     tag = Column('tag', VARCHAR(50), nullable=False)
 
     def __init__(self, user_id, tag):

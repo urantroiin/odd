@@ -22,6 +22,9 @@ ANSWER_UP_DUPLICATE = u'UP已存在'
 
 COMMENT_ADD_OK = u'评论成功'
 
+TAG_FOLLOW_ADD_OK = u'关注成功'
+TAG_FOLLOW_DEL_OK = u'取消关注成功'
+
 def success(error):
     flash(error, 'success')
 

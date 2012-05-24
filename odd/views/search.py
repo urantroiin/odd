@@ -5,7 +5,6 @@ from flaskext.login import login_required, current_user
 
 from odd.utils.error import *
 
-from odd.biz.tag import *
 from odd.biz.question import *
 
 mod = Blueprint('search', __name__, url_prefix='/search')

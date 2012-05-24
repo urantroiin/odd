@@ -7,7 +7,7 @@ from flaskext.wtf import Form, TextField, PasswordField, Required
 from odd.utils.error import *
 
 from odd.biz.user import *
-from odd.biz.question import *
+from odd.biz.question import get_question_by_tags
 
 from functools import wraps
 
@@ -17,12 +17,12 @@ mod = Blueprint('user', __name__, url_prefix='/user')
 @login_required
 def index(nickname):
     if current_user.nickname == nickname:
-        questions = get_question_by_tags(['UIUC'])
+        tags = [tf.tag for tf in current_user.tag_follows]
+        questions = get_question_by_tags(tags)
         return render_template('user/index.html', questions=questions)
 
     user = get_user_by_name(nickname)
     if not user:
         abort(404)
-
 
     return render_template('user/main.html', user=user)

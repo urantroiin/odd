@@ -31,7 +31,7 @@
 {% endmacro %}
 
 {% macro normal_comment(a) %}
-    <section id="comments-{{ a.id }}" class="comments collapse in thumbnail" style="height: 0px;">
+    <section id="comments-{{ a.id }}" class="comments thumbnail">
     `   {% for c in a.comments %}
         <div id="comment-{{ c.id }}" class="comment row">
             <img class="thumbnail pull-left" src="http://www.gravatar.com/avatar/{{ c.user.email_hash() }}?s=20" />
@@ -80,9 +80,11 @@
         </blockquote>
         <footer>
             <p>
-            <a href="javascript:;" data-toggle="collapse" data-target="#comments-{{ a.id }}">{{ a.comments|length }}条评论</a>
+            <a href="javascript:;" data-toggle="collapse" data-target="#comments-collapse-{{ a.id }}">{{ a.comments|length }}条评论</a>
             </p>
-            {{ normal_comment(a) }}
+            <div id="comments-collapse-{{ a.id }}" class="collapse in" style="height: 0px;">
+                {{ normal_comment(a) }}
+            </div>
         </footer>
     </section>
 {% endmacro %}
@@ -105,7 +107,7 @@
             }
 
             $.ajax({
-                url:"{{ url_for('question.answer') }}",
+                url:"{{ url_for('answer.new') }}",
                 type: "POST",
                 data: $(this).serialize(),
                 error: function(request){alert("fail")},
@@ -117,7 +119,7 @@
         $('.answer .up').click(function(){
             aid = $(this).attr('id').split('-')[1]
             $.ajax({
-                url:"{{ url_for('question.answer_up') }}",
+                url:"{{ url_for('answer.up') }}",
                 type: "POST",
                 data: {"answer_id":aid},
                 error: function(request){alert("fail")},
@@ -157,7 +159,7 @@
             }
 
             $.ajax({
-                url:"{{ url_for('question.comment') }}",
+                url:"{{ url_for('answer.comment') }}",
                 type: "POST",
                 data: $(this).serialize(),
                 error: function(request){alert("fail")},

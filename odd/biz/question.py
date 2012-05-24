@@ -1,11 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from odd.data.db import db_session
-from odd.models.question import *
-from odd.models.tag import *
-from odd.models.user import *
 
-from odd.biz.tag import *
+from odd.models.question import *
 
 from odd.utils.error import *
 
@@ -23,7 +20,7 @@ def get_question_by_id(id):
 
 def get_question_by_tags(tags):
     tags = db_session.query(Question_Tag).filter(Question_Tag.tag.in_(tags)).all()
-    return [t.question for t in tags]
+    return set([t.question for t in tags])
 
 def get_question_by_tag(tag):
     tags = db_session.query(Question_Tag).filter_by(tag=tag).all()
@@ -34,26 +31,8 @@ def new_question(question):
     db_session.commit()
     return QUESTION_ADD_OK
 
-def new_answer(answer):
-    db_session.add(answer)
+def new_question_tags(question_tags):
+    for qt in question_tags:
+        db_session.add(qt)
     db_session.commit()
-    return QUESTION_ADD_OK
-
-def new_answer_up(answer_up):
-    try:
-        db_session.add(answer_up)
-        db_session.commit()
-    
-        anwser = db_session.query(Answer).get(answer_up.answer_id)
-        anwser.up += 1
-        db_session.commit()
-        
-        return ANSWER_UP_ADD_OK
-    except:
-        db_session.rollback()
-        return ANSWER_UP_DUPLICATE
-
-def new_comment(comment):
-    db_session.add(comment)
-    db_session.commit()
-    return COMMENT_ADD_OK
+    return QUESTION_TAG_ADD_OK

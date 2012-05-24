@@ -28,8 +28,9 @@
 <section class="fav-tags side-box thumbnail">
 <header><h5>珍藏的标签</h5></header>
 <hr class="hr-small">
-<a href=""><span class="label label-info">Linux</span></a>
-<a href=""><span class="label label-warning">CSS</span></a>
+{% for tf in current_user.tag_follows %}
+<a href="{{ url_for('tag.index', tag=tf.tag) }}"><span class="label label-info">{{ tf.tag }}</span></a>
+{% endfor %}
 </section>
 
 </section>

@@ -1,9 +1,38 @@
 {% extends 'layout.html' %}
 
 {% block content %}
+<script>
+    $(function(){
+        $('.follow').click(function(){
+            tag = $(this).siblings('.tag').text()
+            $.ajax({
+                url:"{{ url_for('follow.follow') }}",
+                type: 'POST',
+                data: {'type':'tag', 'tag':tag},
+                error: function(request){alert("fail")},
+                success: function(data){window.location.reload(true);}
+            })
+        })
+        $('.unfollow').click(function(){
+            tag = $(this).siblings('.tag').text()
+            $.ajax({
+                url:"{{ url_for('follow.unfollow') }}",
+                type: 'POST',
+                data: {'type':'tag', 'tag':tag},
+                error: function(request){alert("fail")},
+                success: function(data){window.location.reload(true);}
+            })
+        })
+    })
+</script>
 
 <section class="span12">
-<span class="label label-info">{{ tag }}</span>
+<span class="tag label label-info">{{ tag }}</span>
+{% if current_user.tag_is_followed(tag) %}
+    <a class="unfollow btn btn-danger pull-right">取消关注</a>
+{% else %}
+    <a class="follow btn btn-info pull-right">关注</a>
+{% endif %}
 </section>
 
 {% from 'import/topic.html' import normal_question %}

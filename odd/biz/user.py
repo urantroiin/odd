@@ -5,6 +5,7 @@ from flaskext.login import logout_user, login_user
 from hashlib import md5
 
 from odd.data.db import db_session
+
 from odd.models.user import User
 
 from odd.utils.error import *

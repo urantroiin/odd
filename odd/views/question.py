@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from flask import Blueprint, url_for, redirect, render_template, abort, request, jsonify
+from flask import Blueprint, url_for, redirect, render_template, abort
 from flaskext.login import login_required, current_user
-from flaskext.wtf import Form, TextField, TextAreaField, HiddenField, Required
+from flaskext.wtf import Form, TextField, TextAreaField, Required
 
 from odd.utils.error import *
 
@@ -13,19 +13,6 @@ from functools import wraps
 
 from re import match
 
-def check_load_question(func):
-    @wraps(func)
-    def wrapper(**kv):
-        if 'id' in kv.keys():
-            question = get_question_by_id(kv['id'])
-       
-        if question:
-            return func(question=question, **kv)
-        else:
-            return abort(404)
-
-    return wrapper
-
 mod = Blueprint('question', __name__, url_prefix='/question')
 
 @mod.route('/<id>')
@@ -35,56 +22,6 @@ def index(id):
     if not question:
         abort(404)
     return render_template('question/index.html', question=question)
-
-@mod.route('/answer', methods=['POST'])
-@login_required
-def answer():
-    form = request.form
-    question_id = form.getlist('question_id')
-    content = form.getlist('content')
-    if not question_id or not content:
-        return jsonify(errno='FAIL')
-
-    answer = Answer(current_user.id, question_id[0], content[0])
-    ret = new_answer(answer)
-    if ret != ANSWER_ADD_OK:
-        return jsonify(errno='FAIL')
-
-    return jsonify(errno='SUCCESS')
-
-@mod.route('/answer/up', methods=['POST'])
-@login_required
-def answer_up():
-    form = request.form
-    answer_id = form.getlist('answer_id')
-    if not answer_id:
-        return jsonify(errno='FAIL')
-
-    answer_up = Answer_Up(current_user.id, answer_id[0])
-    ret = new_answer_up(answer_up)
-    if ret != ANSWER_UP_ADD_OK:
-        return jsonify(errno='FAIL')
-
-    return jsonify(errno='SUCCESS')
-
-@mod.route('/comment', methods=['POST'])
-@login_required
-def comment():
-    form = request.form
-    answer_id = form.getlist('answer_id')
-    comment_id = form.getlist('comment_id')
-    content = form.getlist('content')
-    if not answer_id or not comment_id or not content:
-        return jsonify(errno='FAIL')
-
-    comm = Comment(current_user.id, answer_id[0], comment_id[0], content[0])
-    ret = new_comment(comm)
-    if ret != COMMENT_ADD_OK:
-        return jsonify(errno='FAIL')
-
-    return jsonify(errno='SUCCESS')
-
-
 
 @mod.route('/new', methods=['GET','POST'])
 @login_required
@@ -117,7 +54,3 @@ class NewQueForm(Form):
     title = TextField(u'标题', validators=[Required()])
     content = TextAreaField(u'内容', validators=[Required()])
     tags = TextField(u'标签', validators=[Required()])
-
-class AnswerForm(Form):
-    question_id = HiddenField(validators=[Required])
-    content = TextAreaField(u'内容', validators=[Required()])
