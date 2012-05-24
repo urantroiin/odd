@@ -17,8 +17,8 @@ TAG_FOLLOW_ADD_OK = u'关注成功'
 
 ANSWER_ADD_OK = u'回答成功'
 
-UP_ADD_OK = u'UP成功'
-UP_DUPLICATE = u'UP已存在'
+ANSWER_UP_ADD_OK = u'UP成功'
+ANSWER_UP_DUPLICATE = u'UP已存在'
 
 COMMENT_ADD_OK = u'评论成功'
 

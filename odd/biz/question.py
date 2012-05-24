@@ -39,23 +39,21 @@ def new_answer(answer):
     db_session.commit()
     return QUESTION_ADD_OK
 
-def new_up(up):
+def new_answer_up(answer_up):
     try:
-        db_session.add(up)
+        db_session.add(answer_up)
         db_session.commit()
     
-        anwser = db_session.query(Answer).get(up.answer_id)
+        anwser = db_session.query(Answer).get(answer_up.answer_id)
         anwser.up += 1
         db_session.commit()
         
-        return UP_ADD_OK
+        return ANSWER_UP_ADD_OK
     except:
         db_session.rollback()
-        return UP_DUPLICATE
+        return ANSWER_UP_DUPLICATE
 
 def new_comment(comment):
     db_session.add(comment)
     db_session.commit()
     return COMMENT_ADD_OK
-
-

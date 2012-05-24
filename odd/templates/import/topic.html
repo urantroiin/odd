@@ -117,7 +117,7 @@
         $('.answer .up').click(function(){
             aid = $(this).attr('id').split('-')[1]
             $.ajax({
-                url:"{{ url_for('question.up') }}",
+                url:"{{ url_for('question.answer_up') }}",
                 type: "POST",
                 data: {"answer_id":aid},
                 error: function(request){alert("fail")},

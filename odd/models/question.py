@@ -53,8 +53,8 @@ class Answer(Model):
     def __repr__(self):
         return '<Answer %d,%d>' % (self.user_id, self.question_id)
 
-class Up(Model):
-    __tablename__ = 'ups'
+class Answer_Up(Model):
+    __tablename__ = 'answer_ups'
 
     id = Column('id', INT, primary_key=True)
     user_id = Column('user_id', INT,  nullable=False)
@@ -65,7 +65,7 @@ class Up(Model):
         self.answer_id = answer_id
 
     def __repr__(self):
-        return '<Up %d,%d>' % (self.user_id, self.answer_id)
+        return '<Answer_Up %d,%d>' % (self.user_id, self.answer_id)
 
 class Comment(Model):
     __tablename__ = 'comments'
