@@ -4,7 +4,7 @@
 <script>
     $(function(){
         $('.follow').click(function(){
-            tag = $(this).siblings('.tag').text()
+            tag = $(this).siblings('.tag-tag').text()
             $.ajax({
                 url:"{{ url_for('follow.follow') }}",
                 type: 'POST',
@@ -14,7 +14,7 @@
             })
         })
         $('.unfollow').click(function(){
-            tag = $(this).siblings('.tag').text()
+            tag = $(this).siblings('.tag-tag').text()
             $.ajax({
                 url:"{{ url_for('follow.unfollow') }}",
                 type: 'POST',
@@ -26,8 +26,8 @@
     })
 </script>
 
-<section class="span12">
-<span class="tag label label-info">{{ tag }}</span>
+<section class="tag span12">
+<span class="tag-tag">{{ tag }}</span>
 {% if current_user.tag_is_followed(tag) %}
     <a class="unfollow btn btn-danger pull-right">取消关注</a>
 {% else %}

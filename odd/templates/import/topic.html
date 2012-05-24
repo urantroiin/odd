@@ -177,7 +177,7 @@
     
     <p>{{ q.answers|length }}个答案</p>
     <hr>
-    {% for a in q.answers %}
+    {% for a in q.answers|reverse %}
         {{ normal_answer(a) }}
         <hr>
     {% endfor %}

@@ -14,6 +14,7 @@ QUESTION_ADD_OK = u'问题发布成功'
 QUESTION_TAG_ADD_OK = u'tag添加成功'
 
 TAG_FOLLOW_ADD_OK = u'关注成功'
+TAG_FOLLOW_DUPLICATE = u'已经关注'
 
 ANSWER_ADD_OK = u'回答成功'
 
