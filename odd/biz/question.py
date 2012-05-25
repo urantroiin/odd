@@ -26,6 +26,10 @@ def get_question_by_tags(tags):
             qs.append(t.question)
     return qs
 
+def get_question_by_uid(uid):
+    questions = db_session.query(Question).filter_by(user_id=uid).all()
+    return questions
+
 def get_question_by_tag(tag):
     tags = db_session.query(Question_Tag).filter_by(tag=tag).all()
     return [t.question for t in tags]
