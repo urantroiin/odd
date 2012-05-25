@@ -26,20 +26,14 @@
     })
 </script>
 
-<section class="tag span12">
-<span class="tag-tag">{{ tag }}</span>
-{% if current_user.tag_is_followed(tag) %}
-    <a class="unfollow btn btn-danger pull-right">取消关注</a>
-{% else %}
-    <a class="follow btn btn-info pull-right">关注</a>
-{% endif %}
-</section>
+{% from 'import/tag.html' import tag_info %}
+{{ tag_info(tag, current_user.tag_is_followed(tag)) }}
 
 {% from 'import/topic.html' import normal_question %}
 <section class="span12">
 {% for q in questions %}
     <hr>
-    {{ normal_question(q) }}
+    {{ normal_question(q, True) }}
 {% endfor %}
 </section>
 

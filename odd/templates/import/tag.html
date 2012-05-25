@@ -1,0 +1,12 @@
+{% macro tag_info(tag, has_followed) %}
+
+<section class="tag span12">
+<span class="tag-tag">{{ tag }}</span>
+{% if has_followed %}
+    <a class="unfollow btn btn-danger pull-right">取消关注</a>
+{% else %}
+    <a class="follow btn btn-info pull-right">关注</a>
+{% endif %}
+</section>
+
+{% endmacro %}

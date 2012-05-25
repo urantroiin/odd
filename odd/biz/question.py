@@ -20,7 +20,11 @@ def get_question_by_id(id):
 
 def get_question_by_tags(tags):
     tags = db_session.query(Question_Tag).filter(Question_Tag.tag.in_(tags)).all()
-    return set([t.question for t in tags])
+    qs = []
+    for t in tags:
+        if not t.question in qs:
+            qs.append(t.question)
+    return qs
 
 def get_question_by_tag(tag):
     tags = db_session.query(Question_Tag).filter_by(tag=tag).all()
@@ -29,7 +33,7 @@ def get_question_by_tag(tag):
 def order_by_time(questions):
     def time_key(q):
         return q.create_time
-    return questions.sort(key=time_key)
+    return sorted(questions, key=time_key, reverse=True)
 
 def new_question(question):
     db_session.add(question)

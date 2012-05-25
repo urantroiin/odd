@@ -1,17 +1,18 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-<section class="span12">
-<header>
+
+<section>
+
+<header class="span12">
 <h2 class="alert alert-info">搜索结果</h2>
 </header>
 
-<section>
-<span class="label label-info">{{ tag }}</span>
-</section>
+{% from 'import/tag.html' import tag_info %}
+{{ tag_info(tag, current_user.tag_is_followed(tag)) }}
 
 {% from 'import/topic.html' import normal_question %}
-<section>
+<section class="span12">
 {% for q in questions %}
     <hr>
     {{ normal_question(q) }}
@@ -19,4 +20,5 @@
 </section>
 
 </section>
+
 {% endblock %}

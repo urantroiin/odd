@@ -5,11 +5,14 @@
 {% from 'import/topic.html' import normal_question %}
 
 <section id="tag-news" class="span8">
-<header><h3>问题动态</h3></header>
+<header class="clearfix">
+    <h3 class="pull-left">问题动态</h3>
+
+</header>
 <hr>
 
 {% for q in questions %}
-    {{ normal_question(q, False) }}
+    {{ normal_question(q) }}
     <hr>
 {% endfor %}
 

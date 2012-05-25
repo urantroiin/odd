@@ -5,7 +5,7 @@ test environment
 '''
 #host
 HOST = '0.0.0.0'
-PORT = 5001
+PORT = 5000
 
 #debug
 DEBUG = True

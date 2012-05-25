@@ -1,4 +1,4 @@
-{% macro normal_question(q, content=True, footer=True, focus=False) %}
+{% macro normal_question(q, content=False, focus=False) %}
 <section class="question {{ 'focus' if focus }} thumbnail">
         <header>
         <a href="{{ url_for('question.index', id=q.id) }}"><h4>{{ q.title }}</h4></a>
@@ -9,6 +9,7 @@
             {% endfor %}
             </p>
         </header>
+
         {% if content %}
             <blockquote>
                 <p>{{ q.content }}</p>
@@ -17,23 +18,28 @@
                         <img src="http://www.gravatar.com/avatar/{{ q.user.email_hash()}}?s=20" />
                         {{ q.user.nickname }}
                     </a>
-                    <span class="pull-right">{{ q.create_time }}</span>
                 </small>
             </blockquote>
         {% endif %}
 
-            <footer>
-            {% if footer %}
-            <a href="{{ url_for('question.index', id=q.id) }}">{{ q.answers|length }}个答案</a>
-            {% endif %}
-            </footer>
+        <footer>
+        {% if focus %}
+        &nbsp
+        <span class="small pull-right">{{ q.create_time }}</span>
+        {% else %}
+        <span class="small">{{ q.create_time }}</span>
+        <a class="pull-right" href="{{ url_for('question.index', id=q.id) }}">
+            {{ q.answers|length }}个答案
+        </a>
+        {% endif %}
+        </footer>
     </section>
 {% endmacro %}
 
 {% macro normal_comment(a) %}
     <section id="comments-{{ a.id }}" class="comments thumbnail">
-    `   {% for c in a.comments %}
-        <div id="comment-{{ c.id }}" class="comment row">
+        {% for c in a.comments %}
+        <div id="comment-{{ c.id }}" class="comment clearfix">
             <img class="thumbnail pull-left" src="http://www.gravatar.com/avatar/{{ c.user.email_hash() }}?s=20" />
             <div class="pull-left">
                 <p>
@@ -49,7 +55,7 @@
         <hr>
         {% endfor %}
         
-        <div class="row">
+        <div class="clearfix">
             <img class="thumbnail pull-left" src="http://www.gravatar.com/avatar/1?s=20" />
             <form class="comment-form form-inline">
                 <input name="answer_id" type="hidden" value="{{ a.id }}">
@@ -75,14 +81,14 @@
                     <img src="http://www.gravatar.com/avatar/{{ a.user.email_hash()}}?s=20" />
                     {{ a.user.nickname }}
                 </a> 
-                <span class="pull-right">{{ a.create_time }}</span>
             </small>
         </blockquote>
         <footer>
-            <p>
-            <a href="javascript:;" data-toggle="collapse" data-target="#comments-collapse-{{ a.id }}">{{ a.comments|length }}条评论</a>
-            </p>
-            <div id="comments-collapse-{{ a.id }}" class="collapse in" style="height: 0px;">
+                <a href="javascript:;" data-toggle="collapse" data-target="#comments-collapse-{{ a.id }}">
+                    {{ a.comments|length }}条评论
+                </a>
+                <span class="pull-right small">{{ a.create_time }}</span>
+            <div id="comments-collapse-{{ a.id }}" class="collapse in" style="margin-top:5px;height: 0px;">
                 {{ normal_comment(a) }}
             </div>
         </footer>
@@ -171,13 +177,13 @@
     })
 </script>
 <section class="topic">
-    {{ normal_question(q, True, False, True) }}
+    {{ normal_question(q, True, True) }}
 
     <hr>
     
     <p>{{ q.answers|length }}个答案</p>
     <hr>
-    {% for a in q.answers|reverse %}
+    {% for a in q.answers %}
         {{ normal_answer(a) }}
         <hr>
     {% endfor %}
