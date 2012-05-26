@@ -36,7 +36,7 @@
     </section>
 {% endmacro %}
 
-{% macro normal_comment(a) %}
+{% macro normal_comment(a, current_user) %}
     <section id="comments-{{ a.id }}" class="comments thumbnail">
         {% for c in a.comments %}
         <div id="comment-{{ c.id }}" class="comment clearfix">
@@ -56,7 +56,7 @@
         {% endfor %}
         
         <div class="clearfix">
-            <img class="thumbnail pull-left" src="http://www.gravatar.com/avatar/1?s=20" />
+            <img class="thumbnail pull-left" src="http://www.gravatar.com/avatar/{{ current_user.email_hash() }}?s=20" />
             <form class="comment-form form-inline">
                 <input name="answer_id" type="hidden" value="{{ a.id }}">
                 <input name="comment_id" type="hidden" value="-1">
@@ -68,7 +68,7 @@
     </section>
 {% endmacro %}
 
-{% macro normal_answer(a) %}
+{% macro normal_answer(a, current_user) %}
     <section class="answer thumbnail">
         <div id="up-{{ a.id }}" class="up thumbnail">
             <span>{{ a.up }}</span>
@@ -89,15 +89,27 @@
                 </a>
                 <span class="pull-right small">{{ a.create_time }}</span>
             <div id="comments-collapse-{{ a.id }}" class="collapse in" style="margin-top:5px;height: 0px;">
-                {{ normal_comment(a) }}
+                {{ normal_comment(a, current_user) }}
             </div>
         </footer>
     </section>
 {% endmacro %}
 
-{% macro topic(q) %}
+{% macro topic(q, current_user) %}
 <script>
     $(function(){
+        function fail(request){
+            alert('fail')
+        }
+
+        function success(data){
+            if(data.errno=='FAIL'){
+                alert('fail')
+                return
+            }
+            window.location.reload(true)
+        }        
+        
         $(".collapse").collapse()
         
         $(".topic .answer-form").submit(function(){
@@ -116,8 +128,8 @@
                 url:"{{ url_for('answer.new') }}",
                 type: "POST",
                 data: $(this).serialize(),
-                error: function(request){alert("fail")},
-                success: function(data){window.location.reload(true);}
+                error: fail,
+                success: success
             })
             return false
         })
@@ -128,8 +140,8 @@
                 url:"{{ url_for('answer.up') }}",
                 type: "POST",
                 data: {"answer_id":aid},
-                error: function(request){alert("fail")},
-                success: function(data){window.location.reload(true);}
+                error: fail,
+                success: success
             })
         })
 
@@ -168,8 +180,8 @@
                 url:"{{ url_for('answer.comment') }}",
                 type: "POST",
                 data: $(this).serialize(),
-                error: function(request){alert("fail")},
-                success: function(data){window.location.reload(true);}
+                error: fail,
+                success: success
             })
             return false
         })
@@ -184,7 +196,7 @@
     <p>{{ q.answers|length }}个答案</p>
     <hr>
     {% for a in q.answers %}
-        {{ normal_answer(a) }}
+        {{ normal_answer(a, current_user) }}
         <hr>
     {% endfor %}
     

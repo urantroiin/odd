@@ -26,6 +26,9 @@ COMMENT_ADD_OK = u'评论成功'
 TAG_FOLLOW_ADD_OK = u'关注成功'
 TAG_FOLLOW_DEL_OK = u'取消关注成功'
 
+REMIND_ADD_OK = u'提醒添加成功'
+REMIND_EDIT_OK = u'提醒修改成功'
+
 def success(error):
     flash(error, 'success')
 

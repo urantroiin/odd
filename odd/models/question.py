@@ -21,7 +21,7 @@ class Question(Model):
     
     user = relation("User")
     tags = relation("Question_Tag", backref=backref('question'))
-    answers = relation("Answer", order_by='desc(Answer.up)')
+    answers = relation("Answer", order_by='desc(Answer.up)', backref=backref('question'))
 
     def __init__(self, user_id, title, content):
         self.user_id = user_id

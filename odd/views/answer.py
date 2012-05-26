@@ -5,8 +5,8 @@ from flaskext.login import login_required, current_user
 
 from odd.utils.error import *
 
-from odd.models.answer import *
 from odd.biz.answer import *
+from odd.biz.remind import *
 
 from functools import wraps
 
@@ -27,6 +27,9 @@ def new():
     ret = new_answer(answer)
     if ret != ANSWER_ADD_OK:
         return jsonify(errno='FAIL')
+
+    remind = Remind(answer.question.user.id, question_id[0], answer.id, -1)
+    new_remind(remind)
 
     return jsonify(errno='SUCCESS')
 
@@ -59,5 +62,9 @@ def comment():
     ret = new_comment(comm)
     if ret != COMMENT_ADD_OK:
         return jsonify(errno='FAIL')
+
+    user_id = comm.comment.user.id if comm.comment else comm.answer.user.id
+    remind = Remind(user_id, comm.answer.question.id, -1, comm.id)
+    new_remind(remind)
 
     return jsonify(errno='SUCCESS')

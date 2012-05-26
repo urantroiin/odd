@@ -9,7 +9,7 @@ from odd.utils.error import *
 def new_answer(answer):
     db_session.add(answer)
     db_session.commit()
-    return QUESTION_ADD_OK
+    return ANSWER_ADD_OK
 
 def new_answer_up(answer_up):
     try:

@@ -40,9 +40,9 @@ def new():
         fail(ret)
         return render_template('question/new.html', form=form)
 
-    tags = set(form.tags.data.split(' '))
+    tags = set(form.tags.data.split(','))
 
-    question_tags = [Question_Tag(question.id, tag) for tag in tags if tag]
+    question_tags = [Question_Tag(question.id, tag.strip()) for tag in tags if tag.strip()]
     ret = new_question_tags(question_tags)
     if ret != QUESTION_TAG_ADD_OK:
         fail(ret)

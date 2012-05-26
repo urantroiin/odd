@@ -20,7 +20,7 @@ def index(nickname):
         tags = [tf.tag for tf in current_user.tag_follows]
         questions = get_question_by_tags(tags)
         qs = order_by_time(questions)
-        questions = get_question_by_tags(tags)
+        questions = get_question_by_uid(current_user.id)
         my_qs = order_by_time(questions)
         return render_template('user/index.html', questions=qs, my_questions=my_qs)
 

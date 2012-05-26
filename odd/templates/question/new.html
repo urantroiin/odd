@@ -17,7 +17,7 @@
     {{ form.tags.label }}
     {{ form.tags() }}
     {{ error(form.errors['tags']) }}
-    <span class="help-block">问题涉及的领域，便于搜索, 多个标签以空格分开</span>
+    <span class="help-block">问题涉及的领域，便于搜索, 多个标签以逗号分开</span>
 
     {{ form.content.label }}
     {{ form.content(rows=5,cols=5) }}

@@ -7,8 +7,6 @@ from odd.utils.error import *
 
 from odd.biz.follow import *
 
-from functools import wraps
-
 from re import match
 
 mod = Blueprint('follow', __name__, url_prefix='/follow')

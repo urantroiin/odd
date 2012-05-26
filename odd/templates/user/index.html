@@ -4,25 +4,46 @@
 
 {% from 'import/topic.html' import normal_question %}
 
+<script>
+    $(function(){
+        /*
+        $('.tabs a').click(function (e) {
+            e.preventDefault();
+            $(this).tab('show');
+        })
+        */
+    })
+</script>
+
 <section id="tag-news" class="span8">
-<header>
-    <ul class="nav nav-pills">
+<header class="tabs">
+    <ul class="nav nav-tabs">
         <li class="active">
-            <a href="#">最新</a>
+            <a href="#latest" data-toggle="tab">最新</a>
         </li>
         <li>
-            <a href="#">我的</a>
+            <a href="#my" data-toggle="tab">我的</a>
         </li>
     </ul>
 
     
 </header>
 
-{% for q in questions %}
-    {{ normal_question(q) }}
-    <hr>
-{% endfor %}
-
+<div class="tab-content">
+    <div class="tab-pane active" id="latest">
+        {% for q in questions %}
+            {{ normal_question(q) }}
+        <hr>
+        {% endfor %}
+    </div>
+    
+    <div class="tab-pane" id="my">
+        {% for q in my_questions %}
+            {{ normal_question(q) }}
+        <hr>
+        {% endfor %}
+    </div>
+</div>
 </section>
 
 <section class="span4">

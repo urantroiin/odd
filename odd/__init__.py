@@ -16,6 +16,7 @@ from odd.views import answer
 from odd.views import tag
 from odd.views import search
 from odd.views import follow
+from odd.views import remind
 
 app.register_blueprint(general.mod)
 app.register_blueprint(user.mod)
@@ -24,6 +25,7 @@ app.register_blueprint(answer.mod)
 app.register_blueprint(tag.mod)
 app.register_blueprint(search.mod)
 app.register_blueprint(follow.mod)
+app.register_blueprint(remind.mod)
 
 #
 # Login

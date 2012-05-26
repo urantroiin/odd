@@ -1,30 +1,6 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-<script>
-    $(function(){
-        $('.follow').click(function(){
-            tag = $(this).siblings('.tag-tag').text()
-            $.ajax({
-                url:"{{ url_for('follow.follow') }}",
-                type: 'POST',
-                data: {'type':'tag', 'tag':tag},
-                error: function(request){alert("fail")},
-                success: function(data){window.location.reload(true);}
-            })
-        })
-        $('.unfollow').click(function(){
-            tag = $(this).siblings('.tag-tag').text()
-            $.ajax({
-                url:"{{ url_for('follow.unfollow') }}",
-                type: 'POST',
-                data: {'type':'tag', 'tag':tag},
-                error: function(request){alert("fail")},
-                success: function(data){window.location.reload(true);}
-            })
-        })
-    })
-</script>
 
 {% from 'import/tag.html' import tag_info %}
 {{ tag_info(tag, current_user.tag_is_followed(tag)) }}

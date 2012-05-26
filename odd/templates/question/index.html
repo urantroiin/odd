@@ -5,7 +5,7 @@
 {% from 'import/topic.html' import topic %}
 
 <section class="span12">
-{{ topic(question) }}
+{{ topic(question, current_user) }}
 </section>
 
 {% endblock %}

@@ -1,4 +1,28 @@
 {% macro tag_info(tag, has_followed) %}
+<script>
+    $(function(){
+        $('.follow').click(function(){
+            tag = $(this).siblings('.tag-tag').text()
+            $.ajax({
+                url:"{{ url_for('follow.follow') }}",
+                type: 'POST',
+                data: {'type':'tag', 'tag':tag},
+                error: function(request){alert("fail")},
+                success: function(data){window.location.reload(true);}
+            })
+        })
+        $('.unfollow').click(function(){
+            tag = $(this).siblings('.tag-tag').text()
+            $.ajax({
+                url:"{{ url_for('follow.unfollow') }}",
+                type: 'POST',
+                data: {'type':'tag', 'tag':tag},
+                error: function(request){alert("fail")},
+                success: function(data){window.location.reload(true);}
+            })
+        })
+    })
+</script>
 
 <section class="tag span12">
 <span class="tag-tag">{{ tag }}</span>
