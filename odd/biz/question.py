@@ -49,3 +49,8 @@ def new_question_tags(question_tags):
         db_session.add(qt)
     db_session.commit()
     return QUESTION_TAG_ADD_OK
+
+def get_question_tags():
+    tags = db_session.query(Question_Tag.tag).distinct().all()
+    tags_merged = [t[0] for t in tags]
+    return tags_merged

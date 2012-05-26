@@ -11,10 +11,77 @@
 
 {% endmacro %}
 
-{% macro error(msg) %}
+{% macro error(msg, class='') %}
 {% if msg %} 
-    <span class="help-inline label label-important">
+    <span class="{{ class }} help-inline label label-important">
         {{ msg[0] }}
     </span> 
 {% endif %}
+{% endmacro %}
+
+{% macro search() %}
+<li>
+    <script>
+       $(function(){
+            $.getJSON("{{ url_for('tag.all') }}", function(data){
+                $('.navbar-search .tag-search').typeahead({source:data.tags});
+            });
+
+            $('.navbar-search').submit(function(){
+                tag = $('input[name=tag]', this).val();
+                if(tag) return true;
+                return false;
+            })
+        })
+
+    </script>
+    <form class="navbar-search" action="{{ url_for('search.index') }}" method="get">
+        <input class="tag-search search-query" name="tag" type="text" placeholder="标签" autocomplete="off">
+        <input class="btn" type="submit" value="搜索">
+        <a class="btn" href="{{ url_for('question.new') }}">提问</a>
+    </form>
+</li>
+{% endmacro %}
+
+{% macro reminds() %}
+<script>
+    $(function(){
+        function load_reminds(){
+            $.getJSON("{{ url_for('remind.index') }}",function(data){
+                if(data.reminds.length == 0) return;
+            
+                $('#reminds').empty();
+                $.each(data.reminds,function(i,r){
+                    if(r.comment){
+                        title = '评论';
+                        content = r.comment;
+                    }else{
+                        title = '答案';
+                        content = r.answer;
+                    }
+                    row = '<li><a href="/remind/read?id='
+                            +r.id+'" style="color:#999">问题<span style="color:#7a43b6">'
+                            +r.question+'...</span>有了新的'
+                            +title+'<span style="color:#7a43b6">'
+                            +content+'...</span></a></li>';
+                    $('#reminds').append(row);
+                })
+
+                $('#reminds').parents('.dropdown').addClass('open');
+            })
+        }
+
+        setInterval(load_reminds, 5000);
+    })
+</script>
+<li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        <img src="{{ url_for('static', filename='img/alarm.png') }}">
+        <b class="caret"></b>
+    </a>
+    
+    <ul id="reminds" class="dropdown-menu">
+        <li><a>暂无消息</a></li> 
+    </ul>
+</li>
 {% endmacro %}

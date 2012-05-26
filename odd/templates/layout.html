@@ -22,23 +22,8 @@
                 <a class="brand" href="{{ url_for('general.index') }}">Offer多多</a>
                 {% if current_user.is_authenticated() %}
                 <ul id="mheader" class="nav pull-left">
-                    <li>
-
-                    <script>
-                        $(function(){
-                            $('.navbar-search').submit(function(){
-                                tag = $('input[name=tag]', this).val()
-                                if(tag) return true
-                                return false
-                            })
-                        })
-                    </script>
-                    <form class="navbar-search" action="{{ url_for('search.index') }}" method="get">
-                        <input class="search-query" name="tag" type="search" placeholder="标签">
-                        <input class="btn" type="submit" value="搜索">
-                        <a class="btn" href="{{ url_for('question.new') }}">提问</a>
-                    </form>
-                    </li>
+                    {% from 'import/tools.html' import search, reminds %}
+                    {{ search() }}
                 </ul>
                 <ul id="rheader" class="nav pull-right">
                     <li>
@@ -53,7 +38,6 @@
                             <li><a href="{{ url_for('general.logout') }}">注销</a></li>
                         </ul>
                      </li>
-                     {% from 'import/remind.html' import reminds %}
                      {{ reminds() }}
                 </ul>
                 {% else %}

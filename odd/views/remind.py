@@ -36,6 +36,6 @@ def read():
     edit_remind(remind)
     
     if remind.comment:
-        return redirect(url_for('question.index', id=remind.question.id))
+        return redirect(url_for('question.index', id=remind.question.id, answer_id=remind.answer.id, comment_id=remind.comment.id))
     else:
-        return redirect(url_for('question.index', id=remind.question.id))
+        return redirect(url_for('question.index', id=remind.question.id, answer_id=remind.answer.id))

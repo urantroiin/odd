@@ -64,7 +64,7 @@ def comment():
         return jsonify(errno='FAIL')
 
     user_id = comm.comment.user.id if comm.comment else comm.answer.user.id
-    remind = Remind(user_id, comm.answer.question.id, -1, comm.id)
+    remind = Remind(user_id, comm.answer.question.id, comm.answer.id, comm.id)
     new_remind(remind)
 
     return jsonify(errno='SUCCESS')

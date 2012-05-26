@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from flask import Blueprint, url_for, redirect, render_template, abort
+from flask import Blueprint, url_for, redirect, render_template, abort, request
 from flaskext.login import login_required, current_user
 from flaskext.wtf import Form, TextField, TextAreaField, Required
 
@@ -21,7 +21,14 @@ def index(id):
     question = get_question_by_id(id)
     if not question:
         abort(404)
-    return render_template('question/index.html', question=question)
+
+    args = request.args
+    answer_id = args.getlist('answer_id')[0] if args.getlist('answer_id') else -1
+    comment_id = args.getlist('comment_id')[0] if args.getlist('comment_id') else -1
+
+    return render_template('question/index.html', question=question, answer_id=answer_id, comment_id=comment_id)
+
+
 
 @mod.route('/new', methods=['GET','POST'])
 @login_required
@@ -40,9 +47,14 @@ def new():
         fail(ret)
         return render_template('question/new.html', form=form)
 
-    tags = set(form.tags.data.split(','))
+    tags = request.form.getlist('tag')
+    tags_clean = []
+    for t in tags:
+        t = t.strip()
+        if t and t not in tags_clean:
+            tags_clean.append(t)
 
-    question_tags = [Question_Tag(question.id, tag.strip()) for tag in tags if tag.strip()]
+    question_tags = [Question_Tag(question.id, t) for t in tags_clean]
     ret = new_question_tags(question_tags)
     if ret != QUESTION_TAG_ADD_OK:
         fail(ret)
@@ -51,6 +63,6 @@ def new():
     return redirect(url_for('.index', id=question.id))
 
 class NewQueForm(Form):
-    title = TextField(u'标题', validators=[Required()])
-    content = TextAreaField(u'内容', validators=[Required()])
-    tags = TextField(u'标签', validators=[Required()])
+    title = TextField(u'标题*', validators=[Required()])
+    content = TextAreaField(u'内容*', validators=[Required()])
+    tags = TextField(u'标签*')
