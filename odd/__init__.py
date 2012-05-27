@@ -4,7 +4,8 @@ from flask import Flask, render_template
 from flaskext.login import LoginManager
 
 app = Flask(__name__)
-app.config.from_object("websiteconfig")
+app.config.from_object("test_config")
+app.config.from_object("website_config")
 
 #
 # Blueprints
