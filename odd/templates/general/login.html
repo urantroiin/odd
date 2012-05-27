@@ -2,12 +2,20 @@
 
 {% block top %}
 <section id="culture-wall">
-    <video controls="controls">
-        <source src="static/movie.ogg">
-        <object data="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0">
-        <a href="static/movie.ogg">download</a>
-        </object>
-    </video>
+    <object 
+        classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" 
+        codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,19,0" 
+        width="600" 
+        height="250">
+            <param name="quality" value="high">
+            <embed src="{{ url_for('static', filename='ad.swf') }}" 
+                quality="high" 
+                pluginspage="http://www.macromedia.com/go/getflashplayer" 
+                type="application/x-shockwave-flash" 
+                width="400" 
+                height="300">
+            </embed>
+          </object>
 </section>
 {% endblock %}
 
