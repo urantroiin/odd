@@ -1,0 +1,161 @@
+
+/**functions**/
+/*
+.box-shadow(@style, @c) when (iscolor(@c)) {
+  box-shadow:         @style @c;
+  -webkit-box-shadow: @style @c;
+  -moz-box-shadow:    @style @c;
+}
+
+.box-shadow(@style, @alpha: 50%) when (isnumber(@alpha)) {
+  .box-shadow(@style, rgba(0, 0, 0, @alpha));
+}
+
+
+
+.title (@size) {
+  font-weight: bold;
+  font-size: @size;
+}
+
+.text (@size) {
+  font-size: @size;
+}
+
+*/
+
+/*quick style*/
+
+.rounded-corners (@radius: 3px) {
+  border-radius: @radius;
+  -webkit-border-radius: @radius;
+  -moz-border-radius: @radius;
+}
+
+img {
+    .rounded-corners()
+}
+
+.small {
+  color: #999;
+}
+
+.hr-small {
+    margin: 0;
+    margin-bottom: 5px;
+    border: 0;
+    border-top: 1px solid #171717;
+    border-bottom: 1px solid white;
+    }
+
+.hr-large {
+    margin: 0;
+    margin-bottom: 10px;
+    border: 0;
+    border-top: 2px solid #171717;
+    border-bottom: 1px solid white;
+    }
+
+.tag {
+    cursor: pointer;
+    }
+
+/**custom**/
+#article-header{
+}
+
+#mheader {
+    margin-left: 100px;
+}
+
+#search-row {
+    padding: 10px 0px;
+    text-align: center;
+    form {
+        margin: 0px;
+        }
+}
+
+#article-top {
+    margin-top: 40px;
+    }
+
+#culture-wall {
+    height: 300px;
+    text-align: center;
+    background: #171717 url("/static/img/flashBg.jpg");
+    video {
+        width: 800px;
+        height: 300px;
+        background: #171717;
+        }
+}
+
+#article-content {
+    margin-top: 60px;
+}
+
+.topic {
+    img {
+        display: inline-block;
+    }
+    p {
+        font-size:13px;
+    }
+}
+
+.question.focus {
+    background: #fef;
+}
+
+.question {
+    img {
+        display: inline-block;
+    }
+    p{
+        font-size:13px;
+    }
+}
+
+.answer {
+    position: relative;
+    .up {
+        position:absolute;
+        right:-50px;
+        span {
+            padding: 13px;    
+        }
+        button {
+            padding:5px;
+            font-size:20px;
+            display: block;
+        }
+    }
+}
+
+.comments {
+    img {
+        margin-right: 5px;    
+    }
+    .comm {
+        display: inline-block;
+        }
+    form {
+        margin: 0px;
+    }
+    p {
+        margin: 0px;    
+    }
+    hr {
+        margin: 10px 0px;    
+    }
+}
+
+.tag-info {
+    .tag-tag {
+        padding: 5px 0px;
+        font-size: 25px;
+        font-weight: bold;
+        color: #666;
+    }    
+}
