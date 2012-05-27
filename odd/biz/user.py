@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from flaskext.login import logout_user, login_user
+from flask.ext.login import logout_user, login_user
 
 from hashlib import md5
 

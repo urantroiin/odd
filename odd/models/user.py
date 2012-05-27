@@ -3,7 +3,7 @@
 from datetime import datetime
 from hashlib import md5
 
-from flaskext.login import UserMixin
+from flask.ext.login import UserMixin
 
 from sqlalchemy.orm import relation
 from sqlalchemy.schema import Column, ForeignKey

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from flask import Flask, render_template
-from flaskext.login import LoginManager
+from flask.ext.login import LoginManager
 
 app = Flask(__name__)
 app.config.from_object("test_config")

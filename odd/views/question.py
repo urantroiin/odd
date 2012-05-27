@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from flask import Blueprint, url_for, redirect, render_template, abort, request
-from flaskext.login import login_required, current_user
+from flask.ext.login import login_required, current_user
 from flaskext.wtf import Form, TextField, TextAreaField, Required
 
 from odd.utils.error import *

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from flask import Blueprint, url_for, redirect, render_template, abort, request, jsonify
-from flaskext.login import login_required, current_user
+from flask.ext.login import login_required, current_user
 
 from odd.utils.error import *
 
