@@ -28,7 +28,9 @@ def new():
     if ret != ANSWER_ADD_OK:
         return jsonify(errno='FAIL')
 
-    remind = Remind(answer.question.user.id, question_id[0], answer.id, -1)
+    question = answer.question
+    remind = Remind(question.user.id, question.id, question.title, 
+            answer.id, answer.content, -1, '')
     new_remind(remind)
 
     return jsonify(errno='SUCCESS')
@@ -64,7 +66,9 @@ def comment():
         return jsonify(errno='FAIL')
 
     user_id = comm.comment.user.id if comm.comment else comm.answer.user.id
-    remind = Remind(user_id, comm.answer.question.id, comm.answer.id, comm.id)
+    answer = comm.answer
+    question = answer.question
+    remind = Remind(user_id, question.id, question.title, answer.id, answer.content, comm.id, comm.content)
     new_remind(remind)
 
     return jsonify(errno='SUCCESS')

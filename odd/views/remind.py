@@ -17,9 +17,10 @@ def index():
     for r in reminds:
         rdicts.append({
             'id': r.id,
-            'question': r.question.title[0:10],
-            'answer': r.answer.content[0:10] if r.answer else False,
-            'comment': r.comment.content[0:10] if r.comment else False
+            'type': 'answer' if r.comment_id==-1 else 'comment',
+            'question': r.question_title,
+            'answer': r.answer_content,
+            'comment': r.comment_content
             })
     return jsonify(errno='SUCCESS', reminds = rdicts)
 
@@ -35,7 +36,4 @@ def read():
     remind.has_read = True
     edit_remind(remind)
     
-    if remind.comment:
-        return redirect(url_for('question.index', id=remind.question.id, answer_id=remind.answer.id, comment_id=remind.comment.id))
-    else:
-        return redirect(url_for('question.index', id=remind.question.id, answer_id=remind.answer.id))
+    return redirect(url_for('question.index', id=remind.question_id, answer_id=remind.answer_id, comment_id=remind.comment_id))

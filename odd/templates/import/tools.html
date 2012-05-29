@@ -47,19 +47,32 @@
 <script>
     $(function(){
         function load_reminds(){
+            if($('#reminds .remind').length){
+                dropdown = $('#reminds').parents('.dropdown');
+                if(!dropdown.hasClass('open')) 
+                    dropdown.addClass('open');
+                return;
+            }
+
             $.getJSON("{{ url_for('remind.index') }}",function(data){
                 if(data.reminds.length == 0) return;
             
                 $('#reminds').empty();
                 $.each(data.reminds,function(i,r){
-                    if(r.comment){
-                        title = '评论';
-                        content = r.comment;
-                    }else{
+                    switch(r.type){
+                    case 'answer':
                         title = '答案';
                         content = r.answer;
+                        break;
+                    case 'comment':
+                        title = '评论';
+                        content = r.comment;
+                        break;
+                    default:
+                        return;
                     }
-                    row = '<li><a href="/remind/read?id='
+                    
+                    row = '<li><a class="remind" href="/remind/read?id='
                             +r.id+'" style="color:#999">问题<span style="color:#7a43b6">'
                             +r.question+'...</span>有了新的'
                             +title+'<span style="color:#7a43b6">'
@@ -70,8 +83,9 @@
                 $('#reminds').parents('.dropdown').addClass('open');
             })
         }
-
-        setInterval(load_reminds, 5000);
+        
+        load_reminds();
+        setInterval(load_reminds, 10000);
     })
 </script>
 <li class="dropdown">
