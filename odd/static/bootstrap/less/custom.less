@@ -40,6 +40,19 @@ img {
   color: #999;
 }
 
+.border(@height:1px, @margin:5px, @color:black) {
+    border-bottom: @height @color solid;
+    margin-bottom: @margin;
+}
+
+.border-small {
+    .border()    
+}
+
+.border-medium {
+    .border(1px, 15px)    
+}
+
 .hr-small {
     margin: 0;
     margin-bottom: 5px;
@@ -64,10 +77,6 @@ img {
 #article-header{
 }
 
-#mheader {
-    margin-left: 100px;
-}
-
 #search-row {
     padding: 10px 0px;
     text-align: center;
@@ -77,8 +86,7 @@ img {
 }
 
 #article-top {
-    margin-top: 40px;
-    }
+}
 
 #culture-wall {
     height: 300px;
@@ -92,7 +100,7 @@ img {
 }
 
 #article-content {
-    margin-top: 60px;
+    margin-top: 30px;
 }
 
 .topic {

@@ -18,6 +18,14 @@ def get_question_by_id(id):
     question = db_session.query(Question).get(id)
     return question
 
+def get_question_by_time(time):
+    questions = db_session.query(Question).filter(Question.create_time>time).all()
+    return questions
+
+def get_latest_questions():
+    questions = db_session.query(Question).order_by(Question.create_time.desc()).limit(10).all()
+    return questions
+
 def get_question_by_tags(tags):
     tags = db_session.query(Question_Tag).filter(Question_Tag.tag.in_(tags)).all()
     qs = []

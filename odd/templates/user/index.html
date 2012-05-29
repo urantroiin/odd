@@ -4,29 +4,16 @@
 
 {% from 'import/topic.html' import normal_question %}
 
-<script>
-    $(function(){
-        /*
-        $('.tabs a').click(function (e) {
-            e.preventDefault();
-            $(this).tab('show');
-        })
-        */
-    })
-</script>
-
 <section id="tag-news" class="span8">
 <header class="tabs">
-    <ul class="nav nav-tabs">
+    <ul class="nav nav-pills border-medium">
         <li class="active">
-            <a href="#latest" data-toggle="tab">最新</a>
+            <a href="#latest" data-toggle="tab">关注的</a>
         </li>
         <li>
             <a href="#my" data-toggle="tab">我的</a>
         </li>
     </ul>
-
-    
 </header>
 
 <div class="tab-content">
@@ -49,16 +36,14 @@
 <section class="span4">
 
 <section class="user-info side-box thumbnail">
-<header><h5>本大爷</h5></header>
-<hr class="hr-small">
+<header class="border-small"><h5>本大爷</h5></header>
 <img class="thumbnail" src="http://www.gravatar.com/avatar/{{ current_user.email_hash()}}?s=80" />
 <h5 style="text-align:center">{{ current_user.nickname }}</h5>
 </section>
 <hr>
 
 <section class="fav-tags side-box thumbnail">
-<header><h5>珍藏的标签</h5></header>
-<hr class="hr-small">
+<header class="border-small"><h5>珍藏的标签</h5></header>
 {% for tf in current_user.tag_follows %}
 <a href="{{ url_for('tag.index', tag=tf.tag) }}"><span class="label label-info">{{ tf.tag }}</span></a>
 {% endfor %}

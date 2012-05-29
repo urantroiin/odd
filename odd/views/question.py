@@ -13,6 +13,8 @@ from functools import wraps
 
 from re import match
 
+from datetime import datetime, timedelta
+
 mod = Blueprint('question', __name__, url_prefix='/question')
 
 @mod.route('/<id>')
@@ -28,7 +30,13 @@ def index(id):
 
     return render_template('question/index.html', question=question, answer_id=answer_id, comment_id=comment_id)
 
-
+@mod.route('/list')
+@login_required
+def list():
+    dt = datetime.now()-timedelta(minutes=5)
+    #latest_ques = get_question_by_time(dt.strftime('%Y-%m-%d %H:%M'))
+    latest_ques = get_latest_questions()
+    return render_template('question/list.html', latest_questions=latest_ques)
 
 @mod.route('/new', methods=['GET','POST'])
 @login_required

@@ -1,22 +1,21 @@
 {% macro flashed_msg() %}
-
-{% with messages = get_flashed_messages(with_categories=true) %}
-{% for category, message in messages %}
-<div class="alert {{ 'alert-'+category }}">
-    <a class="close" data-dismiss="alert">x</a>
-        {{ message }}
-</div>    
-{% endfor %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+        <div class="alert {{ 'alert-'+category }}">
+            <a class="close" data-dismiss="alert">x</a>
+            {{ message }}
+        </div>    
+    {% endfor %}
 {% endwith %}
 
 {% endmacro %}
 
 {% macro error(msg, class='') %}
-{% if msg %} 
+    {% if msg %} 
     <span class="{{ class }} help-inline label label-important">
         {{ msg[0] }}
     </span> 
-{% endif %}
+    {% endif %}
 {% endmacro %}
 
 {% macro search() %}
@@ -36,12 +35,22 @@
 
     </script>
     <form class="navbar-search" action="{{ url_for('search.index') }}" method="get">
-        <input class="tag-search search-query" name="tag" type="text" placeholder="标签" autocomplete="off">
-        <input class="btn" type="submit" value="搜索">
-        <a class="btn" href="{{ url_for('question.new') }}">提问</a>
+        <input class="tag-search search-query span2" name="tag" type="text" placeholder="搜索:标签" autocomplete="off">
     </form>
 </li>
 {% endmacro %}
+
+{% macro account(current_user) %}
+<li class="dropdown">
+    <a href="{{ url_for('user.index', nickname=current_user.nickname)}}" class="dropdown-toggle" data-toggle="dropdown">
+        [{{ current_user.nickname }}]
+    </a>
+    <ul class="dropdown-menu">
+        <li><a href="{{ url_for('general.logout') }}">注销</a></li>
+    </ul>
+</li>
+{% endmacro %}
+
 
 {% macro reminds() %}
 <script>
@@ -57,6 +66,7 @@
             $.getJSON("{{ url_for('remind.index') }}",function(data){
                 if(data.reminds.length == 0) return;
             
+                $('#reminds').siblings('a').addClass('label label-info')
                 $('#reminds').empty();
                 $.each(data.reminds,function(i,r){
                     switch(r.type){
@@ -90,8 +100,7 @@
 </script>
 <li class="dropdown">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-        <img src="{{ url_for('static', filename='img/alarm.png') }}">
-        <b class="caret"></b>
+        提醒
     </a>
     
     <ul id="reminds" class="dropdown-menu">

@@ -15,38 +15,56 @@
 
 
     <body>
-        <article>
+        <article style="padding-top:40px">
+
+        <script>
+            $(function(){
+                $('.dropdown').hover(function(){
+                    $(this).addClass('open');
+                },function(){
+                    $(this).removeClass('open');
+                })
+            })
+        </script>
         <header id="article-header" class="navbar navbar-fixed-top">
         <div class="navbar-inner">
             <div class="container">
                 <a class="brand" href="{{ url_for('general.index') }}">Offer多多</a>
                 {% if current_user.is_authenticated() %}
-                <ul id="mheader" class="nav pull-left">
-                    {% from 'import/tools.html' import search, reminds %}
-                    {{ search() }}
-                </ul>
-                <ul id="rheader" class="nav pull-right">
-                    <li>
-                    <a href="{{ url_for('user.index', nickname=current_user.nickname)}}">
-                        <img src="http://www.gravatar.com/avatar/{{ current_user.email_hash() }}?s=20" />
-                        {{ current_user.nickname }}
-                    </a>
+
+                <ul class="nav">
+                    <li class="active">
+                    <a href="{{ url_for('user.index', nickname=current_user.nickname) }}">主页</a> 
                     </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">帐号<b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="{{ url_for('general.logout') }}">注销</a></li>
-                        </ul>
-                     </li>
-                     {{ reminds() }}
+                    <li>
+                    <a href="{{ url_for('question.list') }}">问题</a> 
+                    </li>
+                    {#
+                    <li>
+                    <a href="{{ url_for('tag.list') }}">标签</a> 
+                    </li>
+                    #}
                 </ul>
+
+                <ul class="nav pull-right">
+                    {% from 'import/tools.html' import account, search, reminds %}
+                    {{ search() }}
+                    <li class="divider-vertical"></li>
+                    <li><a href="{{ url_for('question.new') }}">我要提问</a></li>
+                    <li class="divider-vertical"></li>
+                    {{ reminds() }}
+                    {{ account(current_user) }}
+                </ul>
+
                 {% else %}
-                <ul id="rheader" class="nav pull-right">
+                
+                <ul class="nav pull-right">
                     <li class="navbar-text">
                     留学领域的社交问答
                     <span class="label label-important">Hot</span>
                     </li>
                 </ul>
+                
                 {% endif %}
             </div>
         </div>

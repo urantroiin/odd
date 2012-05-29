@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+{% from 'import/topic.html' import topic %}
+
+<section class="span6">
+    <header><h5 class="border-medium">等待回答</h5></header>
+    {% from 'import/topic.html' import normal_question %}
+    {% for q in latest_questions %}
+        {% if not q.answers %}
+        {{ normal_question(q) }}
+        <hr>
+        {% endif %}
+    {% endfor %}
+</section>
+
+
+<section class="span6">
+    <header><h5 class="border-medium">最新问题</h5></header>
+    {% from 'import/topic.html' import normal_question %}
+    {% for q in latest_questions %}
+        {{ normal_question(q) }}
+        <hr>
+    {% endfor %}
+</section>
+
+{% endblock %}
