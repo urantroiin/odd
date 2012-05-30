@@ -3,31 +3,41 @@
 {% block content %}
 
 {% from 'import/topic.html' import normal_question %}
-
 <section id="tag-news" class="span8">
 <header class="tabs">
     <ul class="nav nav-pills border-medium">
         <li class="active">
-            <a href="#latest" data-toggle="tab">关注的</a>
+            <a href="#followd" data-toggle="tab">关注的</a>
         </li>
         <li>
             <a href="#my" data-toggle="tab">我的</a>
+        </li>
+        <li>
+            <a href="#latest" data-toggle="tab">随便看看</a>
         </li>
     </ul>
 </header>
 
 <div class="tab-content">
-    <div class="tab-pane active" id="latest">
-        {% for q in questions %}
+    <div class="tab-pane active" id="followd">
+        {% for q in followed %}
             {{ normal_question(q) }}
         <hr>
         {% endfor %}
     </div>
     
     <div class="tab-pane" id="my">
-        {% for q in my_questions %}
+        {% for q in my %}
             {{ normal_question(q) }}
         <hr>
+        {% endfor %}
+    </div>
+    <div class="tab-pane" id="latest">
+        {% for q in latest %}
+            {% if q.user_id != current_user.id %}
+            {{ normal_question(q) }}
+            <hr>
+            {% endif %}
         {% endfor %}
     </div>
 </div>

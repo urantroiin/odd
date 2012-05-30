@@ -18,11 +18,10 @@ mod = Blueprint('user', __name__, url_prefix='/user')
 def index(nickname):
     if current_user.nickname == nickname:
         tags = [tf.tag for tf in current_user.tag_follows]
-        questions = get_question_by_tags(tags)
-        qs = order_by_time(questions)
-        questions = get_question_by_uid(current_user.id)
-        my_qs = order_by_time(questions)
-        return render_template('user/index.html', questions=qs, my_questions=my_qs)
+        followed = get_question_by_tags(tags)
+        my = get_question_by_uid(current_user.id)
+        latest = get_latest_questions(20)
+        return render_template('user/index.html', followed=followed, my=my, latest=latest)
 
     user = get_user_by_name(nickname)
     if not user:

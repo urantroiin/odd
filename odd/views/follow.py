@@ -11,6 +11,12 @@ from re import match
 
 mod = Blueprint('follow', __name__, url_prefix='/follow')
 
+@mod.route('/')
+@login_required
+def index():
+    return ''
+
+
 @mod.route('/follow', methods=['POST'])
 @login_required
 def follow():

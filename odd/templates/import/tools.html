@@ -108,3 +108,20 @@
     </ul>
 </li>
 {% endmacro %}
+
+
+{% macro nav(item, current_user) %}
+<ul class="nav">
+    <li class="{{ 'active' if item=='user' }}">
+    <a href="{{ url_for('user.index', nickname=current_user.nickname) }}">主页</a> 
+    </li>
+    <li class="{{ 'active' if item=='question' }}">
+    <a href="{{ url_for('question.list') }}">问题</a> 
+    </li>
+    {#
+    <li class="{{ 'active' if item=='tag' }}">
+    <a href="{{ url_for('tag.list') }}">标签</a> 
+    </li>
+    #}
+</ul>
+{% endmacro %}

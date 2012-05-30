@@ -1,14 +1,24 @@
 {% extends 'layout.html' %}
 
+{% block nav %}
+{{ nav('question', current_user) }}
+{% endblock %}
+
 {% block content %}
 
 {% from 'import/topic.html' import topic %}
+
+<script>
+    $.getJSON("{{ url_for('question.latest') }}",function(data){
+         
+    })
+</script>
 
 <section class="span6">
     <header><h5 class="border-medium">等待回答</h5></header>
     {% from 'import/topic.html' import normal_question %}
     {% for q in latest_questions %}
-        {% if not q.answers %}
+        {% if not q.answer_count %}
         {{ normal_question(q) }}
         <hr>
         {% endif %}
@@ -20,8 +30,10 @@
     <header><h5 class="border-medium">最新问题</h5></header>
     {% from 'import/topic.html' import normal_question %}
     {% for q in latest_questions %}
+        {% if q.answer_count %}
         {{ normal_question(q) }}
         <hr>
+        {% endif %}
     {% endfor %}
 </section>
 

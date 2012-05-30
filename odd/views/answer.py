@@ -14,6 +14,11 @@ from re import match
 
 mod = Blueprint('answer', __name__, url_prefix='/question/answer')
 
+@mod.route('/')
+@login_required
+def index():
+    return ''
+
 @mod.route('/new', methods=['POST'])
 @login_required
 def new():

@@ -31,23 +31,10 @@
             <div class="container">
                 <a class="brand" href="{{ url_for('general.index') }}">Offer多多</a>
                 {% if current_user.is_authenticated() %}
+                    {% from 'import/tools.html' import nav, account, search, reminds %}
 
-                <ul class="nav">
-                    <li class="active">
-                    <a href="{{ url_for('user.index', nickname=current_user.nickname) }}">主页</a> 
-                    </li>
-                    <li>
-                    <a href="{{ url_for('question.list') }}">问题</a> 
-                    </li>
-                    {#
-                    <li>
-                    <a href="{{ url_for('tag.list') }}">标签</a> 
-                    </li>
-                    #}
-                </ul>
-
-                <ul class="nav pull-right">
-                    {% from 'import/tools.html' import account, search, reminds %}
+                    {% block nav %}{{ nav('user', current_user) }}{% endblock %}
+                    <ul class="nav pull-right">
                     {{ search() }}
                     <li class="divider-vertical"></li>
                     <li><a href="{{ url_for('question.new') }}">我要提问</a></li>

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from flask import Blueprint, url_for, redirect, render_template, abort, request
+from flask import Blueprint, url_for, redirect, render_template, abort, request, jsonify
 from flask.ext.login import login_required, current_user
 from flaskext.wtf import Form, TextField, TextAreaField, Required
 
@@ -33,10 +33,33 @@ def index(id):
 @mod.route('/list')
 @login_required
 def list():
-    dt = datetime.now()-timedelta(minutes=5)
+    #dt = datetime.now()-timedelta(minutes=5)
     #latest_ques = get_question_by_time(dt.strftime('%Y-%m-%d %H:%M'))
-    latest_ques = get_latest_questions()
+    latest_ques = get_latest_questions(20)
     return render_template('question/list.html', latest_questions=latest_ques)
+
+@mod.route('/latest')
+def latest():
+    qid = request.args.getlist('qid')
+    if not qid:
+        return jsonify(errno='FAIL')
+    
+    count = request.args.getlist('count')
+    if not count:
+        return jsonify(errno='FAIL')
+
+    ques = get_question_gt_id(qid[0], count[0])
+    qs = []
+    for q in ques:
+        qs.append({
+            'id': q.id,
+            'title': q.title,
+            'create_time': q.create_time.strftime('%Y-%m-%d %H:%M:%S'),
+            'answer_count': q.answer_count,
+            'tags': [qt.tag for qt in q.tags]
+            })
+    return jsonify(errno='SUCCESS', questions=qs)
+
 
 @mod.route('/new', methods=['GET','POST'])
 @login_required
