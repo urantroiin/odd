@@ -29,7 +29,7 @@
         {% else %}
         <span class="small">{{ q.create_time }}</span>
         <a class="pull-right" href="{{ url_for('question.index', id=q.id) }}">
-            {{ q.answers|length }}个答案
+            {{ q.answer_count }}个答案
         </a>
         {% endif %}
         </footer>
@@ -101,7 +101,7 @@
 
     <hr>
     
-    <p>{{ q.answers|length }}个答案</p>
+    <p>{{ q.answer_count }}个答案</p>
     <hr>
     {% for a in q.answers %}
         {{ normal_answer(a, current_user) }}

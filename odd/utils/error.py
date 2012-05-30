@@ -17,6 +17,7 @@ TAG_FOLLOW_ADD_OK = u'关注成功'
 TAG_FOLLOW_DUPLICATE = u'已经关注'
 
 ANSWER_ADD_OK = u'回答成功'
+ANSWER_ADD_FAIL = u'回答失败'
 
 ANSWER_UP_ADD_OK = u'UP成功'
 ANSWER_UP_DUPLICATE = u'UP已存在'

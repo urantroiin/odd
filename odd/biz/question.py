@@ -52,6 +52,11 @@ def new_question(question):
     db_session.commit()
     return QUESTION_ADD_OK
 
+def answer_question(question):
+    db_session.add(question)
+    db_session.commit()
+    return QUESTION_ADD_OK
+
 def new_question_tags(question_tags):
     for qt in question_tags:
         db_session.add(qt)

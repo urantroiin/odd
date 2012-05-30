@@ -18,6 +18,7 @@ class Question(Model):
     title = Column('title', VARCHAR(255), nullable=False)
     content = Column('content', TEXT, nullable=False)
     create_time = Column('create_time', TIMESTAMP, nullable=False)
+    answer_count = Column('answer_count', INT, nullable=False)
     
     user = relation("User")
     tags = relation("Question_Tag", backref=backref('question'))
@@ -28,6 +29,7 @@ class Question(Model):
         self.title = title
         self.content = content
         self.create_time = datetime.now()
+        self.answer_count = 0
 
     def __repr__(self):
         return '<Question %r>' % self.title
