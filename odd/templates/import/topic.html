@@ -1,7 +1,7 @@
 {% macro normal_question(q, content=False, focus=False) %}
 <section id="question-{{ q.id }}" class="question {{ 'focus' if focus }} thumbnail">
         <header>
-        <a href="{{ url_for('question.index', id=q.id) }}"><h4>{{ q.title }}</h4></a>
+            <a href="{{ url_for('question.index', id=q.id) }}"><h4>{{ q.title }}</h4></a>
             <p>
             来自：
             {% for tag in q.tags %}

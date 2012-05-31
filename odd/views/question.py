@@ -72,12 +72,6 @@ def new():
     title = form.title.data
     content = form.content.data
 
-    question = Question(current_user.id, title, content)
-    ret = new_question(question)
-    if ret != QUESTION_ADD_OK:
-        fail(ret)
-        return render_template('question/new.html', form=form)
-
     tags = request.form.getlist('tag')
     tags_clean = []
     for t in tags:
@@ -85,9 +79,9 @@ def new():
         if t and t not in tags_clean:
             tags_clean.append(t)
 
-    question_tags = [Question_Tag(question.id, t) for t in tags_clean]
-    ret = new_question_tags(question_tags)
-    if ret != QUESTION_TAG_ADD_OK:
+    question = Question(current_user.id, title, content, tags_clean)
+    ret = new_question(question, tags_clean)
+    if ret != QUESTION_ADD_OK:
         fail(ret)
         return render_template('question/new.html', form=form)
 

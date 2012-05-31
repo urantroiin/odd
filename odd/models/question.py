@@ -24,10 +24,11 @@ class Question(Model):
     tags = relation("Question_Tag", backref=backref('question'))
     answers = relation("Answer", order_by='desc(Answer.up)', backref=backref('question'))
 
-    def __init__(self, user_id, title, content):
+    def __init__(self, user_id, title, content, tags):
         self.user_id = user_id
         self.title = title
         self.content = content
+        self.tags = [Question_Tag(self.id, tag) for tag in tags]
         self.create_time = datetime.now()
         self.answer_count = 0
 
