@@ -1,0 +1,39 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<form class="well span8 offset2" action="{{ url_for('user.profile') }}" method='post' enctype='multipart/form-data'>
+    {% from 'import/tools.html' import flashed_msg,error %}
+
+    <h3 class="alert alert-info">个人信息</h3>
+
+    {{ form.hidden_tag() }}
+    {{ form.csrf }}
+
+    {{ form.photo.label }}
+    {{ form.photo() }}
+    {{ error(form.errors['photo']) }}
+
+    {{ form.email.label }}
+    {{ form.email() }}
+    {{ error(form.errors['email']) }}
+
+    {{ form.nickname.label }}
+    {{ form.nickname() }}
+    {{ error(form.errors['nickname']) }}
+
+    {{ form.title.label }}
+    {{ form.title() }}
+    {{ error(form.errors['title']) }}
+
+
+    {{ form.sex.label }}
+    {{ form.sex(class="unstyled inline") }}
+    {{ error(form.errors['sex']) }}
+
+    <hr>
+
+    <input class="btn btn-primary" type="submit" value="修改"/>
+</form>
+
+{% endblock %}

@@ -65,6 +65,8 @@
 
     <hr>
 
+    <div class="QapTcha"></div>
+
     <div class="control-group">
         <div class="controls">
             <input class="btn btn-primary" type="submit" value="确认提交"/>
@@ -72,4 +74,24 @@
         </div>
     </div>
 </form>
+
+
+<!-- include CSS & JS files -->
+<!-- CSS file -->
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='qaptcha/QapTcha.jquery.css') }}" media="screen" />
+<!-- jQuery files -->
+<script type="text/javascript" src="{{ url_for('static', filename='qaptcha/jquery-ui.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='qaptcha/QapTcha.jquery.js') }}"></script>
+
+<script type="text/javascript">
+    $(function(){
+        // More complex call
+        $('.QapTcha').QapTcha({
+            disabledSubmit: true,
+            autoSubmit : false,
+            autoRevert : true
+        });
+    });
+</script>
+
 {% endblock %}

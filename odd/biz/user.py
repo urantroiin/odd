@@ -34,6 +34,14 @@ def register_user(user):
     return USER_REGISTER_OK
 
 def edit_user(user):
+    u = get_user_by_email(user.email)
+    if u and u.id != user.id:
+        return USER_EMAIL_DUPLICATE
+
+    u = get_user_by_name(user.nickname)
+    if u and u.id != user.id:
+        return USER_NICKNAME_DUPLICATE
+
     db_session.add(user)
     db_session.commit()
     return USER_EDIT_OK

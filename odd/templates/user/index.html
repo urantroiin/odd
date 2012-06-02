@@ -2,61 +2,15 @@
 
 {% block content %}
 
-{% from 'import/topic.html' import normal_question %}
-<section id="tag-news" class="span8">
-<header class="tabs">
-    <ul class="nav nav-pills border-medium">
-        <li class="active">
-            <a href="#followed" data-toggle="tab">关注的</a>
-        </li>
-        <li>
-            <a href="#my" data-toggle="tab">我的</a>
-        </li>
-        <li>
-            <a href="#latest" data-toggle="tab">随便看看</a>
-        </li>
-    </ul>
-</header>
+{% from 'import/topic.html' import simple_question %}
 
-<div class="tab-content">
-    <div class="tab-pane active" id="followed">
-        {% for q in followed %}
-            {{ normal_question(q) }}
-        <hr>
-        {% endfor %}
-    </div>
-    
-    <div class="tab-pane" id="my">
-        {% for q in my %}
-            {{ normal_question(q) }}
-        <hr>
-        {% endfor %}
-    </div>
-    <div class="tab-pane" id="latest">
-        {% for q in latest %}
-            {% if q.user_id != current_user.id %}
-            {{ normal_question(q) }}
-            <hr>
-            {% endif %}
-        {% endfor %}
-    </div>
-</div>
-</section>
-
-<section class="span4">
+<section class="span4 offset4">
 
 <section class="user-info side-box thumbnail">
-<header class="border-small"><h5>本大爷</h5></header>
-<img class="thumbnail" src="http://www.gravatar.com/avatar/{{ current_user.email_hash()}}?s=80" />
-<h5 style="text-align:center">{{ current_user.nickname }}</h5>
-</section>
-<hr>
-
-<section class="fav-tags side-box thumbnail">
-<header class="border-small"><h5>珍藏的标签</h5></header>
-{% for tf in current_user.tag_follows %}
-<a href="{{ url_for('tag.index', tag=tf.tag) }}"><span class="label label-info">{{ tf.tag }}</span></a>
-{% endfor %}
+<header><h5>看什么看</h5></header>
+<hr class="hr-small">
+<img class="thumbnail" src="http://www.gravatar.com/avatar/{{ user.email_hash()}}?s=80" />
+<h5 style="text-align:center">{{ user.nickname }}</h5>
 </section>
 
 </section>

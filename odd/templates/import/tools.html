@@ -42,10 +42,11 @@
 
 {% macro account(current_user) %}
 <li class="dropdown">
-    <a href="{{ url_for('user.index', nickname=current_user.nickname)}}" class="dropdown-toggle" data-toggle="dropdown">
+    <a href="{{ url_for('user.home')}}" class="dropdown-toggle" data-toggle="dropdown">
         [{{ current_user.nickname }}]
     </a>
     <ul class="dropdown-menu">
+        <li><a href="{{ url_for('user.profile') }}">个人信息</a></li>
         <li><a href="{{ url_for('general.logout') }}">注销</a></li>
     </ul>
 </li>
@@ -113,7 +114,7 @@
 {% macro nav(item, current_user) %}
 <ul class="nav">
     <li class="{{ 'active' if item=='user' }}">
-    <a href="{{ url_for('user.index', nickname=current_user.nickname) }}">主页</a> 
+    <a href="{{ url_for('user.home') }}">主页</a> 
     </li>
     <li class="{{ 'active' if item=='question' }}">
     <a href="{{ url_for('question.list') }}">问题</a> 

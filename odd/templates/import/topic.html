@@ -118,12 +118,12 @@
 <script>
     $(function(){
         function fail(request){
-            alert('fail')
+            alert('您的操作没有成功')
         }
 
         function success(data){
             if(data.errno=='FAIL'){
-                alert('fail')
+                alert('您的操作没有成功')
                 return
             }
             window.location.reload(true)

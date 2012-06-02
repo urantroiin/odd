@@ -40,6 +40,17 @@ img {
   color: #999;
 }
 
+ul.inline {
+    display: inline;
+    li {
+        display: inline;    
+        margin-right: 10px;
+        label {
+            display: inline-block;     
+        }
+    }
+}
+
 .border(@height:1px, @margin:5px, @color:black) {
     border-bottom: @height @color solid;
     margin-bottom: @margin;

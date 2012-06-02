@@ -16,7 +16,7 @@ def index():
     首页
     '''
     if current_user.is_authenticated():
-        return redirect(url_for('user.index', nickname=current_user.nickname))
+        return redirect(url_for('user.home'))
 
     form = LoginForm()
     return render_template('general/login.html', form=form)
