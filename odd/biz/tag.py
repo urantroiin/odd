@@ -10,3 +10,7 @@ def new_tags(tags):
     db_session.add_all(tags)
     db_session.commit()
     return TAG_ADD_OK
+
+def get_all_tags():
+    return db_session.query(Tag).all()
+

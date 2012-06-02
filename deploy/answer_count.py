@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import oursql
-
-conn = oursql.connect(host='127.0.0.1', user='odd', passwd='odd', db='odd', port=3306)
-curs = conn.cursor(oursql.DictCursor)
+from db import *
 
 #获取每个问题的答案个数
 sql = 'select question_id, count(1) as count from answers group by question_id'

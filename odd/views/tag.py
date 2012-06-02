@@ -5,6 +5,7 @@ from flask.ext.login import login_required, current_user
 
 from odd.utils.error import *
 
+from odd.biz.tag import *
 from odd.biz.question import *
 
 mod = Blueprint('tag', __name__, url_prefix='/tag')
@@ -12,8 +13,9 @@ mod = Blueprint('tag', __name__, url_prefix='/tag')
 @mod.route('/')
 @login_required
 def all():
-    tags = get_question_tags()
-    return jsonify(errno='SUCCESS', tags=tags)
+    tags = get_all_tags()
+    ts = [t.tag for t in tags]
+    return jsonify(errno='SUCCESS', tags=ts)
 
 
 @mod.route('/<tag>')
