@@ -56,6 +56,6 @@ def profile():
 class ProfileForm(Form):
     photo_img = FileField(u'头像', validators=[])
     email = TextField(u'邮箱地址*', validators=[Required(), Email()])
-    nickname = TextField(u'昵称*', validators=[Required()])
-    title = TextField(u'签名*', validators=[Required()])
+    nickname = TextField(u'昵称*', validators=[Required(),Regexp('[\w\d-]{2,20}')])
+    title = TextField(u'签名*', validators=[Required(),Regexp('.{0,128}')])
     sex = RadioField(u'性别*', coerce=int, choices=[(0,u'男人'),(1,u'女人')])
