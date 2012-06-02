@@ -2,6 +2,7 @@
 
 from datetime import datetime
 from hashlib import md5
+from os.path import isfile, join
 
 from flask.ext.login import UserMixin
 
@@ -9,6 +10,7 @@ from sqlalchemy.orm import relation
 from sqlalchemy.schema import Column, ForeignKey
 from sqlalchemy.types import INT, VARCHAR, TIMESTAMP, BOOLEAN
 
+from odd import app
 from odd.data.db import Model
 
 from odd.models.follow import *
@@ -36,7 +38,18 @@ class User(Model, UserMixin):
         return md5(self.email.lower()).hexdigest() 
 
     def photo(self,size):
-        return join(app.config['PHOTO_PATH'], '%d-%d.jpg' % (self.id, size))
+        name = 'photo/%d-%d.jpg'
+        filename = name % (self.id, size)
+        if isfile(join(app.static_folder, filename)):
+            return filename
+        
+        filename = name % (0, size)
+        if isfile(join(app.static_folder, filename)):
+            return filename
+
+        filename = name % (0, 20)
+        if isfile(join(app.static_folder, filename)):
+            return path
 
     def tag_is_followed(self, tag):
         tags = [tf.tag for tf in self.tag_follows]

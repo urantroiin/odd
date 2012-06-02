@@ -40,23 +40,21 @@ def profile():
     if not form.validate_on_submit():
         return render_template('user/profile.html', form=form)
 
-    current_user.nickname = form.nickname.data
-    current_user.title = form.title.data
-    current_user.sex = form.sex.data
+    form.populate_obj(current_user)
 
     ret = edit_user(current_user)
     if not ret == USER_EDIT_OK:
         fail(ret)
         return render_template('user/profile.html', form=form)
 
-    if form.photo.data:
-        save_img(current_user.id, form.photo.data)
+    if form.photo_img.data:
+        save_img(current_user.id, form.photo_img.data)
 
     success(ret)
     return render_template('user/profile.html', form=form)
 
 class ProfileForm(Form):
-    photo = FileField(u'头像', validators=[])
+    photo_img = FileField(u'头像', validators=[])
     email = TextField(u'邮箱地址*', validators=[Required(), Email()])
     nickname = TextField(u'昵称*', validators=[Required()])
     title = TextField(u'签名*', validators=[Required()])

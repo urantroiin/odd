@@ -44,7 +44,7 @@ def login():
         return render_template('general/login.html', form=form)
     
     success(ret);
-    return redirect(url_for('user.index', nickname=user.nickname))
+    return redirect(url_for('user.home', nickname=user.nickname))
 
 @mod.route('/logout', methods=['GET','POST'])
 @login_required

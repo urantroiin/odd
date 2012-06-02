@@ -15,7 +15,7 @@
                 <p>{{ q.content }}</p>
                 <small>
                     <a href="{{ url_for('user.index', nickname=q.user.nickname) }}">
-                        <img src="http://www.gravatar.com/avatar/{{ q.user.email_hash()}}?s=20" />
+                        <img src="{{ url_for('static', filename=q.user.photo(20)) }}" />
                         {{ q.user.nickname }}
                     </a>
                 </small>
@@ -40,7 +40,7 @@
     <section id="comments-{{ a.id }}" class="comments thumbnail">
         {% for c in a.comments %}
         <div id="comment-{{ c.id }}" class="comment clearfix">
-            <img class="pull-left" src="http://www.gravatar.com/avatar/{{ c.user.email_hash() }}?s=20" />
+            <img class="pull-left" src="{{ url_for('static', filename=c.user.photo(20)) }}" />
             <div class="pull-left">
                 <p>
                 <a class="nickname" href="{{ url_for('user.index', nickname=c.user.nickname) }}">{{ c.user.nickname }}</a>
@@ -56,7 +56,7 @@
         {% endfor %}
         
         <div class="clearfix">
-            <img class="pull-left" src="http://www.gravatar.com/avatar/{{ current_user.email_hash() }}?s=20" />
+            <img class="pull-left" src="{{ url_for('static', filename=current_user.photo(20)) }}" />
             <form class="comment-form form-inline">
                 <input name="answer_id" type="hidden" value="{{ a.id }}">
                 <input name="comment_id" type="hidden" value="-1">
@@ -78,7 +78,7 @@
             <p>{{ a.content }}</p>
             <small>
                 <a href="{{ url_for('user.index', nickname=a.user.nickname) }}">
-                    <img src="http://www.gravatar.com/avatar/{{ a.user.email_hash()}}?s=20" />
+                    <img src="{{ url_for('static', filename=a.user.photo(20)) }}" />
                     {{ a.user.nickname }}
                 </a> 
             </small>

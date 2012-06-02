@@ -45,14 +45,13 @@
 
 <section class="span4">
 
-<section class="user-info side-box thumbnail">
-<header class="border-small"><h5>本大爷</h5></header>
-<img class="thumbnail" src="http://www.gravatar.com/avatar/{{ current_user.email_hash()}}?s=80" />
-<h5 style="text-align:center">{{ current_user.nickname }}</h5>
-</section>
+{% from 'import/tools.html' import user_info %}
+
+{{ user_info(current_user) }}
+
 <hr>
 
-<section class="fav-tags side-box thumbnail">
+<section class="fav-tags side-box thumbnail clearfix">
 <header class="border-small"><h5>珍藏的标签</h5></header>
 {% for tf in current_user.tag_follows %}
 <a href="{{ url_for('tag.index', tag=tf.tag) }}"><span class="label label-info">{{ tf.tag }}</span></a>

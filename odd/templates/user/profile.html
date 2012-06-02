@@ -10,9 +10,16 @@
     {{ form.hidden_tag() }}
     {{ form.csrf }}
 
-    {{ form.photo.label }}
-    {{ form.photo() }}
-    {{ error(form.errors['photo']) }}
+    <div class="span2" style="text-align:center">
+        <img src="{{ url_for('static', filename=current_user.photo(20)) }}"/>
+        <hr>
+        <img src="{{ url_for('static', filename=current_user.photo(90)) }}"/>
+    </div>
+
+    <div class="span5">
+    {{ form.photo_img.label }}
+    {{ form.photo_img() }}
+    {{ error(form.errors['photo_img']) }}
 
     {{ form.email.label }}
     {{ form.email() }}
@@ -34,6 +41,7 @@
     <hr>
 
     <input class="btn btn-primary" type="submit" value="修改"/>
+    </div>
 </form>
 
 {% endblock %}
