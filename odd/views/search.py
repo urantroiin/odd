@@ -5,6 +5,7 @@ from flask.ext.login import login_required, current_user
 
 from odd.utils.error import *
 
+from odd.biz.tag import *
 from odd.biz.question import *
 
 mod = Blueprint('search', __name__, url_prefix='/search')
@@ -16,5 +17,6 @@ def index():
     if not tag:
         return abort(404)
 
+    tag_obj = get_tag_by_tag(tag[0])
     questions = get_question_by_tag(tag[0])
-    return render_template('search/index.html', tag=tag[0], questions=questions)
+    return render_template('search/index.html', tag=tag_obj, questions=questions)

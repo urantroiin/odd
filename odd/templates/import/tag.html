@@ -2,7 +2,7 @@
 <script>
     $(function(){
         $('.follow').click(function(){
-            tag = $(this).siblings('.tag-tag').text()
+            tag = $(this).parents('.tag-info').find('.tag-tag').text()
             $.ajax({
                 url:"{{ url_for('follow.follow') }}",
                 type: 'POST',
@@ -12,7 +12,7 @@
             })
         })
         $('.unfollow').click(function(){
-            tag = $(this).siblings('.tag-tag').text()
+            tag = $(this).parents('.tag-info').find('.tag-tag').text()
             $.ajax({
                 url:"{{ url_for('follow.unfollow') }}",
                 type: 'POST',
@@ -25,12 +25,19 @@
 </script>
 
 <section class="tag-info span12">
-<span class="tag-tag">{{ tag }}</span>
-{% if has_followed %}
-    <a class="unfollow btn btn-danger pull-right">取消关注</a>
-{% else %}
-    <a class="follow btn btn-info pull-right">关注</a>
-{% endif %}
+    <img class="span1 offset0" src="{{ url_for('static', filename=tag.tag_photo(90)) }}" />
+    <blockquote class="span9" style="border-left:none;margin-left:0px">
+        <h2 class="tag-tag">{{ tag.tag }}</h2>
+        <small style="font-size:8px">
+            {{ tag.description }}
+        </small>
+    </blockquote>
+    
+    {% if has_followed %}
+        <a class="unfollow btn btn-danger pull-right">取消关注</a>
+    {% else %}
+        <a class="follow btn btn-info pull-right">关注</a>
+    {% endif %}
 </section>
 
 {% endmacro %}

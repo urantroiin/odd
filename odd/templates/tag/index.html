@@ -3,14 +3,43 @@
 {% block content %}
 
 {% from 'import/tag.html' import tag_info %}
-{{ tag_info(tag, current_user.tag_is_followed(tag)) }}
+
+{{ tag_info(tag, current_user.tag_is_followed(tag.tag)) }}
+
+<hr class="span12" style="border:white;">
 
 {% from 'import/topic.html' import normal_question %}
-<section class="span12">
-{% for q in questions %}
-    <hr>
-    {{ normal_question(q, True) }}
+
+<section class="span6">
+    <header><h5 class="border-medium">问题</h5></header>
+    {% for q in questions %}
+        {{ normal_question(q) }}
+        <hr>
+    {% endfor %}
+</section>
+
+{% from 'import/resource.html' import normal_resource %}
+
+<section class="span6">
+    <header><h5 class="border-medium">资源</h5></header>
+    {% for r in resources %}
+        {{ normal_resource(r) }}
+        <hr>
+    {% endfor %}
+</section>
+
+
+{#
+<section id="notice-board" class="side-box thumbnail">
+<header class="border-small"><h5>公告板</h5></header>
+
+{% for n in notices %}
+    <div class="notice clearfix">
+        <a href="">{{ n.title }}</a>
+        <span class="small pull-right">{{ n.create_time }}</span>
+    </div>
 {% endfor %}
 </section>
+#}
 
 {% endblock %}

@@ -14,3 +14,6 @@ def new_tags(tags):
 def get_all_tags():
     return db_session.query(Tag).all()
 
+def get_tag_by_tag(tag):
+    return db_session.query(Tag).filter_by(tag=tag).first()
+

@@ -1,0 +1,17 @@
+{% macro normal_resource(r) %}
+<section id="resource-{{ r.id }}" class="resource thumbnail">
+        <header>
+            <a href=""><h4>{{ r.title }}</h4></a>
+            <p>
+            来自：
+            {% for tag in r.tags %}
+                <a href="{{ url_for('tag.index', tag=tag.tag) }}"><span class="label label-warning">{{ tag.tag }}</span></a>
+            {% endfor %}
+            </p>
+        </header>
+
+        <footer>
+            <span class="small">{{ r.create_time }}</span>
+        </footer>
+    </section>
+{% endmacro %}

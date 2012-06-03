@@ -7,6 +7,7 @@ from odd.utils.error import *
 
 from odd.biz.tag import *
 from odd.biz.question import *
+from odd.biz.resource import *
 
 mod = Blueprint('tag', __name__, url_prefix='/tag')
 
@@ -21,8 +22,10 @@ def all():
 @mod.route('/<tag>')
 @login_required
 def index(tag):
+    tag_obj = get_tag_by_tag(tag)
     questions = get_question_by_tag(tag)
-    return render_template('tag/index.html', tag=tag, questions=questions)
+    resources = get_resource_by_tag(tag)
+    return render_template('tag/index.html', tag=tag_obj, questions=questions, resources=resources)
 
 @mod.route('/list')
 @login_required
