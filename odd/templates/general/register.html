@@ -65,8 +65,9 @@
 
     <hr>
 
+    {#
     <div class="QapTcha"></div>
-
+    #}
     <div class="control-group">
         <div class="controls">
             <input class="btn btn-primary" type="submit" value="确认提交"/>
@@ -83,6 +84,7 @@
 <script type="text/javascript" src="{{ url_for('static', filename='qaptcha/jquery-ui.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='qaptcha/QapTcha.jquery.js') }}"></script>
 
+{#
 <script type="text/javascript">
     $(function(){
         // More complex call
@@ -93,5 +95,5 @@
         });
     });
 </script>
-
+#}
 {% endblock %}
