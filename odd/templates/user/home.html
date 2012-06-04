@@ -1,5 +1,9 @@
 {% extends 'layout.html' %}
 
+{% block nav %}
+{{ nav('user', current_user) }}
+{% endblock %}
+
 {% block content %}
 
 {% from 'import/topic.html' import normal_question %}

@@ -33,7 +33,7 @@
                 {% if current_user.is_authenticated() %}
                     {% from 'import/tools.html' import nav, account, search, reminds %}
 
-                    {% block nav %}{{ nav('user', current_user) }}{% endblock %}
+                    {% block nav %}{{ nav('', current_user) }}{% endblock %}
                     <ul class="nav pull-right">
                     {{ search() }}
                     <li class="divider-vertical"></li>

@@ -1,12 +1,29 @@
 {% extends 'layout.html' %}
 
+{% block nav %}
+{{ nav('tag', current_user) }}
+{% endblock %}
+
 {% block content %}
 
-{% from 'import/topic.html' import topic %}
+{% from 'import/tag.html' import tag_box %}
 
-<section class="span6">
-<header class="border-medium"><h5></h5></header>
-</section>
-<hr>
+<div class="span4">
+{% for i in range(0,tags|count,3) %}
+    {{ tag_box(tags[i]) }}
+{% endfor %}
+</div>
+
+<div class="span4">
+{% for i in range(1,tags|count,3) %}
+    {{ tag_box(tags[i]) }}
+{% endfor %}
+</div>
+
+<div class="span4">
+{% for i in range(2,tags|count,3) %}
+    {{ tag_box(tags[i]) }}
+{% endfor %}
+</div>
 
 {% endblock %}

@@ -30,4 +30,5 @@ def index(tag):
 @mod.route('/list')
 @login_required
 def list():
-    return render_template('tag/list.html')
+    tags = get_tag_by_page(0, 30)
+    return render_template('tag/list.html', tags=tags)

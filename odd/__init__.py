@@ -4,7 +4,6 @@ from flask import Flask, render_template
 from flask.ext.login import LoginManager
 
 app = Flask(__name__)
-app.config.from_object("test_config")
 app.config.from_object("website_config")
 
 #
@@ -18,6 +17,7 @@ from odd.views import tag
 from odd.views import search
 from odd.views import follow
 from odd.views import remind
+from odd.views import admin
 
 app.register_blueprint(general.mod)
 app.register_blueprint(user.mod)
@@ -27,6 +27,7 @@ app.register_blueprint(tag.mod)
 app.register_blueprint(search.mod)
 app.register_blueprint(follow.mod)
 app.register_blueprint(remind.mod)
+app.register_blueprint(admin.mod)
 
 #
 # Login

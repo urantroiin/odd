@@ -17,3 +17,7 @@ def get_all_tags():
 def get_tag_by_tag(tag):
     return db_session.query(Tag).filter_by(tag=tag).first()
 
+def get_tag_by_page(page, count):
+    return db_session.query(Tag).limit(count).offset(page*count).all()
+
+

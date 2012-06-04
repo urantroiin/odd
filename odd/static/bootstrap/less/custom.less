@@ -70,14 +70,14 @@ ul.inline {
 
 .hr(@margin-bottom:5px, @border-width:1px, @border-color:#171717){
     margin: 0;
-    margin-bottom: @margin-bottom;
+    margin: @margin-bottom 0px;
     border: 0;
     border-top: @border-width solid @border-color;
     border-bottom: 1px solid white;
 }
 
 .hr-tiny {
-    .hr(2px, 1px, #eee);
+    .hr(5px, 1px, #eee);
 }
 
 
@@ -188,5 +188,17 @@ ul.inline {
 #notice-board {
     .notice {
         margin-top: 5px;    
+    }
+}
+
+.tag-box {
+    margin: 10px 0px;    
+}
+
+.simple-quote {
+    border-left: none;
+    margin-left: 0px;    
+    small {
+        font-size:8px;    
     }
 }

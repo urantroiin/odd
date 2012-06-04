@@ -26,9 +26,9 @@
 
 <section class="tag-info span12">
     <img class="span1 offset0" src="{{ url_for('static', filename=tag.tag_photo(90)) }}" />
-    <blockquote class="span9" style="border-left:none;margin-left:0px">
+    <blockquote class="simple-quote span9">
         <h2 class="tag-tag">{{ tag.tag }}</h2>
-        <small style="font-size:8px">
+        <small>
             {{ tag.description }}
         </small>
     </blockquote>
@@ -40,4 +40,17 @@
     {% endif %}
 </section>
 
+{% endmacro %}
+
+{% macro tag_box(tag) %}
+    <section class="tag-box thumbnail">
+        <img src="{{ url_for('static', filename=tag.tag_photo(90)) }}" /> 
+        <hr class="hr-tiny">
+        <blockquote class="simple-quote">
+            <a href="{{ url_for('tag.index', tag=tag.tag) }}"><h5>{{ tag.tag }}</h5></a>
+            <small>
+                {{ tag.description }}
+            </small>
+        </blockquote>
+    </section>
 {% endmacro %}
