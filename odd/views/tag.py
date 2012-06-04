@@ -23,6 +23,8 @@ def all():
 @login_required
 def index(tag):
     tag_obj = get_tag_by_tag(tag)
+    if not tag_obj:
+        abort(404)
     questions = get_question_by_tag(tag)
     resources = get_resource_by_tag(tag)
     return render_template('tag/index.html', tag=tag_obj, questions=questions, resources=resources)
