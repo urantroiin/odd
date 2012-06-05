@@ -4,6 +4,7 @@ from odd.data.db import db_session
 
 from odd.models.question import *
 from odd.models.tag import *
+from odd.biz.tag import new_tags
 
 from odd.utils.error import *
 
@@ -52,9 +53,8 @@ def order_by_time(questions):
         return q.create_time
     return sorted(questions, key=time_key, reverse=True)
 
-def new_question(question, tags_clean):
-
-    db_session.add_all([Tag(tag) for tag in tags_clean])
+def new_question(question, tags):
+    new_tags([Tag(tag) for tag in tags])
 
     db_session.add(question)
     db_session.commit()
