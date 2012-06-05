@@ -17,7 +17,7 @@ class Tag(Model):
     description = Column('description', TEXT, nullable=False)
     create_time = Column('create_time', TIMESTAMP, nullable=False)
 
-    def __init__(self, tag, description):
+    def __init__(self, tag, description=''):
         self.tag = tag
         self.description = description
         self.create_time = datetime.now()
