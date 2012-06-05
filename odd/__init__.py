@@ -46,3 +46,10 @@ def load_user(user_id):
 @app.errorhandler(404)
 def not_found(error):
     return render_template('404.html'), 404
+
+if not app.debug:
+    import logging
+    fh = logging.FileHandler(app.config['ERROR_LOG'])
+    fh.setFormatter(logging.Formatter(app.config['ERROR_LOG_FORMAT']))
+    fh.setLevel(logging.WARNING)
+    app.logger.addHandler(fh)
