@@ -49,7 +49,15 @@ def not_found(error):
 
 if not app.debug:
     import logging
+    ft = logging.Formatter(app.config['ERROR_LOG_FORMAT'])
+    
     fh = logging.FileHandler(app.config['ERROR_LOG'])
-    fh.setFormatter(logging.Formatter(app.config['ERROR_LOG_FORMAT']))
+    fh.setFormatter(ft)
     fh.setLevel(logging.WARNING)
     app.logger.addHandler(fh)
+
+    from logging.handlers import SMTPHandler
+    sh = SMTPHandler(app.config['MAIL_HOST'], app.config['MY_ADDR'], app.config['ADMIN_ADDRS'], 'Offerduoduo Error!')
+    sh.setFormatter(ft)
+    sh.setLevel(logging.ERROR)
+    app.logger.addHandler(sh)
