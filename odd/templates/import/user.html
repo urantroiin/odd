@@ -5,9 +5,9 @@
     <div class="span1">
         <img src="{{ url_for('static', filename=user.photo(90)) }}" />
     </div>
-    <blockquote class="span2" style="border-left:none;margin-left:0px">
+    <blockquote class="simple-quote span2">
         <h3>{{ user.nickname }}</h3>
-        <small style="font-size:8px">{{ user.title }}</small>
+        <small>{{ user.title }}</small>
     </blockquote>
 </section>
 

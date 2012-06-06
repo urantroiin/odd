@@ -5,7 +5,7 @@
             <p>
             来自：
             {% for tag in q.tags %}
-                <a href="{{ url_for('tag.index', tag=tag.tag) }}"><span class="label label-warning">{{ tag.tag }}</span></a>
+                <a class="tag" href="{{ url_for('tag.index', tag=tag.tag) }}"><span class="label label-warning">{{ tag.tag }}</span></a>
             {% endfor %}
             </p>
         </header>
