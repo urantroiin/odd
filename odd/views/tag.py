@@ -6,6 +6,8 @@ from flask.ext.login import login_required, current_user
 from odd.utils.error import *
 from odd.utils.tools import *
 
+from odd.models.tag import *
+
 from odd.biz.tag import *
 from odd.biz.question import *
 from odd.biz.resource import *
@@ -44,6 +46,10 @@ def photo(id):
         return jsonify(errno='FAIL')
     
     save_tag_photo(id, tag_photo)
+
+    tag_edit = Tag_Edit(current_user.id, id, '', 1)
+    new_tag_edit(tag_edit)
+
     return jsonify(errno='SUCCESS')
     
 
@@ -60,4 +66,7 @@ def desc(id):
     if ret != TAG_EDIT_OK:
         return jsonify(errno='FAIL')
         
+    tag_edit = Tag_Edit(current_user.id, id, desc[0], -1)
+    new_tag_edit(tag_edit)
+
     return jsonify(errno='SUCCESS')

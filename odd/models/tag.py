@@ -38,3 +38,23 @@ class Tag(Model):
 
     def __repr__(self):
         return '<Tag %s>' % self.tag
+
+class Tag_Edit(Model):
+    __tablename__ = 'tag_edits'
+    
+    id = Column('id', INT, primary_key=True)
+    user_id = Column('user_id', INT, nullable=False)
+    tag_id = Column('tag_id', INT, nullable=False)
+    description = Column('description', TEXT, nullable=False)
+    photo = Column('photo', INT, nullable=False)
+    create_time = Column('create_time', TIMESTAMP, nullable=False)
+
+    def __init__(self, user_id, tag_id, description, photo):
+        self.user_id = user_id
+        self.tag_id = tag_id
+        self.description = description
+        self.photo = photo
+        self.create_time = datetime.now()
+
+    def __repr__(self):
+        return '<Tag_Edit %s>' % self.id

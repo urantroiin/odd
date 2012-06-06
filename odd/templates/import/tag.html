@@ -55,7 +55,7 @@
     </div>
 </div>
 <blockquote class="simple-quote span9">
-    <h2 class="tag-tag" style="display:inline-block">{{ tag.tag }}</h2>
+    <h2 class="tag-tag">{{ tag.tag }}</h2>
     <small class="editable">
         <span>{{ tag.description }}</span>
         <a class="edit small" data-toggle="modal" href="#tag-desc-modal">修改</a>
@@ -65,7 +65,7 @@
             </div>
             <form class="tag-edit-form" action="{{ url_for('tag.desc', id=tag.id) }}" method="post" enctype='multipart/form-data'>
             <div class="modal-body">
-                <textarea name="desc"></textarea>
+                <textarea name="desc">{{ tag.description }}</textarea>
             </div>
             <div class="modal-footer">
                 <input class="btn btn-primary" type="submit" value="修改" />
