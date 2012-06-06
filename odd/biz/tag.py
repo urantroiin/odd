@@ -16,6 +16,9 @@ def new_tags(tags):
 
     return TAG_ADD_OK
 
+def get_tag_by_id(id):
+    return db_session.query(Tag).filter_by(id=id).first()
+
 def get_all_tags():
     return db_session.query(Tag).all()
 

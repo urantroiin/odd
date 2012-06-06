@@ -117,18 +117,6 @@
 
 <script>
     $(function(){
-        function fail(request){
-            alert('您的操作没有成功')
-        }
-
-        function success(data){
-            if(data.errno=='FAIL'){
-                alert('您的操作没有成功')
-                return
-            }
-            window.location.reload(true)
-        }        
-        
         $(".topic .answer-form").submit(function(){
             question_id = $("input[name=question_id]", this).val() 
             if(!question_id){

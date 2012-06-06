@@ -48,7 +48,7 @@ def profile():
         return render_template('user/profile.html', form=form)
 
     if form.photo_img.data:
-        save_img(current_user.id, form.photo_img.data)
+        save_photo(current_user.id, form.photo_img.data)
 
     success(ret)
     return render_template('user/profile.html', form=form)

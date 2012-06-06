@@ -4,6 +4,7 @@ from flask import Blueprint, url_for, redirect, render_template, abort, request,
 from flask.ext.login import login_required, current_user
 
 from odd.utils.error import *
+from odd.utils.tools import *
 
 from odd.biz.tag import *
 from odd.biz.question import *
@@ -34,3 +35,29 @@ def index(tag):
 def list():
     tags = get_tag_by_page(0, 30)
     return render_template('tag/list.html', tags=tags)
+
+@mod.route('/<int:id>/photo', methods=['POST'])
+@login_required
+def photo(id):
+    tag_photo = request.files['tag_photo']
+    if not tag_photo:
+        return jsonify(errno='FAIL')
+    
+    save_tag_photo(id, tag_photo)
+    return jsonify(errno='SUCCESS')
+    
+
+@mod.route('/<int:id>/desc', methods=['POST'])
+@login_required
+def desc(id):
+    desc = request.form.getlist('desc')
+    if not desc:
+        return jsonify(errno='FAIL')
+
+    tag_obj = get_tag_by_id(id)
+    tag_obj.description = desc[0]
+    ret = edit_tag(tag_obj)
+    if ret != TAG_EDIT_OK:
+        return jsonify(errno='FAIL')
+        
+    return jsonify(errno='SUCCESS')

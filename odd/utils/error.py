@@ -33,6 +33,7 @@ REMIND_ADD_OK = u'提醒添加成功'
 REMIND_EDIT_OK = u'提醒修改成功'
 
 TAG_ADD_OK = u'标签添加成功'
+TAG_EDIT_OK = u'标签修改成功'
 
 def success(error):
     flash(error, 'success')
