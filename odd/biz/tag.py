@@ -7,11 +7,12 @@ from odd.models.tag import *
 from odd.utils.error import *
 
 def new_tags(tags):
-    try:
-        db_session.add_all(tags)
-        db_session.commit()
-    except:
-        db_session.rollback()
+    for tag in tags:
+        try:
+            db_session.add(tag)
+            db_session.commit()
+        except:
+            db_session.rollback()
 
     return TAG_ADD_OK
 
