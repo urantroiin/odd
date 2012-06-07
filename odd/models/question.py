@@ -48,3 +48,21 @@ class Question_Tag(Model):
 
     def __repr__(self):
         return '<Question_Tag %d %d %s>' % (self.id, self.question_id,self.tag)
+
+class Question_Edit(Model):
+    __tablename__ = 'question_edits'
+    
+    id = Column('id', INT, primary_key=True)
+    user_id = Column('user_id', INT, nullable=False)
+    question_id = Column('question_id', INT, nullable=False)
+    tags = Column('tags', TEXT, nullable=False)
+    create_time = Column('create_time', TIMESTAMP, nullable=False)
+
+    def __init__(self, user_id, question_id, tags):
+        self.user_id = user_id
+        self.question_id = question_id
+        self.tags = '#'.join(tags)
+        self.create_time = datetime.now()
+
+    def __repr__(self):
+        return '<Question_Edit %s>' % self.id

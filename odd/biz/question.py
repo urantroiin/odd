@@ -69,3 +69,8 @@ def edit_question_tags(qid, tags):
     db_session.add_all([Question_Tag(qid,tag) for tag in tags])
     db_session.commit()
     return QUESTION_TAG_EDIT_OK
+
+def new_question_edit(question_edit):
+    db_session.add(question_edit)
+    db_session.commit()
+    return QUESTION_EDIT_ADD_OK

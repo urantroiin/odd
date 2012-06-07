@@ -79,6 +79,9 @@ def tag(id):
     if ret != QUESTION_TAG_EDIT_OK:
         return jsonify(errno='FAIL')
     
+    question_edit = Question_Edit(current_user.id, id, tags)
+    new_question_edit(question_edit)
+
     return jsonify(errno='SUCCESS')
 
 @mod.route('/new', methods=['GET','POST'])
