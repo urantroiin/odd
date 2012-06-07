@@ -6,14 +6,6 @@
         
         var tags = new Array();
 
-        function trim(str){
-            return str.replace(/(^\s*)|(\s*$)/g, "");
-        }
-
-        $.getJSON("{{ url_for('tag.all') }}", function(data){
-            $('.tag-search').typeahead({source:data.tags});
-        });
-
         function add_tag(tag){
             if(!tag || $.inArray(tag,tags) != -1) return;
             tags.push(tag);
@@ -22,11 +14,7 @@
                 +tag
                 +'</span><input name="tag" type="hidden" value="'
                 +tag
-                +'"></p>');
-        }
-
-        function del_tag(){
-        
+                +'"/></p>');
         }
 
         $('#add').click(function(e){
@@ -34,7 +22,7 @@
             add_tag(tag);
             return false;
         });
-
+        
         $('#selected-tags .tag').live('click',function(){
             $(this).parent('p').remove();
             var tag = $(this).text();
@@ -73,7 +61,7 @@
     <hr class="hr-small">
     
     <div class="clearfix">
-        <div id="selected-tags" class="span2">
+        <div id="selected-tags" class="span2" style="overflow:hidden">
             &nbsp
         </div>
         

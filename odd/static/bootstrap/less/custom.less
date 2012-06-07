@@ -46,6 +46,10 @@ img {
     color: #999;
 }
 
+.inline {
+    display: inline;
+}
+
 ul.inline {
     display: inline;
     li {
@@ -93,7 +97,7 @@ ul.inline {
 
 .tag {
     display: inline-block;
-    margin-top: 2px;
+    margin: 2px 2px 0px 0px;
     cursor: pointer;
     }
 
@@ -183,12 +187,7 @@ ul.inline {
     }
 }
 
-.tag-info {
-    .tag-tag {
-        font-size: 36px;
-        color: #666;
-        margin-bottom: 10px;
-    }
+.editable {
     .edit {
         display: none;
         padding-left: 18px;
@@ -197,6 +196,19 @@ ul.inline {
             background-color: #F89406;
         }
     }
+}
+
+.edit-form {
+    margin: 0px;    
+}
+
+.tag-info {
+    .tag-tag {
+        font-size: 36px;
+        color: #666;
+        margin-bottom: 10px;
+    }
+    
     #tag-photo-edit {
         position:absolute;
         bottom:0px;

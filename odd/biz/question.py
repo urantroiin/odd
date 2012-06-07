@@ -48,11 +48,6 @@ def get_question_by_tag(tag):
     tags = db_session.query(Question_Tag).filter_by(tag=tag).all()
     return [t.question for t in tags]
 
-def order_by_time(questions):
-    def time_key(q):
-        return q.create_time
-    return sorted(questions, key=time_key, reverse=True)
-
 def new_question(question, tags):
     new_tags([Tag(tag) for tag in tags])
 
@@ -61,18 +56,16 @@ def new_question(question, tags):
 
     return QUESTION_ADD_OK
 
-def answer_question(question):
+def edit_question(question, tags):
+    new_tags([Tag(tag) for tag in tags])
+
     db_session.add(question)
     db_session.commit()
-    return QUESTION_ADD_OK
 
-def new_question_tags(question_tags):
-    for qt in question_tags:
-        db_session.add(qt)
+    return QUESTION_EDIT_OK
+
+def edit_question_tags(qid, tags):
+    db_session.query(Question_Tag).filter_by(question_id=qid).delete()
+    db_session.add_all([Question_Tag(qid,tag) for tag in tags])
     db_session.commit()
-    return QUESTION_TAG_ADD_OK
-
-def get_question_tags():
-    tags = db_session.query(Question_Tag.tag).distinct().all()
-    tags_merged = [t[0] for t in tags]
-    return tags_merged
+    return QUESTION_TAG_EDIT_OK

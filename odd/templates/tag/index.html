@@ -13,7 +13,7 @@
 <section class="span6">
     <header><h5 class="border-medium">问题</h5></header>
     {% for q in questions %}
-        {{ normal_question(q) }}
+        {{ normal_question(q, current_user) }}
         <hr>
     {% endfor %}
 </section>

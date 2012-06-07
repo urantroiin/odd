@@ -1,2 +1,8 @@
-/home/odd/odd-python/local/lib/python2.7/site-packages/sqlalchemy/sql/expression.py:1921: SAWarning: The IN-predicate on "question_tags.tag" was invoked with an empty sequence. This results in a contradiction, which nonetheless can be expensive to evaluate.  Consider alternative strategies for improved performance.
-  return self._in_impl(operators.in_op, operators.notin_op, other)
+*error
+mysql has gone away
+
+*reason
+mysql automatically close idle connection in eight hours
+
+*solution
+sqlalchemy pool_recycle=3600

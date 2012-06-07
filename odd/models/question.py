@@ -20,9 +20,9 @@ class Question(Model):
     create_time = Column('create_time', TIMESTAMP, nullable=False)
     answer_count = Column('answer_count', INT, nullable=False)
     
-    user = relation("User")
-    tags = relation("Question_Tag", backref=backref('question'))
-    answers = relation("Answer", order_by='desc(Answer.up)', backref=backref('question'))
+    user = relation('User')
+    tags = relation('Question_Tag', backref=backref('question'), order_by='Question_Tag.id')
+    answers = relation('Answer', order_by='desc(Answer.up)', backref=backref('question'))
 
     def __init__(self, user_id, title, content, tags):
         self.user_id = user_id
@@ -47,4 +47,4 @@ class Question_Tag(Model):
         self.tag = tag
 
     def __repr__(self):
-        return '<Question_Tag %d %s>' % (self.question_id,self.tag)
+        return '<Question_Tag %d %d %s>' % (self.id, self.question_id,self.tag)

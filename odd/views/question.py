@@ -60,6 +60,26 @@ def latest():
             })
     return jsonify(errno='SUCCESS', questions=qs)
 
+def clean_tags(tags):
+    tags_clean = []
+    for t in tags:
+        t = t.strip()
+        if t and t not in tags_clean:
+            tags_clean.append(t)
+    return tags_clean
+
+
+@mod.route('/<int:id>/tag', methods=['POST'])
+@login_required
+def tag(id):
+    tags = request.form.getlist('tag')
+    tags = clean_tags(tags)
+
+    ret = edit_question_tags(id, tags)
+    if ret != QUESTION_TAG_EDIT_OK:
+        return jsonify(errno='FAIL')
+    
+    return jsonify(errno='SUCCESS')
 
 @mod.route('/new', methods=['GET','POST'])
 @login_required
@@ -73,14 +93,10 @@ def new():
     content = form.content.data
 
     tags = request.form.getlist('tag')
-    tags_clean = []
-    for t in tags:
-        t = t.strip()
-        if t and t not in tags_clean:
-            tags_clean.append(t)
+    tags = clean_tags(tags)
 
-    question = Question(current_user.id, title, content, tags_clean)
-    ret = new_question(question, tags_clean)
+    question = Question(current_user.id, title, content, tags)
+    ret = new_question(question, tags)
     if ret != QUESTION_ADD_OK:
         fail(ret)
         return render_template('question/new.html', form=form)

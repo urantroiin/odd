@@ -21,7 +21,7 @@
     {% from 'import/topic.html' import normal_question %}
     {% for q in latest_questions %}
         {% if not q.answer_count %}
-        {{ normal_question(q) }}
+        {{ normal_question(q, current_user) }}
         <hr>
         {% endif %}
     {% endfor %}
@@ -33,7 +33,7 @@
     {% from 'import/topic.html' import normal_question %}
     {% for q in latest_questions %}
         {% if q.answer_count %}
-        {{ normal_question(q) }}
+        {{ normal_question(q, current_user) }}
         <hr>
         {% endif %}
     {% endfor %}

@@ -1,118 +1,179 @@
-{% macro normal_question(q, content=False, focus=False) %}
+{% macro normal_question(q, current_user, content=False, focus=False) %}
 <section id="question-{{ q.id }}" class="question {{ 'focus' if focus }} thumbnail">
-        <header>
-            <a href="{{ url_for('question.index', id=q.id) }}"><h4>{{ q.title }}</h4></a>
-            <p>
-            来自：
-            {% for tag in q.tags %}
-                <a class="tag" href="{{ url_for('tag.index', tag=tag.tag) }}"><span class="label label-warning">{{ tag.tag }}</span></a>
-            {% endfor %}
-            </p>
-        </header>
-
-        {% if content %}
-            <blockquote>
-                <p>{{ q.content }}</p>
-                <small>
-                    <a href="{{ url_for('user.index', nickname=q.user.nickname) }}">
-                        <img src="{{ url_for('static', filename=q.user.photo(20)) }}" />
-                        {{ q.user.nickname }}
-                    </a>
-                </small>
-            </blockquote>
-        {% endif %}
-
-        <footer>
-        {% if focus %}
-        &nbsp
-        <span class="small pull-right">{{ q.create_time }}</span>
-        {% else %}
-        <span class="small">{{ q.create_time }}</span>
-        <a class="pull-right" href="{{ url_for('question.index', id=q.id) }}">
-            {{ q.answer_count }}个答案
+    <header>
+    <a href="{{ url_for('question.index', id=q.id) }}"><h4>{{ q.title }}</h4></a>
+    <p class="editable">
+    来自：
+    {% for tag in q.tags %}
+        <a class="tag" href="{{ url_for('tag.index', tag=tag.tag) }}">
+            <span class="label label-warning">{{ tag.tag }}</span>
         </a>
-        {% endif %}
-        </footer>
-    </section>
+    {% endfor %}
+
+    {% if focus %}
+        <a class="edit small" data-toggle="modal" href="#{{ q.id }}-tag-modal">修改</a>
+        <div id="{{ q.id }}-tag-modal" class="modal hide fade">
+            <form class="edit-form" action="{{ url_for('question.tag', id=q.id) }}" method="post">
+            <div class="modal-header">
+                <h3>问题标签</h3>
+            </div>
+            <div class="modal-body">
+                <div id="selected-tags" style="margin-bottom:10px">
+                    {% for tag in q.tags %}
+                        <p class="inline">
+                            <span class="tag label label-info">{{ tag.tag }}</span>
+                            <input name="tag" type="hidden" value="{{ tag.tag }}" />
+                        </p>
+                    {% endfor %}
+                </div>
+                <div class="input-append">
+                    <input class="tag-search" type="input" autocomplete="off"/>
+                    <button id="add" class="btn">+</button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input class="btn btn-primary" type="submit" value="修改" />
+                <a href="#" class="btn" data-dismiss="modal">取消</a>
+            </div>
+            </form>
+        </div>
+    {% endif %}
+
+    </p>
+
+    <script>
+        var tags = new Array();
+
+        function add_tag(tag){
+            if(!tag || $.inArray(tag,tags) != -1) return;
+            tags.push(tag);
+            $('#selected-tags').append(
+                '<p class="inline"><span class="tag label label-info">'
+                +tag
+                +'</span><input name="tag" type="hidden" value="'
+                +tag
+                +'"/></p>');
+        }
+
+        $('#add').click(function(e){
+            tag = trim($(this).siblings('.tag-search').val());
+            add_tag(tag);
+            return false;
+        });
+        
+        $('#selected-tags .tag').live('click',function(){
+            $(this).parent('p').remove();
+            var tag = $(this).text();
+            delete tags[$.inArray(tag, tags)];
+        });
+ 
+    </script>
+
+    </header>
+
+{% if content %}
+<blockquote>
+    <p>{{ q.content }}</p>
+    <small>
+        <a href="{{ url_for('user.index', nickname=q.user.nickname) }}">
+            <img src="{{ url_for('static', filename=q.user.photo(20)) }}" />
+            {{ q.user.nickname }}
+        </a>
+    </small>
+</blockquote>
+{% endif %}
+
+<footer>
+{% if focus %}
+&nbsp
+<span class="small pull-right">{{ q.create_time }}</span>
+{% else %}
+<span class="small">{{ q.create_time }}</span>
+<a class="pull-right" href="{{ url_for('question.index', id=q.id) }}">
+    {{ q.answer_count }}个答案
+</a>
+{% endif %}
+</footer>
+</section>
 {% endmacro %}
 
 {% macro normal_comment(a, current_user) %}
-    <section id="comments-{{ a.id }}" class="comments thumbnail">
-        {% for c in a.comments %}
-        <div id="comment-{{ c.id }}" class="comment clearfix">
-            <img class="pull-left" src="{{ url_for('static', filename=c.user.photo(20)) }}" />
-            <div class="pull-left">
-                <p>
-                <a class="nickname" href="{{ url_for('user.index', nickname=c.user.nickname) }}">{{ c.user.nickname }}</a>
-                ：{{ c.content }}
-                </p>
-                <p>
-                    <small>{{ c.create_time }}</small>
-                    <a class="reply" href="javascript:;">回复</a>
-                </p>
-            </div>
-        </div>
-        <hr>
-        {% endfor %}
-        
-        <div class="clearfix">
-            <img class="pull-left" src="{{ url_for('static', filename=current_user.photo(20)) }}" />
-            <form class="comment-form form-inline">
-                <input name="answer_id" type="hidden" value="{{ a.id }}">
-                <input name="comment_id" type="hidden" value="-1">
-                <input name="content" type="text">
-                <input class="btn btn-primary" type="submit" value="评论">
-                <a class="cancel btn" href="javascript:;">取消</a>
-            </form>
-        </div>
-    </section>
+<section id="comments-{{ a.id }}" class="comments thumbnail">
+{% for c in a.comments %}
+<div id="comment-{{ c.id }}" class="comment clearfix">
+    <img class="pull-left" src="{{ url_for('static', filename=c.user.photo(20)) }}" />
+    <div class="pull-left">
+        <p>
+        <a class="nickname" href="{{ url_for('user.index', nickname=c.user.nickname) }}">{{ c.user.nickname }}</a>
+        ：{{ c.content }}
+        </p>
+        <p>
+        <small>{{ c.create_time }}</small>
+        <a class="reply" href="javascript:;">回复</a>
+        </p>
+    </div>
+</div>
+<hr>
+{% endfor %}
+
+<div class="clearfix">
+    <img class="pull-left" src="{{ url_for('static', filename=current_user.photo(20)) }}" />
+    <form class="comment-form form-inline">
+        <input name="answer_id" type="hidden" value="{{ a.id }}">
+        <input name="comment_id" type="hidden" value="-1">
+        <input name="content" type="text">
+        <input class="btn btn-primary" type="submit" value="评论">
+        <a class="cancel btn" href="javascript:;">取消</a>
+    </form>
+</div>
+</section>
 {% endmacro %}
 
 {% macro normal_answer(a, current_user) %}
 <section id="answer-{{ a.id }}" class="answer thumbnail">
-        <div id="up-{{ a.id }}" class="up thumbnail">
-            <span>{{ a.up }}</span>
-            <button>顶</button>
-        </div>
-        <blockquote>
-            <p>{{ a.content }}</p>
-            <small>
-                <a href="{{ url_for('user.index', nickname=a.user.nickname) }}">
-                    <img src="{{ url_for('static', filename=a.user.photo(20)) }}" />
-                    {{ a.user.nickname }}
-                </a> 
-            </small>
-        </blockquote>
-        <footer>
-                <a href="javascript:;" data-toggle="collapse" data-target="#comments-collapse-{{ a.id }}">
-                    {{ a.comments|length }}条评论
-                </a>
-                <span class="pull-right small">{{ a.create_time }}</span>
-            <div id="comments-collapse-{{ a.id }}" class="collapse" style="margin-top:5px;height: 0px;">
-                {{ normal_comment(a, current_user) }}
-            </div>
-        </footer>
-    </section>
+<div id="up-{{ a.id }}" class="up thumbnail">
+    <span>{{ a.up }}</span>
+    <button>顶</button>
+</div>
+<blockquote>
+    <p>{{ a.content }}</p>
+    <small>
+        <a href="{{ url_for('user.index', nickname=a.user.nickname) }}">
+            <img src="{{ url_for('static', filename=a.user.photo(20)) }}" />
+            {{ a.user.nickname }}
+        </a> 
+    </small>
+</blockquote>
+<footer>
+<a href="javascript:;" data-toggle="collapse" data-target="#comments-collapse-{{ a.id }}">
+    {{ a.comments|length }}条评论
+</a>
+<span class="pull-right small">{{ a.create_time }}</span>
+<div id="comments-collapse-{{ a.id }}" class="collapse" style="margin-top:5px;height: 0px;">
+    {{ normal_comment(a, current_user) }}
+</div>
+</footer>
+</section>
 {% endmacro %}
 
 {% macro topic(q, current_user, answer_id, comment_id) %}
 <section class="topic">
-    {{ normal_question(q, True, True) }}
+{{ normal_question(q, current_user, True, True) }}
 
-    <hr>
-    
-    <p>{{ q.answer_count }}个答案</p>
-    <hr>
-    {% for a in q.answers %}
-        {{ normal_answer(a, current_user) }}
-        <hr>
-    {% endfor %}
-    
-    <form class="answer-form well" action="" method="post">
-        <input name="question_id" type="hidden" value="{{ q.id }}"/>
-        <textarea class="span6" name="content" rows="5"></textarea>
-        <input class="btn btn-primary" type="submit" value="回答"/>
-    </form>
+<hr>
+
+<p>{{ q.answer_count }}个答案</p>
+<hr>
+{% for a in q.answers %}
+{{ normal_answer(a, current_user) }}
+<hr>
+{% endfor %}
+
+<form class="answer-form well" action="" method="post">
+    <input name="question_id" type="hidden" value="{{ q.id }}"/>
+    <textarea class="span6" name="content" rows="5"></textarea>
+    <input class="btn btn-primary" type="submit" value="回答"/>
+</form>
 </section>
 
 <script>
@@ -187,26 +248,26 @@
                 data: $(this).serialize(),
                 error: fail,
                 success: success
-            })
-            return false
-        })
+                })
+                return false
+                })
 
-    })
+                })
 
-    function center(id){
-        $('body').animate({scrollTop: $(id).offset().top}, 1000);
-    }
+                function center(id){
+                    $('body').animate({scrollTop: $(id).offset().top}, 1000);
+                }
 
-    if({{ answer_id }} > 0){
-        if({{ comment_id }} > 0){
-            csid = "#comments-collapse-{{ answer_id }}" 
-            $(csid).collapse('show')
-            cid = "#comment-{{ comment_id }}";
-            center(cid)
-        }else{
-            aid = "#answer-{{ answer_id }}";
-            center(aid)
-        }
-    }
-</script>
-{% endmacro %}
+                if({{ answer_id }} > 0){
+                    if({{ comment_id }} > 0){
+                        csid = "#comments-collapse-{{ answer_id }}" 
+                        $(csid).collapse('show')
+                        cid = "#comment-{{ comment_id }}";
+                        center(cid)
+                        }else{
+                        aid = "#answer-{{ answer_id }}";
+                        center(aid)
+                    }
+                }
+            </script>
+            {% endmacro %}

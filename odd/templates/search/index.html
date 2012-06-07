@@ -15,7 +15,7 @@
 <section class="span12">
 {% for q in questions %}
     <hr>
-    {{ normal_question(q) }}
+    {{ normal_question(q, current_user) }}
 {% endfor %}
 </section>
 

@@ -22,10 +22,6 @@
 <li>
     <script>
        $(function(){
-            $.getJSON("{{ url_for('tag.all') }}", function(data){
-                $('.navbar-search .tag-search').typeahead({source:data.tags});
-            });
-
             $('.navbar-search').submit(function(){
                 tag = $('input[name=tag]', this).val();
                 if(tag) return true;

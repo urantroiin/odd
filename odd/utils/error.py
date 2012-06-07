@@ -12,8 +12,10 @@ USER_REGISTER_OK = u'注册成功'
 USER_LOGOUT_OK = u'注销成功'
 
 QUESTION_ADD_OK = u'问题发布成功'
+QUESTION_EDIT_OK = u'问题修改成功'
 
-QUESTION_TAG_ADD_OK = u'tag添加成功'
+QUESTION_TAG_ADD_OK = u'问题标签添加成功'
+QUESTION_TAG_EDIT_OK = u'问题标签修改成功'
 
 TAG_FOLLOW_ADD_OK = u'关注成功'
 TAG_FOLLOW_DUPLICATE = u'已经关注'

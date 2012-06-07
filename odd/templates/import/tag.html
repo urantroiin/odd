@@ -23,15 +23,6 @@
             })
         });
 
-        $('.editable').hover(function(){
-            $('.edit', this).fadeIn('fast');
-            },function(){
-            $('.edit', this).fadeOut('fast');
-        });
-
-        $('.tag-edit-form').ajaxForm({
-            complete: success
-        });
     })
 </script>
 
@@ -52,7 +43,7 @@
     <div class="modal-header">
         <h3>标签头像</h3>
     </div>
-    <form class="tag-edit-form" action="{{ url_for('tag.photo', id=tag.id) }}" method="post" enctype='multipart/form-data'>
+    <form class="edit-form" action="{{ url_for('tag.photo', id=tag.id) }}" method="post" enctype='multipart/form-data'>
     <div class="modal-body">
             <input name="tag_photo" type="file" />
     </div>
@@ -67,7 +58,7 @@
     <div class="modal-header">
         <h3>标签描述</h3>
     </div>
-    <form class="tag-edit-form" action="{{ url_for('tag.desc', id=tag.id) }}" method="post" enctype='multipart/form-data'>
+    <form class="edit-form" action="{{ url_for('tag.desc', id=tag.id) }}" method="post" enctype='multipart/form-data'>
     <div class="modal-body">
         <textarea name="desc">{{ tag.description }}</textarea>
     </div>

@@ -25,21 +25,21 @@
 <div class="tab-content">
     <div class="tab-pane active" id="followed">
         {% for q in followed %}
-            {{ normal_question(q) }}
+            {{ normal_question(q, current_user) }}
         <hr>
         {% endfor %}
     </div>
     
     <div class="tab-pane" id="my">
         {% for q in my %}
-            {{ normal_question(q) }}
+            {{ normal_question(q, current_user) }}
         <hr>
         {% endfor %}
     </div>
     <div class="tab-pane" id="latest">
         {% for q in latest %}
             {% if q.user_id != current_user.id %}
-            {{ normal_question(q) }}
+            {{ normal_question(q, current_user) }}
             <hr>
             {% endif %}
         {% endfor %}
