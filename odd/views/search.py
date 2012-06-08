@@ -20,3 +20,7 @@ def index():
     tag_obj = get_tag_by_tag(tag[0])
     questions = get_question_by_tag(tag[0])
     return render_template('search/index.html', tag=tag_obj, questions=questions)
+
+@mod.route('/tip')
+def tip():
+    pass
