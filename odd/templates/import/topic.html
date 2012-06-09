@@ -1,74 +1,73 @@
 {% macro normal_question(q, current_user, content=False, focus=False) %}
 <section id="question-{{ q.id }}" class="question {{ 'focus' if focus }} thumbnail">
-    <header>
+<header>
     <a href="{{ url_for('question.index', id=q.id) }}"><h4>{{ q.title }}</h4></a>
-    <p class="editable">
-    来自：
-    {% for tag in q.tags %}
+    <div class="editable">
+        <p class="tag-list">
+        来自：
+        {% for tag in q.tags %}
         <a class="tag" href="{{ url_for('tag.index', tag=tag.tag) }}">
             <span class="label label-warning">{{ tag.tag }}</span>
         </a>
-    {% endfor %}
-
-    {% if focus %}
-        <a class="edit small" data-toggle="modal" href="#{{ q.id }}-tag-modal">修改</a>
-        <div id="{{ q.id }}-tag-modal" class="modal hide fade">
-            <form class="edit-form" action="{{ url_for('question.tag', id=q.id) }}" method="post">
-            <div class="modal-header">
-                <h3>问题标签</h3>
-            </div>
-            <div class="modal-body">
-                <div id="selected-tags" style="margin-bottom:10px">
-                    {% for tag in q.tags %}
-                        <p class="inline">
-                            <span class="tag label label-info">{{ tag.tag }}</span>
-                            <input name="tag" type="hidden" value="{{ tag.tag }}" />
-                        </p>
-                    {% endfor %}
-                </div>
-                <div class="input-append">
-                    <input class="tag-search" type="input" autocomplete="off"/>
-                    <button id="add" class="btn">+</button>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <input class="btn btn-primary" type="submit" value="修改" />
-                <a href="#" class="btn" data-dismiss="modal">取消</a>
-            </div>
-            </form>
-        </div>
-    {% endif %}
-
-    </p>
-
-    <script>
-        var tags = new Array();
-
-        function add_tag(tag){
-            if(!tag || $.inArray(tag,tags) != -1) return;
-            tags.push(tag);
-            $('#selected-tags').append(
-                '<p class="inline"><span class="tag label label-info">'
-                +tag
-                +'</span><input name="tag" type="hidden" value="'
-                +tag
-                +'"/></p>');
-        }
-
-        $('#add').click(function(e){
-            tag = trim($(this).siblings('.tag-search').val());
-            add_tag(tag);
-            return false;
-        });
+        {% endfor %}
         
-        $('#selected-tags .tag').live('click',function(){
-            $(this).parent('p').remove();
-            var tag = $(this).text();
-            delete tags[$.inArray(tag, tags)];
-        });
- 
-    </script>
+        {% if focus %}
+        <a href="javascript:;" class="edit small">修改</a>
+        {% endif %}
+        </p>
 
+        {% if focus %}
+        <form class="edit-form" action="{{ url_for('question.tags', id=q.id) }}" method="post" style="margin:5px 0px 10px 0px">
+            <input id="{{ q.id }}-tag-edit" name="tags" type="text" />
+        </form>
+        <script>
+        $(function(){
+            var t = null;
+
+            $('.editable .edit').click(function(){
+                var tag_list = $(this).parents('.tag-list');
+                tag_list.hide('fast');
+                tag_list.siblings('.edit-form').show('fast');
+                tag_spans = $(this).siblings('.tag').children('span');
+                tags = new Array();
+                $.each(tag_spans, function(i,span){
+                    tags.push(span.innerHTML);
+                });
+                tagbox_init('#{{ q.id }}-tag-edit', tags);
+            });
+
+            function tagbox_init(input_id, tags) {
+                if(t) return;
+                    
+                t = new $.TextboxList(input_id, {unique: true, plugins: {autocomplete: {}}});
+
+                $.each(tags, function(i,tag){
+                    t.add(tag);
+                });
+               
+                t.addEvent('empty', function(bitBox){
+                    $(input_id).parent('form').ajaxSubmit({
+                        success: success
+                    });
+                });
+
+                $('input',t.getContainer()).focus();
+
+                t.getContainer().addClass('textboxlist-loading');  
+                $.getJSON("{{ url_for('tag.obj') }}", function(data){
+                    var tags = new Array()
+                    $.each(data.tags,function(i,t){
+                        tags.push(new Array(t.tag, t.tag, null, '<img src="/static/'+t.photo+'" />'+t.tag));
+                    });
+    
+                    t.plugins['autocomplete'].setValues(tags);
+                    t.getContainer().removeClass('textboxlist-loading');
+                }); 
+            }
+
+        })
+        </script>
+        {% endif %}
     </header>
 
 {% if content %}

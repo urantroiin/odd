@@ -21,7 +21,25 @@
 {% macro search() %}
 <li>
     <script>
+
        $(function(){
+            var t = new $.TextboxList('#all-search', {unique: true, plugins: {autocomplete: {}}});
+            t.addEvent('bitBoxAdd', function(bit){
+                v = bit.getValue()[0];
+                window.location.href = '/search?tag='+v;
+            })
+            
+            t.getContainer().addClass('textboxlist-loading');  
+            $.getJSON("{{ url_for('tag.obj') }}", function(data){
+                tips = new Array()
+                $.each(data.tags,function(i,t){
+                    tips.push(new Array(t.tag, t.tag, null, '<img src="/static/'+t.photo+'" />'+t.tag));
+                });
+                
+                t.plugins['autocomplete'].setValues(tips);
+                t.getContainer().removeClass('textboxlist-loading');
+            });
+
             $('.navbar-search').submit(function(){
                 tag = $('input[name=tag]', this).val();
                 if(tag) return true;
@@ -31,7 +49,7 @@
 
     </script>
     <form class="navbar-search" action="{{ url_for('search.index') }}" method="get">
-        <input class="tag-search search-query span2" name="tag" type="text" placeholder="搜索:标签" autocomplete="off">
+        <input id="all-search" name="tag" type="text" placeholder="搜索:标签" autocomplete="off">
     </form>
 </li>
 {% endmacro %}

@@ -69,11 +69,15 @@ def clean_tags(tags):
     return tags_clean
 
 
-@mod.route('/<int:id>/tag', methods=['POST'])
+@mod.route('/<int:id>/tags', methods=['POST'])
 @login_required
-def tag(id):
-    tags = request.form.getlist('tag')
-    tags = clean_tags(tags)
+def tags(id):
+    tags = request.form.getlist('tags')
+    print tags
+    if not tags:
+        return jsonify(errno='FAIL')
+
+    tags = clean_tags(tags[0].split(','))
 
     ret = edit_question_tags(id, tags)
     if ret != QUESTION_TAG_EDIT_OK:
@@ -94,9 +98,7 @@ def new():
 
     title = form.title.data
     content = form.content.data
-
-    tags = request.form.getlist('tag')
-    tags = clean_tags(tags)
+    tags = clean_tags(form.tags.data.split(','))
 
     question = Question(current_user.id, title, content, tags)
     ret = new_question(question, tags)
@@ -109,4 +111,4 @@ def new():
 class NewQueForm(Form):
     title = TextField(u'标题*', validators=[Required()])
     content = TextAreaField(u'内容*', validators=[Required()])
-    tags = TextField(u'标签*')
+    tags = TextField(u'标签*', validators=[Required()])

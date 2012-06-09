@@ -47,6 +47,11 @@ def load_user(user_id):
 def not_found(error):
     return render_template('404.html'), 404
 
+@app.errorhandler(413)
+def too_large(error):
+    return render_template('413.html'), 413
+
+
 if not app.debug:
     import logging
     ft = logging.Formatter(app.config['ERROR_LOG_FORMAT'])

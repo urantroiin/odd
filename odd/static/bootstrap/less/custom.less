@@ -50,6 +50,10 @@ img {
     display: inline;
 }
 
+.inline-block {
+    display: inline-block;
+}
+
 ul.inline {
     display: inline;
     li {
@@ -200,6 +204,11 @@ ul.inline {
 
 .edit-form {
     margin: 0px;    
+    display: none;
+}
+
+.plain-form {
+    margin: 0px;    
 }
 
 .tag-info {
@@ -236,4 +245,50 @@ ul.inline {
 
 .simple-p {
     margin-bottom: 0px;    
+}
+
+.modal {
+    overflow: visible;    
+}
+
+.textboxlist {
+    width: 500px;
+    display: inline-block;
+
+    .textboxlist-bits {
+        background-color: white;
+        border: 1px solid #CCC;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+    
+        .textboxlist-bit-editable-input {
+            background: transparent;
+            margin: 0px;
+            -webkit-box-shadow: none;
+            box-shadow: none;
+            border: none;
+            &:focus {
+                border: none;
+                box-shadow: none;
+                -webkit-box-shadow: none;
+            }
+        }
+    }
+
+    .textboxlist-autocomplete-result {
+        overflow: hidden;
+        img{
+            margin-right: 10px;
+        }
+    }
+}
+
+.navbar-search .textboxlist {
+    width: 200px;
+    height: 29px;
+}
+
+.tag-editor {
+    display: none;    
 }

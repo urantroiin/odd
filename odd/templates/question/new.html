@@ -1,39 +1,6 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-<script>
-    $(function(){
-        
-        var tags = new Array();
-
-        function add_tag(tag){
-            if(!tag || $.inArray(tag,tags) != -1) return;
-            tags.push(tag);
-            $('#selected-tags').append(
-                '<p><span class="tag label label-info">'
-                +tag
-                +'</span><input name="tag" type="hidden" value="'
-                +tag
-                +'"/></p>');
-        }
-
-        $('#add').click(function(e){
-            tag = trim($(this).siblings('.tag-search').val());
-            add_tag(tag);
-            return false;
-        });
-        
-        $('#selected-tags .tag').live('click',function(){
-            $(this).parent('p').remove();
-            var tag = $(this).text();
-            delete tags[$.inArray(tag, tags)];
-        });
-        
-        $('#common-tags .tag').click(function(){
-            add_tag($(this).text());
-        });
-    })
-</script>
 
 <form class="well span8 offset2" action="{{ url_for('question.new') }}" method='post'>
     {% from 'import/tools.html' import flashed_msg,error %}
@@ -53,36 +20,26 @@
     {{ error(form.errors['content']) }}
     <span class="help-block">问题的详细内容</span>
 
-    <div class="clearfix">
-        {{ form.tags.label(class="pull-left") }}
-        {{ error(form.errors['tags'], class="pull-right") }}
-    </div>
-    
-    <hr class="hr-small">
-    
-    
+    {{ form.tags.label }}
+    {{ form.tags(id='tag-search') }}
+    {{ error(form.errors['tags']) }}
 
-    {#
-    <div class="clearfix">
-        <div id="selected-tags" class="span2" style="overflow:hidden">
-            &nbsp
-        </div>
-        
-        <div class="span5">
-            <div class="input-append">
-                <input class="tag-search" type="text" autocomplete="off" placeholder="搜索标签"/>
-                <button id="add" class="btn">+</button>
-            </div>
-        
-            <div id="common-tags">
-                <h5>常用标签</h5>
-                {% for tf in current_user.tag_follows %}
-                    <span class="tag label label-info">{{ tf.tag }}</span>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-    #}
+    <script>
+        $(function(){
+            var t = new $.TextboxList('#tag-search', {unique: true, plugins: {autocomplete: {}}});
+            t.getContainer().addClass('textboxlist-loading');  
+            $.getJSON("{{ url_for('tag.obj') }}", function(data){
+                tips = new Array()
+                $.each(data.tags,function(i,t){
+                    tips.push(new Array(t.tag, t.tag, null, '<img src="/static/'+t.photo+'" />'+t.tag));
+                });
+                
+                t.plugins['autocomplete'].setValues(tips);
+                t.getContainer().removeClass('textboxlist-loading');
+            }); 
+        })
+    </script>
+    
     <hr>
     <input class="btn btn-primary" type="submit" value="发布"/>
 </form>

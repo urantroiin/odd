@@ -17,44 +17,30 @@ def index():
     return ''
 
 
-@mod.route('/follow', methods=['POST'])
+@mod.route('/tag/follow', methods=['POST'])
 @login_required
-def follow():
-    form = request.form
-    type = form.getlist('type')
-    if not type:
+def tag_follow():
+    tag = request.form.getlist('tag')
+    if not tag:
         return jsonify(errno='FAIL')
     
-    type = type[0]
-    if type == 'tag':
-        tag = form.getlist('tag')
-        if not tag:
-            return jsonify(errno='FAIL')
-        
-        tag_follow = Tag_Follow(current_user.id, tag[0])
-        ret = new_tag_follow(tag_follow)
-        if ret != TAG_FOLLOW_ADD_OK:
-            return jsonify(errno='FAIL')
+    tag_follow = Tag_Follow(current_user.id, tag[0])
+    ret = new_tag_follow(tag_follow)
+    if ret != TAG_FOLLOW_ADD_OK:
+        return jsonify(errno='FAIL')
 
     return jsonify(errno='SUCCESS')
 
-@mod.route('/unfollow', methods=['POST'])
+@mod.route('/tag/unfollow', methods=['POST'])
 @login_required
-def unfollow():
-    form = request.form
-    type = form.getlist('type')
-    if not type:
+def tag_unfollow():
+    tag = request.form.getlist('tag')
+    if not tag:
         return jsonify(errno='FAIL')
     
-    type = type[0]
-    if type == 'tag':
-        tag = form.getlist('tag')
-        if not tag:
-            return jsonify(errno='FAIL')
-        
-        tag_follow = Tag_Follow(current_user.id, tag[0])
-        ret = del_tag_follow(tag_follow)
-        if ret != TAG_FOLLOW_DEL_OK:
-            return jsonify(errno='FAIL')
+    tag_follow = Tag_Follow(current_user.id, tag[0])
+    ret = del_tag_follow(tag_follow)
+    if ret != TAG_FOLLOW_DEL_OK:
+        return jsonify(errno='FAIL')
 
     return jsonify(errno='SUCCESS')

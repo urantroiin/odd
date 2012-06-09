@@ -1,81 +1,76 @@
 {% macro tag_info(tag, has_followed) %}
-<script>
-    $(function(){
-        $('.follow').click(function(){
-            tag = $(this).parents('.tag-info').find('.tag-tag').text()
-            $.ajax({
-                url:"{{ url_for('follow.follow') }}",
-                type: 'POST',
-                data: {'type':'tag', 'tag':tag},
-                error: fail,
-                success: success
-            })
-        });
-
-        $('.unfollow').click(function(){
-            tag = $(this).parents('.tag-info').find('.tag-tag').text()
-            $.ajax({
-                url:"{{ url_for('follow.unfollow') }}",
-                type: 'POST',
-                data: {'type':'tag', 'tag':tag},
-                error: fail,
-                success: success
-            })
-        });
-
-    })
-</script>
-
 <section class="tag-info span12">
-<div class="editable span1 offset0" style="position:relative">
-    <img class="pull-left" src="{{ url_for('static', filename=tag.tag_photo(90)) }}" />
-    <a id="tag-photo-edit" class="edit small" data-toggle="modal" href="#tag-photo-modal">修改</a>
+
+<div class="editable span1 offset0" style="position:relative;overflow:display">
+    <div class="edited">
+        <img class="pull-left" src="{{ url_for('static', filename=tag.tag_photo(90)) }}" />
+        <a id="tag-photo-edit" class="edit small" data-toggle="modal" href="#tag-photo-modal">修改</a>
+    </div>
+    <form class="edit-form" action="{{ url_for('tag.photo', id=tag.id) }}" method="post" style="width:200px;background:white;">
+        <input name="tag_photo" type="file" />
+        <input type="submit" value="修改" />
+        <a class="edit-cancel small" href="javascript:;">取消</a>
+    </form>
 </div>
+
 <blockquote class="simple-quote span9">
     <h2 class="tag-tag">{{ tag.tag }}</h2>
-    <small class="editable">
-        <span>{{ tag.description }}</span>
-        <a class="edit small" data-toggle="modal" href="#tag-desc-modal">修改</a>
-    </small>
+    <div class="editable">
+        <small class="edited">
+            &nbsp
+            <span class="edited-item">{{ tag.description }}</span>
+            <a class="edit small" href="javascript:;">修改</a>
+        </small>
+        <form class="edit-form" action="{{ url_for('tag.desc', id=tag.id) }}" method="post">
+            <textarea class="edit-item" name="desc"></textarea>
+            <input type="submit" value="修改" />
+            <a class="edit-cancel small" href="javascript:;">取消</a>
+        </form>
+    </div>
 </blockquote>
 
-<div id="tag-photo-modal" class="modal hide fade">
-    <div class="modal-header">
-        <h3>标签头像</h3>
-    </div>
-    <form class="edit-form" action="{{ url_for('tag.photo', id=tag.id) }}" method="post" enctype='multipart/form-data'>
-    <div class="modal-body">
-            <input name="tag_photo" type="file" />
-    </div>
-    <div class="modal-footer">
-        <input class="btn btn-primary" type="submit" value="修改" />
-        <a href="#" class="btn" data-dismiss="modal">取消</a>
-    </div>
-    </form>
-</div>
-
-<div id="tag-desc-modal" class="modal hide fade">
-    <div class="modal-header">
-        <h3>标签描述</h3>
-    </div>
-    <form class="edit-form" action="{{ url_for('tag.desc', id=tag.id) }}" method="post" enctype='multipart/form-data'>
-    <div class="modal-body">
-        <textarea name="desc">{{ tag.description }}</textarea>
-    </div>
-    <div class="modal-footer">
-        <input class="btn btn-primary" type="submit" value="修改" />
-        <a href="#" class="btn" data-dismiss="modal">取消</a>
-    </div>
-    </form>
-</div>
-
-
-
 {% if has_followed %}
-<a class="unfollow btn btn-danger pull-right">取消关注</a>
+<form class="ajax-form plain-form span2 pull-right" action="{{ url_for('follow.tag_unfollow') }}" method="post">
+    <input name="tag" type="hidden" value="{{ tag.tag }}" />
+    <input class="span2 btn btn-danger" type="submit" value="取消关注" />
+<form>
 {% else %}
-<a class="follow btn btn-info pull-right">关注</a>
+<form class="ajax-form plain-form span2 pull-right" action="{{ url_for('follow.tag_follow') }}" method="post">
+    <input name="tag" type="hidden" value="{{ tag.tag }}" />
+    <input class="span2 btn btn-info" type="submit" value="关注" />
+<form>
 {% endif %}
+<script>
+    $(function(){
+
+        $('.editable .edit').click(function(){
+            var edited = $(this).parents('.edited');
+            var edit_form = edited.siblings('.edit-form')
+            var edited_item = $(this).siblings('.edited-item');
+            var edit_item = edit_form.find('.edit-item');
+            var edit_cancel = edit_form.find('.edit-cancel');
+
+            edited.hide('fast');
+            edit_form.show('fast');
+            edit_item.val(edited_item.text())
+            edit_cancel.click(function(){
+                edit_form.hide('fast');
+                edited.show('fast');
+            })
+        });
+
+        $('.ajax-form').ajaxForm({
+            'complete': success
+        });
+
+        $('.edit-form').ajaxForm({
+            'complete': success
+        });
+
+    });
+</script>
+
+
 </section>
 
 {% endmacro %}

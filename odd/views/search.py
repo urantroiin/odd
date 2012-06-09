@@ -23,4 +23,18 @@ def index():
 
 @mod.route('/tip')
 def tip():
-    pass
+    tags = get_all_tags()
+    ts = [t.tag for t in tags]
+    return jsonify(errno='SUCCESS', tags=ts)
+
+@mod.route('/tag')
+def tag():
+    tags = get_all_tags()
+    ts = []
+    for t in tags:
+        ts.append({
+            'id': t.id,
+            'tag': t.tag,
+            'photo': t.tag_photo(20)
+            })
+    return jsonify(errno='SUCCESS', tags=ts)

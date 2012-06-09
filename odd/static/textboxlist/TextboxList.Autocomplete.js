@@ -14,12 +14,11 @@ Script: TextboxList.Autocomplete.js
 	
 $.TextboxList.Autocomplete = function(textboxlist, _options){
 	
-  var index, prefix, method, container, list, values = [], searchValues = [], results = [], placeholder = false, current, currentInput, suggestInput, hidetimer, doAdd, currentSearch, currentRequest;
+  var index, prefix, method, container, list, values = [], searchValues = [], results = [], placeholder = false, current, currentInput, hidetimer, doAdd, currentSearch, currentRequest;
 	var options = $.extend(true, {
 		minLength: 1,
 		maxResults: 10,
 		insensitive: true,
-		inlineSuggest: true,
 		highlight: true,
 		highlightSelector: null,
 		mouseInteraction: true,
@@ -50,20 +49,15 @@ $.TextboxList.Autocomplete = function(textboxlist, _options){
 		});
 	};
 	
-	var self = this;
 	var setupBit = function(bit){
-		bit.getInput().keydown(navigate).keyup(function(){ search(); });
-		if(options.inlineSuggest) {
-		  suggestInput = new $.SuggestInput(bit, textboxlist, self);
-		}
+		bit.toElement().keydown(navigate).keyup(function(){ search(); });
 	};
 	
 	var search = function(bit){
 		if (bit) currentInput = bit;
 		if (!options.queryRemote && !values.length) return;
 		var search = $.trim(currentInput.getValue()[1]);
-		search.length == 0 ? showPlaceholder() : hidePlaceholder();
-    if (search.length < options.minLength) current = null;
+		if (search.length < options.minLength) showPlaceholder();
 		if (search == currentSearch) return;
 		currentSearch = search;
 		list.css('display', 'none');
@@ -96,15 +90,11 @@ $.TextboxList.Autocomplete = function(textboxlist, _options){
 			results = $.grep(results, function(v){ return textboxlist.isDuplicate(v) == -1; });		
 		}
 		hidePlaceholder();
-		if (!results.length) {
-		  if (options.inlineSuggest) suggestInput.clearSuggest();
-		  current = null; return;
-		}
+		if (!results.length) return;
 		blur();
-		list.empty().show();
+		list.empty().css('display', 'block');
 		$.each(results, function(i, r){ addResult(r, search); });
 		if (options.onlyFromValues) focusFirst();
-		if (options.inlineSuggest) suggestInput.suggest(results[0][1]);
 		results = results;
 	};
 	
@@ -116,7 +106,6 @@ $.TextboxList.Autocomplete = function(textboxlist, _options){
 		});
 		if (options.mouseInteraction){
 			element.css('cursor', 'pointer').hover(function(){ focus(element); }).mousedown(function(ev){
-			  if(ev.which != 1) return;
 				ev.stopPropagation(); 
 				ev.preventDefault();
 				clearTimeout(hidetimer);
@@ -136,7 +125,7 @@ $.TextboxList.Autocomplete = function(textboxlist, _options){
 	var hide = function(){
 		hidetimer = setTimeout(function(){
 			hidePlaceholder();
-			list.hide();
+			list.css('display', 'none');
 			currentSearch = null;			
 		}, $.browser.msie ? 150 : 0);
 	};
@@ -187,18 +176,15 @@ $.TextboxList.Autocomplete = function(textboxlist, _options){
 	var navigate = function(ev){
 		var evStop = function(){ ev.stopPropagation(); ev.preventDefault(); };
 		switch (ev.which){
-			case 38: //up
+			case 38:			
 				evStop();
 				(!options.onlyFromValues && current && current.get(0) === list.find(':first').get(0)) ? blur() : focusRelative('prev');
 				break;
-			case 40: //down
+			case 40:			
 				evStop();
 				(current && current.length) ? focusRelative('next') : focusFirst();
 				break;
-			case 39: //right
-			  if ((!current || current.length == 0) || (currentInput.getCaret() < currentInput.getValue()[1].length))
-			    break;
-			case 9: //tab
+			case 13:
 				evStop();
 				if (current && current.length) addCurrent();
 				else if (!options.onlyFromValues){
@@ -209,23 +195,11 @@ $.TextboxList.Autocomplete = function(textboxlist, _options){
 						currentInput.setValue([null, '', null]);
 					}
 				}
-			  break;
-			case 13: //enter
-			  if (current && current.length) {
-			    evStop();
-			    addCurrent();
-			  }
-			  else if(options.stopEnter)
-			    evStop();
 		}
 	};
 	
 	this.setValues = function(v){
 		values = v;
-	};
-	
-	this.getOptions = function(){
-		return options;
 	};
 	
 	init();
