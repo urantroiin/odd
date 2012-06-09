@@ -73,7 +73,6 @@ def clean_tags(tags):
 @login_required
 def tags(id):
     tags = request.form.getlist('tags')
-    print tags
     if not tags:
         return jsonify(errno='FAIL')
 
