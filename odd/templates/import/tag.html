@@ -6,8 +6,9 @@
         <img class="pull-left" src="{{ url_for('static', filename=tag.tag_photo(90)) }}" />
         <a id="tag-photo-edit" class="edit small" data-toggle="modal" href="#tag-photo-modal">修改</a>
     </div>
-    <form class="edit-form" action="{{ url_for('tag.photo', id=tag.id) }}" method="post" style="width:200px;background:white;">
+    <form class="edit-form span2" action="{{ url_for('tag.photo', id=tag.id) }}" method="post" style="border-radius:10px;background:white;padding:5px;">
         <input name="tag_photo" type="file" />
+        <label></label>
         <input type="submit" value="修改" />
         <a class="edit-cancel small" href="javascript:;">取消</a>
     </form>
