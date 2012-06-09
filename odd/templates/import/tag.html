@@ -2,16 +2,18 @@
 <section class="tag-info span12">
 
 <div class="editable span1 offset0" style="position:relative;overflow:display">
-    <div class="edited">
+    <div>
         <img class="pull-left" src="{{ url_for('static', filename=tag.tag_photo(90)) }}" />
         <a id="tag-photo-edit" class="edit small" data-toggle="modal" href="#tag-photo-modal">修改</a>
     </div>
-    <form class="edit-form span2" action="{{ url_for('tag.photo', id=tag.id) }}" method="post" style="border-radius:10px;background:white;padding:5px;">
+    {#
+    <form class="edit-form span2" action="{{ url_for('tag.photo', id=tag.id) }}" method="post" style="border-radius:10px;background:whiteSmoke;padding:5px;">
         <input name="tag_photo" type="file" />
         <label></label>
         <input type="submit" value="修改" />
         <a class="edit-cancel small" href="javascript:;">取消</a>
     </form>
+    #}
 </div>
 
 <blockquote class="simple-quote span9">
@@ -29,6 +31,22 @@
         </form>
     </div>
 </blockquote>
+
+<div class="modal hide fade" id="tag-photo-modal">
+    <form class="ajax-form plain-form" action="{{ url_for('tag.photo', id=tag.id) }}" method="post" enctype="multipart/form-data">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">×</button>
+        <h3>标签头像</h3>
+    </div>
+    <div class="modal-body">
+        <input name="tag_photo" type="file"/>
+    </div>
+    <div class="modal-footer">
+        <input class="btn btn-primary" type="submit" value="修改" />
+        <a href="#" class="btn" data-dismiss="modal">取消</a>
+    </div>
+    </form>
+</div>
 
 {% if has_followed %}
 <form class="ajax-form plain-form span2 pull-right" action="{{ url_for('follow.tag_unfollow') }}" method="post">

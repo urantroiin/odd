@@ -23,7 +23,7 @@
     <script>
 
        $(function(){
-            var t = new $.TextboxList('#all-search', {unique: true, plugins: {autocomplete: {}}});
+            var t = new $.TextboxList('#all-search', {unique: true, plugins: {autocomplete: {placeholder:'搜索:标签'}}});
             t.addEvent('bitBoxAdd', function(bit){
                 v = bit.getValue()[0];
                 window.location.href = '/search?tag='+v;

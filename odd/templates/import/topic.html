@@ -39,7 +39,7 @@
             function tagbox_init(input_id, tags) {
                 if(t) return;
                     
-                t = new $.TextboxList(input_id, {unique: true, plugins: {autocomplete: {}}});
+                t = new $.TextboxList(input_id, {unique: true, plugins: {autocomplete: {placeholder:'搜索:标签'}}});
 
                 $.each(tags, function(i,tag){
                     t.add(tag);
