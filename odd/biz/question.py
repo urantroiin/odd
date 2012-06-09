@@ -44,6 +44,10 @@ def get_question_by_uid(uid):
     questions = db_session.query(Question).filter_by(user_id=uid).order_by(Question.create_time.desc()).all()
     return questions
 
+def get_question_titles(count):
+    questions = db_session.query(Question.id, Question.title).order_by(Question.id.desc()).limit(count).all()
+    return questions
+
 def get_question_by_tag(tag):
     tags = db_session.query(Question_Tag).filter_by(tag=tag).all()
     return [t.question for t in tags]

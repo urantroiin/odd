@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from flask import Blueprint, url_for, redirect, render_template, abort, request
+from flask import Blueprint, url_for, redirect, render_template, abort, request, jsonify
 from flask.ext.login import login_required, current_user
 
 from odd.utils.error import *
@@ -21,14 +21,8 @@ def index():
     questions = get_question_by_tag(tag[0])
     return render_template('search/index.html', tag=tag_obj, questions=questions)
 
-@mod.route('/tip')
-def tip():
-    tags = get_all_tags()
-    ts = [t.tag for t in tags]
-    return jsonify(errno='SUCCESS', tags=ts)
-
-@mod.route('/tag')
-def tag():
+@mod.route('/tips')
+def tips():
     tags = get_all_tags()
     ts = []
     for t in tags:
@@ -37,4 +31,13 @@ def tag():
             'tag': t.tag,
             'photo': t.tag_photo(20)
             })
-    return jsonify(errno='SUCCESS', tags=ts)
+
+    questions = get_question_titles(100)
+    qs = []
+    for q in questions:
+        qs.append({
+            'id': q.id,
+            'title': q.title,
+            })
+
+    return jsonify(errno='SUCCESS', tags=ts, questions=qs)

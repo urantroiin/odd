@@ -11,7 +11,7 @@ Purchase to remove copyright
 .textboxlist-autocomplete-placeholder, .textboxlist-autocomplete-results { 
     opacity: 0.9; 
     filter: alpha(opacity=90); 
-    background: #eee; 
+    background: white; 
     -webkit-box-shadow: 0 3px 3px #ccc; 
     -moz-box-shadow: 0 3px 3px #ccc; 
     box-shadow: 0 3px 3px #ccc; 
@@ -33,15 +33,16 @@ Purchase to remove copyright
     margin: 0; 
     padding: 5px; 
     list-style-type: none; 
-    background: #eee; 
+    background: white; 
+    color: #333;
 }
 
 .textboxlist-autocomplete-result-focus { 
-    background: #C6D9E4; 
+    background: #08c; 
 }
 
 .textboxlist-autocomplete-highlight { 
-    background: #EEF0C4; 
+    background: white; 
     font-weight: bold; 
 }
 

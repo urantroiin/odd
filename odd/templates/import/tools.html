@@ -23,19 +23,35 @@
     <script>
 
        $(function(){
-            var t = new $.TextboxList('#all-search', {unique: true, plugins: {autocomplete: {placeholder:'搜索:标签'}}});
+            var t = new $.TextboxList('#all-search', {unique: true, plugins: {autocomplete: {method:'custom',placeholder:'搜索:标签'}}});
             t.addEvent('bitBoxAdd', function(bit){
                 v = bit.getValue()[0];
-                window.location.href = '/search?tag='+v;
+                window.location.href = v;
             })
             
             t.getContainer().addClass('textboxlist-loading');  
-            $.getJSON("{{ url_for('tag.obj') }}", function(data){
+            $.getJSON("{{ url_for('search.tips') }}", function(data){
                 tips = new Array()
-                $.each(data.tags,function(i,t){
-                    tips.push(new Array(t.tag, t.tag, null, '<img src="/static/'+t.photo+'" />'+t.tag));
+                var que, tag;
+                while(true){
+                    que = data.questions.pop();
+                    if(que){
+                        tips.push(new Array('/question/'+que.id, que.title, null, '<img src="/static/img/question.png" />'+que.title));
+                    }
+                    tag = data.tags.pop()
+                    if(tag){
+                        tips.push(new Array('/tag/'+tag.tag, tag.tag, null, '<img src="/static/'+tag.photo+'" />'+tag.tag));  
+                    }
+                    if(!que && !tag) break;
+                }
+                {#
+                $.each(data.questions,function(i,q){
+                    tips.push(new Array('/question/'+q.id, q.title, null, q.title));
                 });
-                
+                $.each(data.tags,function(i,t){
+                    tips.push(new Array('/tag/'+t.tag, t.tag, null, '<img src="/static/'+t.photo+'" />'+t.tag));
+                });
+                #}
                 t.plugins['autocomplete'].setValues(tips);
                 t.getContainer().removeClass('textboxlist-loading');
             });

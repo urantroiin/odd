@@ -14,12 +14,6 @@ from odd.biz.resource import *
 
 mod = Blueprint('tag', __name__, url_prefix='/tag')
 
-@mod.route('/all')
-def all():
-    tags = get_all_tags()
-    ts = [t.tag for t in tags]
-    return jsonify(errno='SUCCESS', tags=ts)
-
 @mod.route('/obj')
 def obj():
     tags = get_all_tags()
