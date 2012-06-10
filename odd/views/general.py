@@ -44,7 +44,7 @@ def login():
         return render_template('general/login.html', form=form)
     
     success(ret);
-    return redirect(url_for('user.home', nickname=user.nickname))
+    return redirect(url_for('user.home'))
 
 @mod.route('/logout', methods=['GET','POST'])
 @login_required
@@ -77,7 +77,7 @@ def register():
         return render_template('general/register.html', form=form)
     
     success(ret);
-    return redirect(url_for('user.index', nickname=user.nickname))
+    return redirect(url_for('user.home'))
 
 # forms
 def BeTrue(msg):

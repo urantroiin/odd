@@ -33,16 +33,13 @@
             $.getJSON("{{ url_for('search.tips') }}", function(data){
                 tips = new Array()
                 var que, tag;
-                while(true){
-                    que = data.questions.pop();
+                while((que = data.questions.pop()) || (tag = data.tags.pop())){
                     if(que){
                         tips.push(new Array('/question/'+que.id, que.title, null, '<img src="/static/img/question.png" />'+que.title));
                     }
-                    tag = data.tags.pop()
                     if(tag){
                         tips.push(new Array('/tag/'+tag.tag, tag.tag, null, '<img src="/static/'+tag.photo+'" />'+tag.tag));  
                     }
-                    if(!que && !tag) break;
                 }
                 {#
                 $.each(data.questions,function(i,q){

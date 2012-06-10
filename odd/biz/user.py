@@ -31,6 +31,9 @@ def register_user(user):
 
     db_session.add(user)
     db_session.commit()
+
+    login_user(user, remember=True)
+    
     return USER_REGISTER_OK
 
 def edit_user(user):

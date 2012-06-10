@@ -32,6 +32,8 @@ class User(Model, UserMixin):
         self.email = email
         self.passwd = md5(passwd).hexdigest()
         self.nickname = nickname
+        self.title = ''
+        self.sex = 0
         self.create_time = datetime.now()
 
     def email_hash(self):
