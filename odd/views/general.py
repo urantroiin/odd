@@ -21,6 +21,13 @@ def index():
     form = LoginForm()
     return render_template('general/login.html', form=form)
 
+@mod.route('/protocal', methods=['GET'])
+def protocal():
+    '''
+    协议
+    '''
+ 
+    return render_template('general/protocal.html')
 
 @mod.route('/login', methods=['GET','POST'])
 def login():

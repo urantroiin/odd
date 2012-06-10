@@ -57,7 +57,9 @@
             <label class="checkbox">
                 {{ form.agree }}
                 我已经认真阅读并同意
-                <a>《Offer多多协议》</a>
+            
+                <a href="{{ url_for('general.protocal') }}">《Offer多多协议》</a>
+                
                 {{ error(form.errors['agree']) }}
             </label>
         </div>
