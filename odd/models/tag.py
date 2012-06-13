@@ -23,7 +23,7 @@ class Tag(Model):
         self.create_time = datetime.now()
 
     def tag_photo(self,size):
-        name = 'tag_photo/%d-%d.jpg'
+        name = 'tag_photos/%d-%d.jpg'
         filename = name % (self.id, size)
         if isfile(join(app.static_folder, filename)):
             return filename

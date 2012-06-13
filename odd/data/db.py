@@ -10,7 +10,7 @@ db_engine = create_engine(app.config['DATABASE_URI'],
                           convert_unicode=True,
                           **app.config['DATABASE_CONNECT_OPTIONS'])
 
-db_session = scoped_session(sessionmaker(autoflush=False, bind=db_engine))
+db_session = scoped_session(sessionmaker(bind=db_engine))
 
 Model = declarative_base(name='Model')
 # Model.query = db_session.query_property()
@@ -22,7 +22,6 @@ def init_db():
     Model.metadata.create_all(bind=db_engine)
 
 
-# TODO:// 生产环境需要去掉
 '''
 import logging
 logger = logging.getLogger('sqlalchemy.engine')

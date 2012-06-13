@@ -1,0 +1,11 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+{% from 'import/resource.html' import normal_resource %}
+
+<section class="span12">
+{{ normal_resource(resource, current_user, True) }}
+</section>
+
+{% endblock %}

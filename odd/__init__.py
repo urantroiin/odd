@@ -18,6 +18,7 @@ from odd.views import search
 from odd.views import follow
 from odd.views import remind
 from odd.views import admin
+from odd.views import resource
 
 app.register_blueprint(general.mod)
 app.register_blueprint(user.mod)
@@ -28,6 +29,7 @@ app.register_blueprint(search.mod)
 app.register_blueprint(follow.mod)
 app.register_blueprint(remind.mod)
 app.register_blueprint(admin.mod)
+app.register_blueprint(resource.mod)
 
 #
 # Login

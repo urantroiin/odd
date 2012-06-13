@@ -1,7 +1,7 @@
-{% macro normal_resource(r) %}
+{% macro normal_resource(r, current_user, content=False) %}
 <section id="resource-{{ r.id }}" class="resource thumbnail">
         <header>
-            <a href=""><h4>{{ r.title }}</h4></a>
+            <a href="{{ url_for('resource.index', id=r.id) }}"><h4>{{ r.title }}</h4></a>
             <p>
             来自：
             {% for tag in r.tags %}
@@ -12,6 +12,29 @@
 
         <footer>
             <span class="small">{{ r.create_time }}</span>
+            <span class="small pull-right">下载量：{{ r.download_count }}</span>
+        {% if content %}
+            <hr class="hr-tiny">
+            <ul class="span3">
+                {% for f in r.file_list() %}
+                <li class="small">{{ f }}</li>
+                {% endfor %}
+            </ul>
+            <span class="divider-vertical"></span>
+            <a class="btn btn-large download" data-url="{{ url_for('resource.download', id=r.id) }}" href="{{ url_for('static', filename='resources/%d.zip' % r.id) }}" class="btn btn-large">
+                <h2>下载全部</h2>
+                <span class="small">zip压缩包</span>
+            </a>
+            <script>
+                $(function(){
+                    $('.download').click(function(){
+                        $.post($(this).attr('data-url'));
+                        return false;
+                    });
+                });
+            </script>
+        {% endif %}
         </footer>
-    </section>
+</section>
+
 {% endmacro %}

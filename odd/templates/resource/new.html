@@ -1,0 +1,48 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<form class="well span8 offset2" action="{{ url_for('resource.new') }}" method='post' enctype="multipart/form-data">
+    {% from 'import/tools.html' import flashed_msg,error %}
+
+    <h3 class="alert alert-info">传资源</h3>
+
+    {{ form.hidden_tag() }}
+    {{ form.csrf }}
+
+    {{ form.title.label }}
+    {{ form.title() }}
+    {{ error(form.errors['title']) }}
+    <span class="help-block">资源的主题</span>
+
+    <label>文件*</label>
+    <input name="files" type="file" multiple>
+    {#
+    {{ form.files.label }}
+    {{ form.files() }}
+    {{ error(form.errors['files']) }}
+    #}
+
+    {{ form.tags.label }}
+    {{ form.tags(id='tag-search') }}
+    {{ error(form.errors['tags']) }}
+    <script>
+        $(function(){
+            var t = new $.TextboxList('#tag-search', {unique: true, plugins: {autocomplete: {placeholder:'搜索:标签'}}});
+            t.getContainer().addClass('textboxlist-loading');  
+            $.getJSON("{{ url_for('tag.obj') }}", function(data){
+                tips = new Array()
+                $.each(data.tags,function(i,t){
+                    tips.push(new Array(t.tag, t.tag, null, '<img src="/static/'+t.photo+'" />'+t.tag));
+                });
+                
+                t.plugins['autocomplete'].setValues(tips);
+                t.getContainer().removeClass('textboxlist-loading');
+            }); 
+        })
+    </script>
+    
+    <hr>
+    <input class="btn btn-primary" type="submit" value="上传"/>
+</form>
+{% endblock %}

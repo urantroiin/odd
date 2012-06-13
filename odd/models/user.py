@@ -40,7 +40,7 @@ class User(Model, UserMixin):
         return md5(self.email.lower()).hexdigest() 
 
     def photo(self,size):
-        name = 'photo/%d-%d.jpg'
+        name = 'photos/%d-%d.jpg'
         filename = name % (self.id, size)
         if isfile(join(app.static_folder, filename)):
             return filename

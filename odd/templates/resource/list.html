@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+
+{% block nav %}
+{{ nav('resource', current_user) }}
+{% endblock %}
+
+{% block content %}
+
+{% from 'import/resource.html' import normal_resource %}
+
+<section class="span6">
+    <header><h5 class="border-medium">热门资源</h5></header>
+    {% for r in latest_resources %}
+        {{ normal_resource(r, current_user) }}
+        <hr>
+    {% endfor %}
+</section>
+
+
+<section class="span6">
+    <header><h5 class="border-medium">最新资源</h5></header>
+    {% for r in latest_resources %}
+        {{ normal_resource(r, current_user) }}
+        <hr>
+    {% endfor %}
+</section>
+
+{% endblock %}

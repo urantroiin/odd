@@ -68,13 +68,15 @@
             <div class="container">
                 <a class="brand" href="{{ url_for('general.index') }}">Offer多多</a>
                 {% if current_user and current_user.is_authenticated() %}
-                    {% from 'import/tools.html' import nav, account, search, reminds %}
+                    {% from 'import/tools.html' import nav, account, search, iwant, reminds %}
 
                     {% block nav %}{{ nav('', current_user) }}{% endblock %}
                     <ul class="nav pull-right">
                     {{ search() }}
                     <li class="divider-vertical"></li>
-                    <li><a href="{{ url_for('question.new') }}">我要提问</a></li>
+                    <li><a href="{{ url_for('question.new') }}">提问</a></li>
+                    <li class="divider-vertical"></li>
+                    <li><a href="{{ url_for('resource.new') }}">传资源</a></li>
                     <li class="divider-vertical"></li>
                     {{ reminds() }}
                     {{ account(current_user) }}

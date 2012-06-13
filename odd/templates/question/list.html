@@ -6,19 +6,10 @@
 
 {% block content %}
 
-{% from 'import/topic.html' import topic %}
-
-<script>
-    /*
-    $.getJSON("{{ url_for('question.latest') }}",function(data){
-         
-    })
-    */
-</script>
+{% from 'import/topic.html' import normal_question %}
 
 <section class="span6">
     <header><h5 class="border-medium">等待回答</h5></header>
-    {% from 'import/topic.html' import normal_question %}
     {% for q in latest_questions %}
         {% if not q.answer_count %}
         {{ normal_question(q, current_user) }}
@@ -30,7 +21,6 @@
 
 <section class="span6">
     <header><h5 class="border-medium">最新问题</h5></header>
-    {% from 'import/topic.html' import normal_question %}
     {% for q in latest_questions %}
         {% if q.answer_count %}
         {{ normal_question(q, current_user) }}

@@ -23,7 +23,16 @@
     <script>
 
        $(function(){
-            var t = new $.TextboxList('#all-search', {unique: true, plugins: {autocomplete: {method:'custom',placeholder:'搜索:标签'}}});
+           var t = new $.TextboxList('#all-search', {
+               unique: true, 
+               plugins: {
+                   autocomplete: {
+                       method:'custom',
+                       placeholder:'搜索:标签,问题'
+                    }
+                }
+            });
+
             t.addEvent('bitBoxAdd', function(bit){
                 v = bit.getValue()[0];
                 window.location.href = v;
@@ -64,6 +73,18 @@
     <form class="navbar-search" action="{{ url_for('search.index') }}" method="get">
         <input id="all-search" class="span3" name="tag" type="text" />
     </form>
+</li>
+{% endmacro %}
+
+{% macro iwant() %}
+<li class="dropdown">
+    <a class="dropdown-toggle" data-toggle="dropdown">
+        我要
+    </a>
+    <ul class="dropdown-menu">
+        <li><a href="{{ url_for('question.new') }}">提问</a></li>
+        <li><a href="{{ url_for('resource.new') }}">传资源</a></li>
+    </ul>
 </li>
 {% endmacro %}
 
@@ -146,8 +167,8 @@
     <li class="{{ 'active' if item=='question' }}">
     <a href="{{ url_for('question.list') }}">问题</a> 
     </li>
-    <li class="{{ 'active' if item=='tag' }}">
-    <a href="{{ url_for('tag.list') }}">标签</a> 
+    <li class="{{ 'active' if item=='resource' }}">
+    <a href="{{ url_for('resource.list') }}">资源</a> 
     </li>
 </ul>
 {% endmacro %}
