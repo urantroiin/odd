@@ -15,16 +15,19 @@ class Resource(Model):
     __tablename__ = 'resources'
     
     id = Column('id', INT, primary_key=True)
-    user_id = Column('user_id', INT, nullable=False)
+    user_id = Column('user_id', INT, ForeignKey('users.id'), nullable=False)
     title = Column('title', VARCHAR(50), nullable=False)
+    desc = Column('description', TEXT, nullable=False)
     create_time = Column('create_time', TIMESTAMP, nullable=False)
     download_count = Column('download_count', INT, nullable=False)
     
+    user = relation('User')
     tags = relation("Resource_Tag", backref=backref('resource'))
 
-    def __init__(self, user_id, title, tags):
+    def __init__(self, user_id, title, desc, tags):
         self.user_id = user_id
         self.title = title
+        self.desc = desc
         self.tags = [Resource_Tag(self.id, tag) for tag in tags]
         self.create_time = datetime.now()
         self.download_count = 0

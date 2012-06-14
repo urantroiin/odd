@@ -28,11 +28,11 @@ def index():
 @login_required
 def read():
     args = request.args
-    id = args.getlist('id')
+    id = args.get('id')
     if not id:
         return abort(404)
     
-    remind = get_remind_by_id(id[0])
+    remind = get_remind_by_id(id)
     remind.has_read = True
     edit_remind(remind)
     

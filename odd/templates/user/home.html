@@ -6,45 +6,45 @@
 
 {% block content %}
 
+{% from 'import/user.html' import home_nav %}
 {% from 'import/topic.html' import normal_question %}
-<section id="tag-news" class="span8">
-<header class="tabs">
-    <ul class="nav nav-pills border-medium">
-        <li class="active">
-            <a href="#followed" data-toggle="tab">我关注的</a>
+{% from 'import/resource.html' import normal_resource %}
+
+<section class="span8">
+
+    <ul class="nav nav-tabs">
+        <li class="{{ 'focus' if nav_item=='followed' }}">
+            <a href="{{ url_for('user.followed') }}">我关注的</a>
         </li>
-        <li>
-            <a href="#my" data-toggle="tab">我参与的</a>
+        <li class="{{ 'focus' if nav_item=='my' }}">
+            <a href="{{ url_for('user.my') }}">我参与的</a>
         </li>
-        <li>
-            <a href="#latest" data-toggle="tab">随便看看</a>
+        <li class="{{ 'focus' if nav_item=='around' }}">
+            <a href="{{ url_for('user.around') }}">随便看看</a>
+        </li>
+        <li class="pull-right">
+            <a href="#resource-tab" data-toggle="tab">资源</a>
+        </li>
+        <li class="active pull-right">
+            <a href="#question-tab" data-toggle="tab">问题</a>
         </li>
     </ul>
-</header>
-
-<div class="tab-content">
-    <div class="tab-pane active" id="followed">
-        {% for q in followed %}
-            {{ normal_question(q, current_user) }}
-        <hr>
-        {% endfor %}
-    </div>
     
-    <div class="tab-pane" id="my">
-        {% for q in my %}
-            {{ normal_question(q, current_user) }}
-        <hr>
-        {% endfor %}
-    </div>
-    <div class="tab-pane" id="latest">
-        {% for q in latest %}
-            {% if q.user_id != current_user.id %}
+    <div class="tab-content">
+        <div class="tab-pane active" id="question-tab">
+            {% for q in questions %}
             {{ normal_question(q, current_user) }}
             <hr>
-            {% endif %}
-        {% endfor %}
+            {% endfor %}
+    
+        </div>
+        <div class="tab-pane active" id="resource-tab">
+            {% for r in resources %}
+            {{ normal_resource(r, current_user) }}
+            <hr>
+            {% endfor %}
+        </div>
     </div>
-</div>
 </section>
 
 <section class="span4">
@@ -56,12 +56,12 @@
 <hr>
 
 <section class="fav-tags side-box thumbnail clearfix">
-<header class="border-small"><h5>珍藏的标签</h5></header>
-<p class="simple-p">
-{% for tf in current_user.tag_follows %}
-<a class="tag" href="{{ url_for('tag.index', tag=tf.tag) }}"><span class="label label-info">{{ tf.tag }}</span></a>
-{% endfor %}
-</p>
+    <header class="border-small"><h5>珍藏的标签</h5></header>
+    <p class="simple-p">
+        {% for tf in current_user.tag_follows %}
+        <a class="tag" href="{{ url_for('tag.index', tag=tf.tag) }}"><span class="label label-info">{{ tf.tag }}</span></a>
+        {% endfor %}
+    </p>
 </section>
 
 </section>

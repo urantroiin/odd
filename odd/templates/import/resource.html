@@ -1,40 +1,72 @@
 {% macro normal_resource(r, current_user, content=False) %}
 <section id="resource-{{ r.id }}" class="resource thumbnail">
         <header>
-            <a href="{{ url_for('resource.index', id=r.id) }}"><h4>{{ r.title }}</h4></a>
-            <p>
+        <a class="title" href="{{ url_for('resource.index', id=r.id) }}"><h4>{{ r.title }}</h4></a>
+        <p>
             来自：
             {% for tag in r.tags %}
                 <a href="{{ url_for('tag.index', tag=tag.tag) }}"><span class="label label-warning">{{ tag.tag }}</span></a>
             {% endfor %}
             </p>
         </header>
+        
+        {% if content %}
+        <blockquote>
+            <p>{{ r.desc }}</p>
+            <small>
+                <a href="{{ url_for('user.index', nickname=r.user.nickname) }}">
+                    <img src="{{ url_for('static', filename=r.user.photo(20)) }}" />
+                    {{ r.user.nickname }}
+                </a>
+            </small>
+        </blockquote>
+       {% endif %}
 
         <footer>
+        {% if content %}
+            &nbsp
+            <span class="small pull-right">{{ r.create_time }}</span>
+        {% else %}
             <span class="small">{{ r.create_time }}</span>
             <span class="small pull-right">下载量：{{ r.download_count }}</span>
-        {% if content %}
-            <hr class="hr-tiny">
-            <ul class="span3">
-                {% for f in r.file_list() %}
-                <li class="small">{{ f }}</li>
-                {% endfor %}
-            </ul>
-            <span class="divider-vertical"></span>
-            <a class="btn btn-large download" data-url="{{ url_for('resource.download', id=r.id) }}" href="{{ url_for('static', filename='resources/%d.zip' % r.id) }}" class="btn btn-large">
-                <h2>下载全部</h2>
-                <span class="small">zip压缩包</span>
-            </a>
-            <script>
-                $(function(){
-                    $('.download').click(function(){
-                        $.post($(this).attr('data-url'));
-                        return false;
-                    });
-                });
-            </script>
-        {% endif %}
+            {% endif %}
         </footer>
 </section>
 
+{% endmacro %}
+
+{% macro download_box(r) %}
+<ul class="span3">
+    {% for f in r.file_list() %}
+    <li class="small">{{ f }}</li>
+    {% endfor %}
+</ul>
+
+<span class="divider-vertical"></span>
+
+<a class="btn btn-large download" href="{{ url_for('static', filename='resources/%d.zip' % r.id) }}" data-url="{{ url_for('resource.download', id=r.id) }}">
+    <h2>下载全部</h2>
+    <span class="small">zip压缩包</span>
+</a>
+
+<script>
+    $(function(){
+        $('.download').click(function(){
+            url = $(this).attr('data-url');
+            href = $(this).attr('href');
+            $.post(url, function(){
+                location.href = href;
+            });
+            return false;
+        });
+    });
+</script> 
+{% endmacro %}
+
+{% macro resource_board(r, current_user) %}
+{{ normal_resource(r, current_user, True) }}
+<hr>
+下载量：{{ r.download_count }}
+<hr>
+{{ download_box(r) }}
 {% endmacro %}

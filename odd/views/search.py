@@ -13,12 +13,12 @@ mod = Blueprint('search', __name__, url_prefix='/search')
 @mod.route('/')
 def index():
     args = request.args
-    tag = args.getlist('tag')
+    tag = args.get('tag')
     if not tag:
         return abort(404)
 
-    tag_obj = get_tag_by_tag(tag[0])
-    questions = get_question_by_tag(tag[0])
+    tag_obj = get_tag_by_tag(tag)
+    questions = get_question_by_tag(tag)
     return render_template('search/index.html', tag=tag_obj, questions=questions)
 
 @mod.route('/tips')

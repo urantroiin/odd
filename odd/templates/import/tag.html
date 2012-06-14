@@ -59,37 +59,6 @@
     <input class="span2 btn btn-info" type="submit" value="关注" />
 <form>
 {% endif %}
-<script>
-    $(function(){
-
-        $('.editable .edit').click(function(){
-            var edited = $(this).parents('.edited');
-            var edit_form = edited.siblings('.edit-form')
-            var edited_item = $(this).siblings('.edited-item');
-            var edit_item = edit_form.find('.edit-item');
-            var edit_cancel = edit_form.find('.edit-cancel');
-
-            edited.hide('fast');
-            edit_form.show('fast');
-            edit_item.val(edited_item.text())
-            edit_cancel.click(function(){
-                edit_form.hide('fast');
-                edited.show('fast');
-            })
-        });
-
-        $('.ajax-form').ajaxForm({
-            'complete': success
-        });
-
-        $('.edit-form').ajaxForm({
-            'complete': success
-        });
-
-    });
-</script>
-
-
 </section>
 
 {% endmacro %}

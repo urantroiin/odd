@@ -10,6 +10,7 @@ from odd.utils.tools import *
 from odd import app
 from odd.biz.user import *
 from odd.biz.question import *
+from odd.biz.resource import *
 
 from functools import wraps
 
@@ -24,14 +25,40 @@ def index(nickname):
 
     return render_template('user/index.html', user=user)
 
+@mod.route('/followed')
+@login_required
+def followed():
+    tags = [tf.tag for tf in current_user.tag_follows]
+
+    questions = get_question_by_tags(tags)
+    resources = get_resource_by_tags(tags)
+
+    return render_template('user/home.html', nav_item='followed', questions=questions, resources=resources)
+
+@mod.route('/my')
+@login_required
+def my():
+
+    questions = get_question_by_uid(current_user.id)
+    resources = get_resource_by_uid(current_user.id)
+
+    return render_template('user/home.html', nav_item='my', questions=questions, resources=resources)
+
+@mod.route('/around')
+@login_required
+def around():
+
+    questions = get_latest_questions(20)
+    questions = [q for q in questions if q.user_id != current_user.id]
+    resources = get_latest_resources(20)
+    resources = [r for r in resources if r.user_id != current_user.id]
+
+    return render_template('user/home.html', nav_item='around', questions=questions, resources=resources)
+
 @mod.route('/home')
 @login_required
 def home():
-    tags = [tf.tag for tf in current_user.tag_follows]
-    followed = get_question_by_tags(tags)
-    my = get_question_by_uid(current_user.id)
-    latest = get_latest_questions(20)
-    return render_template('user/home.html', followed=followed, my=my, latest=latest)
+    return followed()
 
 @mod.route('/profile', methods=['GET','POST'])
 @login_required

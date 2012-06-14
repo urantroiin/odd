@@ -5,7 +5,7 @@ from odd.data.db import db_session
 from odd.models.resource import *
 from odd.models.tag import *
 
-from odd.biz.tag import *
+from odd.biz.tag import new_tags
 
 from odd.utils.error import *
 
@@ -13,16 +13,32 @@ def get_resource_by_id(id):
     resource = db_session.query(Resource).get(id)
     return resource
 
+def get_resource_by_uid(uid):
+    resources = db_session.query(Resource).filter_by(user_id=uid).order_by(Resource.id.desc()).all()
+    return resources
+
 def get_resource_by_tag(tag):
     tags = db_session.query(Resource_Tag).filter_by(tag=tag).all()
     return [t.resource for t in tags]
+
+def get_resource_by_tags(tags):
+    tags = db_session.query(Resource_Tag).filter(Resource_Tag.tag.in_(tags)).order_by(Resource_Tag.id.desc()).all()
+    rs = []
+    for t in tags:
+        if not t.resource in rs:
+            rs.append(t.resource)
+    return rs
 
 def get_latest_resources(count):
     resources = db_session.query(Resource).order_by(Resource.id.desc()).limit(count).all()
     return resources
 
+def get_hotest_resources(count):
+    resources = db_session.query(Resource).order_by(Resource.download_count.desc(), Resource.id.desc()).limit(count).all()
+    return resources
+
 def new_resource(resource, tags):
-    new_tags([Tag(tag) for tag in tags])
+    new_tags(tags)
 
     db_session.add(resource)
     db_session.commit()

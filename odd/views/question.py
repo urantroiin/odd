@@ -24,9 +24,8 @@ def index(id):
     if not question:
         abort(404)
 
-    args = request.args
-    answer_id = args.getlist('answer_id')[0] if args.getlist('answer_id') else -1
-    comment_id = args.getlist('comment_id')[0] if args.getlist('comment_id') else -1
+    answer_id = request.args.get('answer_id', -1, type=int)
+    comment_id = request.args.get('comment_id', -1, type=int)
 
     return render_template('question/index.html', question=question, answer_id=answer_id, comment_id=comment_id)
 
@@ -40,15 +39,15 @@ def list():
 
 @mod.route('/latest')
 def latest():
-    qid = request.args.getlist('qid')
+    qid = request.args.get('qid')
     if not qid:
         return jsonify(errno='FAIL')
     
-    count = request.args.getlist('count')
+    count = request.args.get('count')
     if not count:
         return jsonify(errno='FAIL')
 
-    ques = get_question_gt_id(qid[0], count[0])
+    ques = get_question_gt_id(qid, count)
     qs = []
     for q in ques:
         qs.append({
@@ -72,11 +71,11 @@ def clean_tags(tags):
 @mod.route('/<int:id>/tags', methods=['POST'])
 @login_required
 def tags(id):
-    tags = request.form.getlist('tags')
+    tags = request.form.get('tags')
     if not tags:
         return jsonify(errno='FAIL')
 
-    tags = clean_tags(tags[0].split(','))
+    tags = clean_tags(tags.split(','))
 
     ret = edit_question_tags(id, tags)
     if ret != QUESTION_TAG_EDIT_OK:

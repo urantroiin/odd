@@ -41,7 +41,7 @@ def get_question_by_tags(tags):
     return qs
 
 def get_question_by_uid(uid):
-    questions = db_session.query(Question).filter_by(user_id=uid).order_by(Question.create_time.desc()).all()
+    questions = db_session.query(Question).filter_by(user_id=uid).order_by(Question.id.desc()).all()
     return questions
 
 def get_question_titles(count):
@@ -53,7 +53,7 @@ def get_question_by_tag(tag):
     return [t.question for t in tags]
 
 def new_question(question, tags):
-    new_tags([Tag(tag) for tag in tags])
+    new_tags(tags)
 
     db_session.add(question)
     db_session.commit()
@@ -61,7 +61,7 @@ def new_question(question, tags):
     return QUESTION_ADD_OK
 
 def edit_question(question, tags):
-    new_tags([Tag(tag) for tag in tags])
+    new_tags(tags)
 
     db_session.add(question)
     db_session.commit()
@@ -69,6 +69,8 @@ def edit_question(question, tags):
     return QUESTION_EDIT_OK
 
 def edit_question_tags(qid, tags):
+    new_tags(tags)
+
     db_session.query(Question_Tag).filter_by(question_id=qid).delete()
     db_session.add_all([Question_Tag(qid,tag) for tag in tags])
     db_session.commit()

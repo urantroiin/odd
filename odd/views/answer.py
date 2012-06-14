@@ -23,12 +23,12 @@ def index():
 @login_required
 def new():
     form = request.form
-    question_id = form.getlist('question_id')
-    content = form.getlist('content')
+    question_id = form.get('question_id')
+    content = form.get('content')
     if not question_id or not content:
         return jsonify(errno='FAIL')
 
-    answer = Answer(current_user.id, question_id[0], content[0])
+    answer = Answer(current_user.id, question_id, content)
     ret = new_answer(answer)
     if ret != ANSWER_ADD_OK:
         return jsonify(errno='FAIL')
@@ -44,11 +44,11 @@ def new():
 @login_required
 def up():
     form = request.form
-    answer_id = form.getlist('answer_id')
+    answer_id = form.get('answer_id')
     if not answer_id:
         return jsonify(errno='FAIL')
 
-    answer_up = Answer_Up(current_user.id, answer_id[0])
+    answer_up = Answer_Up(current_user.id, answer_id)
     ret = new_answer_up(answer_up)
     if ret != ANSWER_UP_ADD_OK:
         return jsonify(errno='FAIL')
@@ -59,13 +59,13 @@ def up():
 @login_required
 def comment():
     form = request.form
-    answer_id = form.getlist('answer_id')
-    comment_id = form.getlist('comment_id')
-    content = form.getlist('content')
+    answer_id = form.get('answer_id')
+    comment_id = form.get('comment_id')
+    content = form.get('content')
     if not answer_id or not comment_id or not content:
         return jsonify(errno='FAIL')
 
-    comm = Comment(current_user.id, answer_id[0], comment_id[0], content[0])
+    comm = Comment(current_user.id, answer_id, comment_id, content)
     ret = new_comment(comm)
     if ret != COMMENT_ADD_OK:
         return jsonify(errno='FAIL')

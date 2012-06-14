@@ -17,11 +17,11 @@
 
     <label>文件*</label>
     <input name="files" type="file" multiple>
-    {#
-    {{ form.files.label }}
-    {{ form.files() }}
-    {{ error(form.errors['files']) }}
-    #}
+
+    {{ form.desc.label }}
+    {{ form.desc() }}
+    {{ error(form.errors['desc']) }}
+    <span class="help-block">资源的详细介绍</span>
 
     {{ form.tags.label }}
     {{ form.tags(id='tag-search') }}

@@ -12,3 +12,18 @@
 </section>
 
 {% endmacro %}
+
+
+{% macro home_nav(item, current_user) %}
+<ul class="nav nav-pills">
+    <li class="{{ 'active' if item=='followed' }}">
+        <a href="{{ url_for('user.followed') }}">我关注的</a>
+    </li>
+    <li class="{{ 'active' if item=='my' }}">
+        <a href="{{ url_for('user.my') }}">我参与的</a>
+    </li>
+    <li class="{{ 'active' if item=='around' }}">
+        <a href="{{ url_for('user.around') }}">随便看看</a>
+    </li>
+</ul>
+{% endmacro %}

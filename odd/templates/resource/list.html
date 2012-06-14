@@ -10,7 +10,7 @@
 
 <section class="span6">
     <header><h5 class="border-medium">热门资源</h5></header>
-    {% for r in latest_resources %}
+    {% for r in hotest_resources %}
         {{ normal_resource(r, current_user) }}
         <hr>
     {% endfor %}

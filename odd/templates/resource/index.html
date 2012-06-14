@@ -2,10 +2,10 @@
 
 {% block content %}
 
-{% from 'import/resource.html' import normal_resource %}
+{% from 'import/resource.html' import resource_board %}
 
 <section class="span12">
-{{ normal_resource(resource, current_user, True) }}
+{{ resource_board(resource, current_user) }}
 </section>
 
 {% endblock %}

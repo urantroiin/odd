@@ -1,9 +1,9 @@
 {% macro normal_question(q, current_user, content=False, focus=False) %}
 <section id="question-{{ q.id }}" class="question {{ 'focus' if focus }} thumbnail">
 <header>
-    <a href="{{ url_for('question.index', id=q.id) }}"><h4>{{ q.title }}</h4></a>
+    <a class="title" href="{{ url_for('question.index', id=q.id) }}"><h4>{{ q.title }}</h4></a>
     <div class="editable">
-        <p class="tag-list">
+        <p class="edited tag-list">
         来自：
         {% for tag in q.tags %}
         <a class="tag" href="{{ url_for('tag.index', tag=tag.tag) }}">
@@ -19,6 +19,7 @@
         {% if focus %}
         <form class="edit-form" action="{{ url_for('question.tags', id=q.id) }}" method="post" style="margin:5px 0px 10px 0px">
             <input id="{{ q.id }}-tag-edit" name="tags" type="text" />
+            <a class="edit-cancel small" href="javascript:;">取消</a>
         </form>
         <script>
         $(function(){
@@ -26,8 +27,6 @@
 
             $('.editable .edit').click(function(){
                 var tag_list = $(this).parents('.tag-list');
-                tag_list.hide('fast');
-                tag_list.siblings('.edit-form').show('fast');
                 tag_spans = $(this).siblings('.tag').children('span');
                 tags = new Array();
                 $.each(tag_spans, function(i,span){

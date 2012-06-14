@@ -2,7 +2,7 @@
 
 from flask import Blueprint, url_for, redirect, render_template, abort, request, jsonify
 from flask.ext.login import login_required, current_user
-from flaskext.wtf import Form, TextField, FileField, FieldList, Required
+from flaskext.wtf import Form, TextField, TextAreaField, FileField, FieldList, Required
 
 from odd.utils.error import *
 from odd.utils.tools import *
@@ -37,7 +37,8 @@ def download(id):
 @login_required
 def list():
     latest_res = get_latest_resources(20)
-    return render_template('resource/list.html', latest_resources=latest_res)
+    hotest_res = get_hotest_resources(20)
+    return render_template('resource/list.html', latest_resources=latest_res, hotest_resources=hotest_res)
 
 def clean_tags(tags):
     tags_clean = []
@@ -50,11 +51,11 @@ def clean_tags(tags):
 @mod.route('/<int:id>/tags', methods=['POST'])
 @login_required
 def tags(id):
-    tags = request.form.getlist('tags')
+    tags = request.form.get('tags')
     if not tags:
         return jsonify(errno='FAIL')
 
-    tags = clean_tags(tags[0].split(','))
+    tags = clean_tags(tags.split(','))
 
     ret = edit_resource_tags(id, tags)
     if ret != QUESTION_TAG_EDIT_OK:
@@ -83,9 +84,10 @@ def new():
         return render_template('resource/new.html', form=form)
     
     title = form.title.data
+    desc = form.desc.data
     tags = clean_tags(form.tags.data.split(','))
 
-    resource = Resource(current_user.id, title, tags)
+    resource = Resource(current_user.id, title, desc, tags)
     ret = new_resource(resource, tags)
     if ret != RESOURCE_ADD_OK:
         fail(ret)
@@ -97,4 +99,5 @@ def new():
 
 class NewResForm(Form):
     title = TextField(u'标题*', validators=[Required()])
+    desc = TextAreaField(u'描述*', validators=[Required()])
     tags = TextField(u'标签*', validators=[Required()])

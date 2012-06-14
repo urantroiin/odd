@@ -5,4 +5,15 @@ mysql has gone away
 mysql automatically close idle connection in eight hours
 
 *solution
-sqlalchemy pool_recycle=3600
+sqlalchemy pool_recycle=3600 auto_flush = True
+
+*error
+error: [Errno 32] Broken pipe
+
+*reason
+one request disturb the other
+
+*solution
+parallel windows.open()
+or
+serial $.post('',function(){ do_another })

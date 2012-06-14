@@ -61,17 +61,17 @@ def photo(id):
 @mod.route('/<int:id>/desc', methods=['POST'])
 @login_required
 def desc(id):
-    desc = request.form.getlist('desc')
+    desc = request.form.get('desc')
     if not desc:
         return jsonify(errno='FAIL')
 
     tag_obj = get_tag_by_id(id)
-    tag_obj.description = desc[0]
+    tag_obj.description = desc
     ret = edit_tag(tag_obj)
     if ret != TAG_EDIT_OK:
         return jsonify(errno='FAIL')
         
-    tag_edit = Tag_Edit(current_user.id, id, desc[0], -1)
+    tag_edit = Tag_Edit(current_user.id, id, desc, -1)
     new_tag_edit(tag_edit)
 
     return jsonify(errno='SUCCESS')
