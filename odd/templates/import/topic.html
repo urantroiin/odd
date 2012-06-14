@@ -3,7 +3,7 @@
 <header>
     <a class="title" href="{{ url_for('question.index', id=q.id) }}"><h4>{{ q.title }}</h4></a>
     <div class="editable">
-        <p class="edited tag-list">
+        <p class="edited">
         来自：
         {% for tag in q.tags %}
         <a class="tag" href="{{ url_for('tag.index', tag=tag.tag) }}">
@@ -12,59 +12,42 @@
         {% endfor %}
         
         {% if focus %}
-        <a href="javascript:;" class="edit small">修改</a>
+        <a href="javascript:;" class="question-tag-edit edit small">修改</a>
         {% endif %}
         </p>
 
         {% if focus %}
         <form class="edit-form" action="{{ url_for('question.tags', id=q.id) }}" method="post" style="margin:5px 0px 10px 0px">
-            <input id="{{ q.id }}-tag-edit" name="tags" type="text" />
+            <input class="edit-item" name="tags" type="text" />
             <a class="edit-cancel small" href="javascript:;">取消</a>
         </form>
         <script>
         $(function(){
             var t = null;
 
-            $('.editable .edit').click(function(){
-                var tag_list = $(this).parents('.tag-list');
-                tag_spans = $(this).siblings('.tag').children('span');
-                tags = new Array();
-                $.each(tag_spans, function(i,span){
-                    tags.push(span.innerHTML);
-                });
-                tagbox_init('#{{ q.id }}-tag-edit', tags);
-            });
-
-            function tagbox_init(input_id, tags) {
+            $('.question-tag-edit').click(function(){
                 if(t) return;
-                    
-                t = new $.TextboxList(input_id, {unique: true, plugins: {autocomplete: {placeholder:'搜索:标签'}}});
+                var edited = $(this).parents('.edited');
+                var edit_item = edited.siblings('.edit-form').children('.edit-item');
+                var tag_spans = $(this).siblings('.tag').children('span');
 
-                $.each(tags, function(i,tag){
-                    t.add(tag,tag);
-                });
-               
-                t.addEvent('empty', function(bitBox){
-                    $(input_id).parent('form').ajaxSubmit({
-                        success: success
-                    });
+                var tags = [];
+                $.each(tag_spans, function(i,span){
+                    var tag = span.innerHTML;
+                    tags.push([tag, tag]);
                 });
 
-                $('input',t.getContainer()).focus();
-
-                t.getContainer().addClass('textboxlist-loading');  
-                $.getJSON("{{ url_for('tag.obj') }}", function(data){
-                    var tags = new Array()
-                    $.each(data.tags,function(i,t){
-                        tags.push(new Array(t.tag, t.tag, null, '<img src="/static/'+t.photo+'" />'+t.tag));
-                    });
-    
-                    t.plugins['autocomplete'].setValues(tags);
-                    t.getContainer().removeClass('textboxlist-loading');
-                }); 
-            }
-
-        })
+                t = textbox({
+                    element: edit_item, 
+                    placeholder: '搜索：标签',
+                    init_values: tags,  
+                    onempty_submit: true,
+                    url: "{{ url_for('tag.obj') }}",
+                    format: tag_format,
+                    focus: true  
+                });
+            });
+        });
         </script>
         {% endif %}
     </header>

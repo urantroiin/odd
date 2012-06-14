@@ -14,35 +14,65 @@ function success(data){
     window.location.reload(true)
 }
 
-function tagbox(input_id, tags) {
-    if(t) return;
-        
-    t = new $.TextboxList(input_id, {unique: true, plugins: {autocomplete: {placeholder:'搜索:标签'}}});
-
-    $.each(tags, function(i,tag){
-        t.add(tag,tag);
+function tag_format(data){
+    var tags = []
+    $.each(data.tags,function(i,t){
+        tags.push([t.tag, t.tag, null, '<img src="/static/'+t.photo+'" />'+t.tag]);
     });
-   
-    t.addEvent('empty', function(bitBox){
-        $(input_id).parent('form').ajaxSubmit({
-            success: success
-        });
-    });
-
-    $('input',t.getContainer()).focus();
-
-    t.getContainer().addClass('textboxlist-loading');  
-    $.getJSON("{{ url_for('tag.obj') }}", function(data){
-        var tags = new Array()
-        $.each(data.tags,function(i,t){
-            tags.push(new Array(t.tag, t.tag, null, '<img src="/static/'+t.photo+'" />'+t.tag));
-        });
-
-        t.plugins['autocomplete'].setValues(tags);
-        t.getContainer().removeClass('textboxlist-loading');
-    }); 
+    return tags;
 }
 
+function textbox(option) {
+    var config = {
+        element: '',
+        url: '',
+        format: function(data){return data;},
+        placeholder: '',
+        init_values: [],
+        onempty_submit: false,
+        onempty: null,
+        focus: false
+    };
+
+    $.each(option, function(k,v){
+        config[k] = v;     
+    });
+    
+    var t = new $.TextboxList(config.element, {unique: true, plugins: {
+        autocomplete: {method:'custom', placeholder:config.placeholder}}});
+
+    $.each(config.init_values, function(i,v){
+        t.add(v[0], v[1]);
+    });
+   
+    if(config.onempty_submit){
+        t.addEvent('empty', function(bitBox){
+            $(config.element).parent('.edit-form').ajaxSubmit({
+                success: success
+            });
+        });
+    }
+
+    if(config.onempty){
+        t.addEvent('empty', config.onempty);
+    }
+
+    if(config.focus){
+        $('input',t.getContainer()).focus();
+    }
+
+    t.getContainer().addClass('textboxlist-loading');  
+    $.getJSON(config.url, function(data){
+        t.plugins['autocomplete'].setValues(config.format(data));
+        t.getContainer().removeClass('textboxlist-loading');
+    }); 
+
+    return t;
+}
+
+/*
+ * editable
+ * */
 $(function(){
     $('.editable').hover(function(){
         $('.edit', this).fadeIn('fast');

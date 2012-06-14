@@ -69,9 +69,10 @@ def tags(id):
 def clean_files(files):
     files_clean = []
     for f in files:
-        if f.filename:
+        ext = file_type(f.filename)
+        if ext in app.config['ALLOWED_DOCS']:
             files_clean.append(f)
-    return files
+    return files_clean
 
 @mod.route('/new', methods=['GET','POST'])
 @login_required

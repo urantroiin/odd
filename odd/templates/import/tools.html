@@ -20,59 +20,54 @@
 
 {% macro search() %}
 <li>
-    <script>
+ <script>
 
-       $(function(){
-           var t = new $.TextboxList('#all-search', {
-               unique: true, 
-               plugins: {
-                   autocomplete: {
-                       method:'custom',
-                       placeholder:'搜索:标签,问题'
-                    }
-                }
-            });
+ $(function(){
+     textbox({
+         element: '#all-search',
+         url: "{{ url_for('search.tips') }}",
+         format: tip_format,
+         placeholder:'搜索：标签,问题',
+         onempty: function(bitBox){
+             var v = bitBox.getValue()[0];
+             window.location.href = v;
+         }
+     });
+         
+         
+     function tip_format(data){
+         var tips = []
+         var que, tag;
+         while((que = data.questions.pop()) || (tag = data.tags.pop())){
+             if(que){
+                 tips.push(new Array('/question/'+que.id, que.title, null, '<img src="/static/img/question.png" />'+que.title));
+             }
+             if(tag){
+                 tips.push(new Array('/tag/'+tag.tag, tag.tag, null, '<img src="/static/'+tag.photo+'" />'+tag.tag));  
+             }
+         }
+         return tips;
+         {#
+         $.each(data.questions,function(i,q){
+             tips.push(new Array('/question/'+q.id, q.title, null, q.title));
+         });
+         $.each(data.tags,function(i,t){
+             tips.push(new Array('/tag/'+t.tag, t.tag, null, '<img src="/static/'+t.photo+'" />'+t.tag));
+         });
+         #}
+     }
 
-            t.addEvent('bitBoxAdd', function(bit){
-                v = bit.getValue()[0];
-                window.location.href = v;
-            })
-            
-            t.getContainer().addClass('textboxlist-loading');  
-            $.getJSON("{{ url_for('search.tips') }}", function(data){
-                tips = new Array()
-                var que, tag;
-                while((que = data.questions.pop()) || (tag = data.tags.pop())){
-                    if(que){
-                        tips.push(new Array('/question/'+que.id, que.title, null, '<img src="/static/img/question.png" />'+que.title));
-                    }
-                    if(tag){
-                        tips.push(new Array('/tag/'+tag.tag, tag.tag, null, '<img src="/static/'+tag.photo+'" />'+tag.tag));  
-                    }
-                }
-                {#
-                $.each(data.questions,function(i,q){
-                    tips.push(new Array('/question/'+q.id, q.title, null, q.title));
-                });
-                $.each(data.tags,function(i,t){
-                    tips.push(new Array('/tag/'+t.tag, t.tag, null, '<img src="/static/'+t.photo+'" />'+t.tag));
-                });
-                #}
-                t.plugins['autocomplete'].setValues(tips);
-                t.getContainer().removeClass('textboxlist-loading');
-            });
+     $('.navbar-search').submit(function(){
+         tag = $('input[name=tag]', this).val();
+         if(tag) return true;
+         return false;
+     });
+ });
 
-            $('.navbar-search').submit(function(){
-                tag = $('input[name=tag]', this).val();
-                if(tag) return true;
-                return false;
-            })
-        })
-
-    </script>
-    <form class="navbar-search" action="{{ url_for('search.index') }}" method="get">
-        <input id="all-search" class="span3" name="tag" type="text" />
-    </form>
+ </script>
+ <form class="navbar-search" action="{{ url_for('search.index') }}" method="get">
+     <input id="all-search" class="span3" name="tag" type="text" />
+ </form>
 </li>
 {% endmacro %}
 

@@ -26,17 +26,12 @@
 
     <script>
         $(function(){
-            var t = new $.TextboxList('#tag-search', {unique: true, plugins: {autocomplete: {placeholder:'搜索:标签'}}});
-            t.getContainer().addClass('textboxlist-loading');  
-            $.getJSON("{{ url_for('tag.obj') }}", function(data){
-                tips = new Array()
-                $.each(data.tags,function(i,t){
-                    tips.push(new Array(t.tag, t.tag, null, '<img src="/static/'+t.photo+'" />'+t.tag));
-                });
-                
-                t.plugins['autocomplete'].setValues(tips);
-                t.getContainer().removeClass('textboxlist-loading');
-            }); 
+            textbox({
+                element: '#tag-search',
+                placeholder: '搜索：标签',
+                url: "{{ url_for('tag.obj') }}",
+                format: tag_format
+            });
         })
     </script>
     
