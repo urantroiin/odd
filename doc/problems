@@ -5,7 +5,8 @@ mysql has gone away
 mysql automatically close idle connection in eight hours
 
 *solution
-sqlalchemy pool_recycle=3600 auto_flush = True
+sqlalchemy autocommit=True pool_recycle=3600
+https://bugs.launchpad.net/oursql/+bug/906183
 
 *error
 error: [Errno 32] Broken pipe
