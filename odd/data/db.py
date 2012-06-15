@@ -10,7 +10,7 @@ db_engine = create_engine(app.config['DATABASE_URI'],
                           convert_unicode=True,
                           **app.config['DATABASE_CONNECT_OPTIONS'])
 
-db_session = scoped_session(sessionmaker(bind=db_engine))
+db_session = scoped_session(sessionmaker(bind=db_engine, autocommit=True))
 
 Model = declarative_base(name='Model')
 # Model.query = db_session.query_property()
