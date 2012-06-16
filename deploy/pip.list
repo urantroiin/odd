@@ -1,9 +1,10 @@
 
-pip install Flask Flask-WTF Flask-Login sqlalchemy oursql
+pip install Flask Flask-WTF Flask-Login sqlalchemy oursql gunicorn
 
 Flask
 Flask-WTF
 Flask-Login
 sqlalchemy
 oursql
+gunicorn
 

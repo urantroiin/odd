@@ -23,6 +23,7 @@ def get_user_by_name(nickname):
     return user
 
 def register_user(user):
+    db_session.begin()
     if get_user_by_email(user.email):
         return USER_DUPLICATE
 
@@ -37,6 +38,7 @@ def register_user(user):
     return USER_REGISTER_OK
 
 def edit_user(user):
+    db_session.begin()
     u = get_user_by_email(user.email)
     if u and u.id != user.id:
         return USER_EMAIL_DUPLICATE

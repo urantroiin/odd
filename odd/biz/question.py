@@ -53,6 +53,7 @@ def get_question_by_tag(tag):
     return [t.question for t in tags]
 
 def new_question(question, tags):
+    db_session.begin()
     new_tags(tags)
 
     db_session.add(question)
@@ -61,6 +62,7 @@ def new_question(question, tags):
     return QUESTION_ADD_OK
 
 def edit_question(question, tags):
+    db_session.begin()
     new_tags(tags)
 
     db_session.add(question)
@@ -69,6 +71,7 @@ def edit_question(question, tags):
     return QUESTION_EDIT_OK
 
 def edit_question_tags(qid, tags):
+    db_session.begin()
     new_tags(tags)
 
     db_session.query(Question_Tag).filter_by(question_id=qid).delete()
@@ -77,6 +80,7 @@ def edit_question_tags(qid, tags):
     return QUESTION_TAG_EDIT_OK
 
 def new_question_edit(question_edit):
+    db_session.begin()
     db_session.add(question_edit)
     db_session.commit()
     return QUESTION_EDIT_ADD_OK

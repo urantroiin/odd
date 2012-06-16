@@ -22,15 +22,16 @@ def new_tags(tags):
     ts = db_session.query(Tag.tag).filter(Tag.tag.in_(tags)).all()
     ts = [t[0] for t in ts]
     db_session.add_all([Tag(t) for t in tags if t not in ts])
-    db_session.commit()
     return TAG_ADD_OK
 
 def new_tag_edit(tag_edit):
+    db_session.begin()
     db_session.add(tag_edit)
     db_session.commit()
     return TAG_EDIT_ADD_OK
 
 def edit_tag(tag):
+    db_session.begin()
     db_session.add(tag)
     db_session.commit()
     return TAG_EDIT_OK

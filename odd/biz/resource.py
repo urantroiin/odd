@@ -38,6 +38,7 @@ def get_hotest_resources(count):
     return resources
 
 def new_resource(resource, tags):
+    db_session.begin()
     new_tags(tags)
 
     db_session.add(resource)
@@ -46,6 +47,7 @@ def new_resource(resource, tags):
     return RESOURCE_ADD_OK
 
 def new_resource_download(rd):
+    db_session.begin()
     download = db_session.query(Resource_Download).filter_by(resource_id=rd.resource_id, 
             user_id=rd.user_id).first()
     if download:
