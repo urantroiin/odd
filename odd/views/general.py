@@ -29,6 +29,47 @@ def protocal():
  
     return render_template('general/protocal.html')
 
+
+@mod.route('/advice', methods=['GET'])
+def advice():
+    '''
+   宝贵意见
+    '''
+ 
+    return render_template('general/advice.html')
+
+@mod.route('/help', methods=['GET'])
+def help():
+    '''
+    帮助
+    '''
+ 
+    return render_template('general/help.html')
+
+@mod.route('/aboutus', methods=['GET'])
+def aboutus():
+    '''
+    关于我们
+    '''
+ 
+    return render_template('general/aboutus.html')
+
+@mod.route('/joinus', methods=['GET'])
+def joinus():
+    '''
+    加入我们
+    '''
+ 
+    return render_template('general/joinus.html')
+
+@mod.route('/poster', methods=['GET'])
+def poster():
+    '''
+    公告栏
+    '''
+ 
+    return render_template('general/poster.html')
+
 @mod.route('/login', methods=['GET','POST'])
 def login():
     '''
@@ -104,3 +145,4 @@ class RegisterForm(Form):
     passwd = PasswordField(u'密码*', validators=[Required(),Regexp('[\w\d-]{5,20}')])
     confirm = PasswordField(u'确认密码*', validators=[Required(), EqualTo('passwd', message=u'密码不一致')])
     agree = BooleanField(u'我已经认真阅读并同意', default=True, validators=[BeTrue(u'同意此协议才能注册')])
+
