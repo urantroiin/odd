@@ -8,16 +8,30 @@
 <h2 class="alert alert-info">搜索结果</h2>
 </header>
 
-{% if tag %}
-    {% from 'import/tag.html' import tag_info %}
-    {{ tag_info(tag, current_user.tag_is_followed(tag)) }}
-{% endif %}
-
-{% from 'import/topic.html' import normal_question %}
-<section class="span12">
-{% for q in questions %}
+<section class="span4">
+<h5 class="border-medium">标签</h5>
+{% from 'import/tag.html' import tag_box %}
+{% for t in tags %}
+    {{ tag_box(t) }}
     <hr>
+{% endfor %}
+</section>
+
+<section class="span4">
+<h5 class="border-medium">问题</h5>
+{% from 'import/topic.html' import normal_question %}
+{% for q in questions %}
     {{ normal_question(q, current_user) }}
+    <hr>
+{% endfor %}
+</section>
+
+<section class="span4">
+<h5 class="border-medium">资源</h5>
+{% from 'import/resource.html' import normal_resource %}
+{% for r in resources %}
+    {{ normal_resource(r, current_user) }}
+    <hr>
 {% endfor %}
 </section>
 

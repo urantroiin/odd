@@ -20,12 +20,12 @@ def get_question_by_id(id):
     question = db_session.query(Question).get(id)
     return question
 
-def get_question_gt_id(id,count):
+def get_question_gt_id(id, count):
     questions = db_session.query(Question).filter(Question.id>id).order_by(Question.id).limit(count).all()
     return questions
 
-def get_latest_questions(count):
-    questions = db_session.query(Question).order_by(Question.id.desc()).limit(count).all()
+def get_latest_questions(count, page=0):
+    questions = db_session.query(Question).order_by(Question.id.desc()).limit(count).offset(page*count).all()
     return questions
 
 def get_question_by_time(time):
@@ -44,8 +44,8 @@ def get_question_by_uid(uid):
     questions = db_session.query(Question).filter_by(user_id=uid).order_by(Question.id.desc()).all()
     return questions
 
-def get_question_titles(count):
-    questions = db_session.query(Question.id, Question.title).order_by(Question.id.desc()).limit(count).all()
+def get_question_titles(count, page=0):
+    questions = db_session.query(Question.id, Question.title).order_by(Question.id.desc()).limit(count).offset(page*count).all()
     return questions
 
 def get_question_by_tag(tag):

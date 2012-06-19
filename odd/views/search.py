@@ -13,14 +13,19 @@ mod = Blueprint('search', __name__, url_prefix='/search')
 
 @mod.route('/')
 def index():
-    args = request.args
-    tag = args.get('tag')
-    if not tag:
-        return abort(404)
+    query = request.args.get('query')
+    if not query:
+        abort(404)
 
-    tag_obj = get_tag_by_tag(tag)
-    questions = get_question_by_tag(tag)
-    return render_template('search/index.html', tag=tag_obj, questions=questions)
+    query = query.lower()
+
+    count = 50
+
+    tags = [t for t in get_latest_tags(count) if query in t.tag.lower()]
+    questions = [q for q in get_latest_questions(count) if query in q.title.lower()]
+    resources = [r for r in get_latest_resources(count) if query in r.title.lower()]
+
+    return render_template('search/index.html', tags=tags, questions=questions, resources=resources)
 
 @mod.route('/tips')
 def tips():

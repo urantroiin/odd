@@ -15,8 +15,8 @@ def get_all_tags():
 def get_tag_by_tag(tag):
     return db_session.query(Tag).filter_by(tag=tag).first()
 
-def get_tag_by_page(page, count):
-    return db_session.query(Tag).limit(count).offset(page*count).all()
+def get_latest_tags(count, page=0):
+    return db_session.query(Tag).order_by(Tag.id.desc()).limit(count).offset(page*count).all()
 
 def new_tags(tags):
     ts = db_session.query(Tag.tag).filter(Tag.tag.in_(tags)).all()

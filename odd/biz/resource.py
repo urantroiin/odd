@@ -29,8 +29,8 @@ def get_resource_by_tags(tags):
             rs.append(t.resource)
     return rs
 
-def get_latest_resources(count):
-    resources = db_session.query(Resource).order_by(Resource.id.desc()).limit(count).all()
+def get_latest_resources(count, page=0):
+    resources = db_session.query(Resource).order_by(Resource.id.desc()).limit(count).offset(page*count).all()
     return resources
 
 def get_hotest_resources(count):
