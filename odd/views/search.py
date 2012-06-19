@@ -7,6 +7,7 @@ from odd.utils.error import *
 
 from odd.biz.tag import *
 from odd.biz.question import *
+from odd.biz.resource import *
 
 mod = Blueprint('search', __name__, url_prefix='/search')
 
@@ -39,5 +40,13 @@ def tips():
             'id': q.id,
             'title': q.title,
             })
+    
+    resources = get_resource_titles(100)
+    rs = []
+    for r in resources:
+        rs.append({
+            'id': r.id,
+            'title': r.title,
+            })
 
-    return jsonify(errno='SUCCESS', tags=ts, questions=qs)
+    return jsonify(errno='SUCCESS', tags=ts, questions=qs, resources=rs)

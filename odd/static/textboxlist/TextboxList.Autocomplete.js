@@ -31,7 +31,9 @@ $.TextboxList.Autocomplete = function(textboxlist, _options){
 			loadPlaceholder: 'Please wait...'
     },
 		method: 'standard',
-		placeholder: 'Type to receive suggestions'
+		placeholder: 'Type to receive suggestions',
+                on_selected: null,
+                on_new: null,
 	}, _options);
 	
 	var init = function(){
@@ -42,11 +44,12 @@ $.TextboxList.Autocomplete = function(textboxlist, _options){
 		if ($.browser.msie) textboxlist.setOptions({bitsOptions: {editable: {addOnBlur: false}}});
 		prefix = textboxlist.getOptions().prefix + '-autocomplete';
 		method = $.TextboxList.Autocomplete.Methods[options.method];
-		container = $('<div class="'+ prefix +'" />').width(textboxlist.getContainer().width()).appendTo(textboxlist.getContainer());
+		container = $('<div class="'+ prefix +'" />').appendTo(textboxlist.getContainer());
 		if (chk(options.placeholder)) placeholder = $('<div class="'+ prefix +'-placeholder" />').html(options.placeholder).appendTo(container);		
+                //allow click
 		list = $('<ul class="'+ prefix +'-results" />').appendTo(container).click(function(ev){
-			ev.stopPropagation(); ev.preventDefault();
-		});
+                    ev.stopPropagation(); ev.preventDefault();
+                });
 	};
 	
 	var setupBit = function(bit){
@@ -162,6 +165,8 @@ $.TextboxList.Autocomplete = function(textboxlist, _options){
 	
 	var addCurrent = function(){
 		var value = current.data('textboxlist:auto:value');
+                //add selected handler
+                if(options.on_selected && !options.on_selected(value)) return self;
 		var b = textboxlist.create('box', value.slice(0, 3));
 		if (b){
 			b.autoValue = value;
@@ -189,6 +194,8 @@ $.TextboxList.Autocomplete = function(textboxlist, _options){
 				if (current && current.length) addCurrent();
 				else if (!options.onlyFromValues){
 					var value = currentInput.getValue();				
+                                        //add new handler
+                                        if(options.on_new && !options.on_new(value)) break;
 					var b = textboxlist.create('box', value);
 					if (b){
 						b.inject(currentInput.toElement(), 'before');

@@ -37,6 +37,10 @@ def get_hotest_resources(count):
     resources = db_session.query(Resource).order_by(Resource.download_count.desc(), Resource.id.desc()).limit(count).all()
     return resources
 
+def get_resource_titles(count):
+    resources = db_session.query(Resource.id, Resource.title).order_by(Resource.id.desc()).limit(count).all()
+    return resources
+
 def new_resource(resource, tags):
     db_session.begin()
     new_tags(tags)

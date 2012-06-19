@@ -26,14 +26,20 @@
 
 /*quick style*/
 
-.rounded-corners (@radius: 3px) {
+.box-shadow(@style) {
+  box-shadow:         @style;
+  -webkit-box-shadow: @style;
+  -moz-box-shadow:    @style;
+}
+
+.border-radius (@radius: 3px) {
   border-radius: @radius;
   -webkit-border-radius: @radius;
   -moz-border-radius: @radius;
 }
 
 img {
-    .rounded-corners()
+    .border-radius()
 }
 
 .offset0 {
@@ -99,11 +105,13 @@ ul.inline {
     .hr(10px, 2px);
 }
 
-.tag {
-    display: inline-block;
-    margin: 2px 2px 0px 0px;
-    cursor: pointer;
-    }
+.divider-vertical {
+    width: 1px;
+    height: auto;
+    margin: 0 9px;
+    overflow: hidden;
+    border-right: 1px solid #eee;
+}
 
 /**custom**/
 #article-header{
@@ -135,11 +143,19 @@ ul.inline {
     margin-top: 30px;
 }
 
+#notice-board {
+    .notice {
+        margin-top: 5px;    
+    }
+}
+
 .nav li.focus {
     a {
         border-top: 3px solid #08c;     
     }
 }
+
+
 
 .resource {
     .title {
@@ -231,6 +247,12 @@ ul.inline {
     margin: 0px;    
 }
 
+.tag {
+    display: inline-block;
+    margin: 2px 2px 0px 0px;
+    cursor: pointer;
+}
+
 .tag-info {
     .tag-tag {
         font-size: 36px;
@@ -242,12 +264,6 @@ ul.inline {
         position:absolute;
         bottom:0px;
         right:0px;  
-    }
-}
-
-#notice-board {
-    .notice {
-        margin-top: 5px;    
     }
 }
 
@@ -271,48 +287,44 @@ ul.inline {
     overflow: visible;    
 }
 
-.textboxlist {
+
+.textboxlist-bits {
     width: 500px;
-    display: inline-block;
+    background-color: white;
+    border: 1px solid #CCC;
+    .border-radius();
+}
 
-    .textboxlist-bits {
-        background-color: white;
-        border: 1px solid #CCC;
-        -webkit-border-radius: 3px;
-        -moz-border-radius: 3px;
-        border-radius: 3px;
-    
-        .textboxlist-bit-editable-input {
-            background: transparent;
-            margin: 0px;
-            -webkit-box-shadow: none;
-            box-shadow: none;
+.textboxlist-bit-editable-input {
+        background: transparent;
+        margin: 0px;
+        .box-shadow(none);
+        &:focus {
+            .box-shadow(none);
             border: none;
-            &:focus {
-                border: none;
-                box-shadow: none;
-                -webkit-box-shadow: none;
-            }
         }
-    }
-    .textboxlist-autocomplete-results {
-        overflow: hidden;
-        img{
-            margin-right: 10px;
-        }
-    }
-
 }
 
-.navbar-search .textboxlist {
-    width: 220px;
-    height: 20px;
+.textboxlist-autocomplete {
+    width: 510px;
 }
 
-.divider-vertical {
-    width: 1px;
-    height: auto;
-    margin: 0 9px;
-    overflow: hidden;
-    border-right: 1px solid #eee;
+.textboxlist-autocomplete-results {
+    img{
+        margin-right: 10px;
+    }
+}
+
+.navbar-search {
+    .textboxlist-bits {
+        width: 210px;
+    }
+    
+    .textboxlist-autocomplete {
+        width: 400px;
+    }
+
+    input {
+        margin: 0px;    
+    }
 }

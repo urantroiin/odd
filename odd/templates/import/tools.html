@@ -20,54 +20,48 @@
 
 {% macro search() %}
 <li>
- <script>
+<script>
+$(function(){
+    textbox({
+        element: '#tip-search',
+        url: "{{ url_for('search.tips') }}",
+        format: tip_format,
+        placeholder:'搜索：标签,问题',
+        on_selected: function(value){
+            location.href = value[0];
+            return false;
+        },
+        on_new: function(value){
+            if(!value[1]) return false;
+            $('#tip-search').val(value[1]);
+            $('#tip-search').parent('form').submit();
+            return false;
+        }
+    });
 
- $(function(){
-     textbox({
-         element: '#all-search',
-         url: "{{ url_for('search.tips') }}",
-         format: tip_format,
-         placeholder:'搜索：标签,问题',
-         onempty: function(bitBox){
-             var v = bitBox.getValue()[0];
-             window.location.href = v;
-         }
-     });
-         
-         
-     function tip_format(data){
-         var tips = []
-         var que, tag;
-         while((que = data.questions.pop()) || (tag = data.tags.pop())){
-             if(que){
-                 tips.push(new Array('/question/'+que.id, que.title, null, '<img src="/static/img/question.png" />'+que.title));
-             }
-             if(tag){
-                 tips.push(new Array('/tag/'+tag.tag, tag.tag, null, '<img src="/static/'+tag.photo+'" />'+tag.tag));  
-             }
-         }
-         return tips;
-         {#
-         $.each(data.questions,function(i,q){
-             tips.push(new Array('/question/'+q.id, q.title, null, q.title));
-         });
-         $.each(data.tags,function(i,t){
-             tips.push(new Array('/tag/'+t.tag, t.tag, null, '<img src="/static/'+t.photo+'" />'+t.tag));
-         });
-         #}
-     }
+    function tip_format(data){
+        var tips = []
 
-     $('.navbar-search').submit(function(){
-         tag = $('input[name=tag]', this).val();
-         if(tag) return true;
-         return false;
-     });
- });
+        $.each(data.tags,function(i,tag){
+            tips.push(['/tag/'+tag.tag, tag.tag, 'tag', '<img src="/static/'+tag.photo+'" />'+tag.tag]);  
+        });
 
- </script>
- <form class="navbar-search" action="{{ url_for('search.index') }}" method="get">
-     <input id="all-search" class="span3" name="tag" type="text" />
- </form>
+        $.each(data.questions,function(i,que){
+            tips.push(['/question/'+que.id, que.title, 'question', '<img src="/static/img/question.png" />'+que.title]);
+        });
+
+        $.each(data.resources,function(i,res){
+            tips.push(['/resource/'+res.id, res.title, 'resource', '<img src="/static/img/resource.png" />'+res.title]);  
+        });
+
+        return tips;
+    }
+});
+
+</script>
+<form class="navbar-search" action="{{ url_for('search.index') }}" method="get">
+    <input id="tip-search" class="span3" name="tag" type="text" />
+</form>
 </li>
 {% endmacro %}
 
