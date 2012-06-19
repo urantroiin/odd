@@ -20,6 +20,10 @@
 
 {% macro search() %}
 <li>
+<form class="navbar-search" action="{{ url_for('search.index') }}" method="get">
+    <img id="search-img" src="{{ url_for('static', filename='img/search.png') }}" />
+    <input id="tip-search" class="span3" name="query" type="text" />
+</form>
 <script>
 $(function(){
     textbox({
@@ -39,13 +43,9 @@ $(function(){
         },
         post_result: classify,
     });
-
 });
-
 </script>
-<form class="navbar-search" action="{{ url_for('search.index') }}" method="get">
-    <input id="tip-search" class="span3" name="query" type="text" />
-</form>
+
 </li>
 {% endmacro %}
 
