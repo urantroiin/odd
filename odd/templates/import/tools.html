@@ -26,7 +26,7 @@ $(function(){
         element: '#tip-search',
         url: "{{ url_for('search.tips') }}",
         format: tip_format,
-        placeholder:'搜索：标签,问题',
+        placeholder:'搜索：标签，问题，资源',
         on_selected: function(value){
             location.href = value[0];
             return false;
@@ -36,26 +36,10 @@ $(function(){
             $('#tip-search').val(value[1]);
             $('#tip-search').parent('form').submit();
             return false;
-        }
+        },
+        post_result: classify,
     });
 
-    function tip_format(data){
-        var tips = []
-
-        $.each(data.tags,function(i,tag){
-            tips.push(['/tag/'+tag.tag, tag.tag, 'tag', '<img src="/static/'+tag.photo+'" />'+tag.tag]);  
-        });
-
-        $.each(data.questions,function(i,que){
-            tips.push(['/question/'+que.id, que.title, 'question', '<img src="/static/img/question.png" />'+que.title]);
-        });
-
-        $.each(data.resources,function(i,res){
-            tips.push(['/resource/'+res.id, res.title, 'resource', '<img src="/static/img/resource.png" />'+res.title]);  
-        });
-
-        return tips;
-    }
 });
 
 </script>

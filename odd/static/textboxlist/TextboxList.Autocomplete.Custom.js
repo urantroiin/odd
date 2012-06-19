@@ -14,7 +14,6 @@ var searcher =  {
     matcher: function (item, query) {
         return ~item.toLowerCase().indexOf(query.toLowerCase());
     }
-
     , sorter: function (items, query) {
         var beginswith = []
             , caseSensitive = []
@@ -28,50 +27,31 @@ var searcher =  {
             }
 
         return beginswith.concat(caseSensitive, caseInsensitive);
-    }, classify: function(items, max){
-        var tags = []
-            , questions = []
-            , resources = [];
-
-        $.each(items, function(k, v){
-            switch(v[2]){
-                case 'tag':
-                    tags.push(v);
-                    break;
-                case 'question':
-                    questions.push(v);
-                    break;
-                case 'resource':
-                    resources.push(v);
-                    break;
-            }
-
+    }
+    
+    , highlight: function(html, query, hit_class){
+        var regex = new RegExp('(<[^>]*>)|(\\b'+ query.replace(/([-.*+?^${}()|[\]\/\\])/g,"\\$1") +')', 'ig');
+        return html.replace(regex, function(a, b, c, d){
+            return (a.charAt(0) == '<') ? a : '<strong class="'+ hit_class +'">' + c + '</strong>'; 
         });
-        
-        tags = tags.slice(0, max/3);
-        questions = questions.slice(0, max/3);
-        resources = resources.slice(0, max/3);
-
-        return tags.concat(questions, resources);
-    },
+    }
 };
 
 $.TextboxList.Autocomplete.Methods.custom = {
-    filter: function(items, query, insensitive, max){
+    filter: function(items, query, insensitive, max, post_result){
         items = $.grep(items, function (item) {
             return searcher.matcher(item[1], query);
         })
 
         items = searcher.sorter(items, query);
 
-        items = searcher.classify(items, max);
+        if(post_result){
+            items = post_result(items, max);
+        }
 
-        return items;
+        return items.slice(0, max);
     }
-    , highlight: function(element, query, insensitive, klass){
-        var regex = new RegExp('(<[^>]*>)|(\\b'+ query.replace(/([-.*+?^${}()|[\]\/\\])/g,"\\$1") +')', insensitive ? 'ig' : 'g');
-        return element.html(element.html().replace(regex, function(a, b, c, d){
-            return (a.charAt(0) == '<') ? a : '<strong class="'+ klass +'">' + c + '</strong>'; 
-        }));
+    , highlight: function(element, query, insensitive, hit_class){
+        return element.html(searcher.highlight(element.html(), query, hit_class));
     }
 };

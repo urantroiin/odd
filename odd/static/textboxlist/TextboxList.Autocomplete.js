@@ -34,6 +34,7 @@ $.TextboxList.Autocomplete = function(textboxlist, _options){
 		placeholder: 'Type to receive suggestions',
                 on_selected: null,
                 on_new: null,
+                post_result: null,
 	}, _options);
 	
 	var init = function(){
@@ -88,7 +89,7 @@ $.TextboxList.Autocomplete = function(textboxlist, _options){
 	};
 	
 	var showResults = function(search){
-		var results = method.filter(values, search, options.insensitive, options.maxResults);
+		var results = method.filter(values, search, options.insensitive, options.maxResults, options.post_result);
 		if (textboxlist.getOptions().unique){
 			results = $.grep(results, function(v){ return textboxlist.isDuplicate(v) == -1; });		
 		}

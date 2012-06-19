@@ -1,4 +1,11 @@
 /*
+ *
+ * Note
+ * value = [id_text, search_text, box_text, result_text]
+ *
+ * */
+
+/*
 Script: TextboxList.js
 	Displays a textbox as a combination of boxes an inputs (eg: facebook tokenizer)
 

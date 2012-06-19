@@ -22,6 +22,50 @@ function tag_format(data){
     return tags;
 }
 
+function tip_format(data){
+    var tips = []
+
+    $.each(data.tags,function(i,tag){
+        tips.push(['/tag/'+tag.tag, tag.tag, 'tag', '<img src="/static/'+tag.photo+'" />'+tag.tag]);  
+    });
+
+    $.each(data.questions,function(i,que){
+        tips.push(['/question/'+que.id, que.title, 'question', '<img src="/static/img/question.png" />'+que.title]);
+    });
+
+    $.each(data.resources,function(i,res){
+        tips.push(['/resource/'+res.id, res.title, 'resource', '<img src="/static/img/resource.png" />'+res.title]);  
+    });
+
+    return tips;
+}
+
+function classify(items, max){
+    var tags = []
+        , questions = []
+        , resources = [];
+
+    $.each(items, function(k, v){
+        switch(v[2]){
+        case 'tag':
+            tags.push(v);
+            break;
+        case 'question':
+            questions.push(v);
+            break;
+        case 'resource':
+            resources.push(v);
+            break;
+        }
+    });
+
+    tags = tags.slice(0, max/3);
+    questions = questions.slice(0, max/3);
+    resources = resources.slice(0, max/3);
+    
+    return tags.concat(questions, resources);
+}
+
 function textbox(_options) {
     var options = $.extend({
         element: '',
@@ -35,10 +79,11 @@ function textbox(_options) {
         focus: false,
         on_selected: null,
         on_new: null,
+        post_result: null,
     }, _options);
 
     var t = new $.TextboxList(options.element, {unique: true, plugins: {
-        autocomplete: {method:'custom', placeholder:options.placeholder, on_selected:options.on_selected, on_new:options.on_new}}});
+        autocomplete: {method:'custom', placeholder:options.placeholder, on_selected:options.on_selected, on_new:options.on_new, post_result:options.post_result}}});
 
     $.each(options.init_values, function(i,v){
         t.add(v[0], v[1]);
@@ -60,14 +105,13 @@ function textbox(_options) {
         t.addEvent('bitBoxAdd', options.on_bitBoxAdd);
     }
 
-    if(options.focus){
-        $('input',t.getContainer()).focus();
-    }
-
     t.getContainer().addClass('textboxlist-loading');  
     $.getJSON(options.url, function(data){
         t.plugins['autocomplete'].setValues(options.format(data));
         t.getContainer().removeClass('textboxlist-loading');
+        if(options.focus){
+            $('input',t.getContainer()).focus();
+        }
     }); 
 
     return t;
