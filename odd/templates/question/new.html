@@ -11,12 +11,13 @@
     {{ form.csrf }}
 
     {{ form.title.label }}
-    {{ form.title() }}
+    {{ form.title(style="width:490px;height:21px") }}
     {{ error(form.errors['title']) }}
+    
     <span class="help-block">问题的主题</span>
 
     {{ form.content.label }}
-    {{ form.content(rows=5,cols=5) }}
+    {{ form.content(style="width:490px",rows=10,cols=10) }}
     {{ error(form.errors['content']) }}
     <span class="help-block">问题的详细内容</span>
 
@@ -34,6 +35,59 @@
             });
         })
     </script>
+    <div class="help-block" sytle="width:500px height:31px" >
+<p> 请给您的提问加上详尽的标签；好的标签例如:
+<img src="/static/img/sampletags.jpg">
+</p>.
+</div><br/>
+
+<!--addition-->
+<!--
+<div id="content" class="clearfix">
+	<div class="section cover clearfix">
+		<div class="col col2 first clearfix">		
+		</div>
+		<div class="col col1 clearfix">		
+			<div class="block">
+				<span class="cont_line"><span class="cont_line_right"></span></span>			
+				<a rel="gallary" id="bqzmj" class="fancy" href="/static/img/bqzmj.jpg" title="点击察看"></a>
+
+
+			<div class="block align_center">
+				<a href="javascript:;" onclick="javascript:$('/static/img/bqzmj.jpg').click();"><h3 class="title">瓦塔使用手册</h3></a>
+			</div>
+		</div>
+	</div>
+-->
+	
+	
+<!--
+<div id="fancybox-overlay" sytle="display"; block; background-color:rgb(119,119,119); opacity;0.7;cusor;pointer;height:990px>
+	</div>-->
+	<!--<div id="fancy-outer">
+	<div id="fancy-content" style="opacity">
+<span class="cont_line"><span class="cont_line_right"></span></span>			
+	<a rel="gallary" id="tutorial-first-no" class="fancy" href="/static/img/question.png" title="how to add tag"></a>
+
+
+
+	<img id="fancy-img" src="/static/img/pencil.gif">
+
+
+
+
+
+	<div class="block aline_centre">
+<a href="javascript:;" onclick="javascript:$('#tutorial-first-no').click();"><h4 class="title">怎么添加好的标签？</h4></a>
+	</div>
+	</div>
+	</div>		
+</div>
+-->		
+	
+
+
+<a href="/howtoaddtag">怎么添加好的标签</a>
     
     <hr>
     <input class="btn btn-primary" type="submit" value="发布"/>

@@ -1,13 +1,14 @@
 {% macro user_info(user, class='') %}
 
 <section class="user-info side-box thumbnail clearfix">
-    <header class="border-small"><h5>本大爷</h5></header>
+    <header class="border-small"><h5>本尊</h5></header>
     <div class="span1">
         <img src="{{ url_for('static', filename=user.photo(90)) }}" />
     </div>
     <blockquote class="simple-quote span2">
         <h3>{{ user.nickname }}</h3>
         <small>{{ user.title }}</small>
+	<h5>{{ user.email}}</h5>
     </blockquote>
 </section>
 

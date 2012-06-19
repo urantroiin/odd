@@ -106,6 +106,8 @@ def new():
 
     return redirect(url_for('.index', id=question.id))
 
+
+
 class NewQueForm(Form):
     title = TextField(u'标题*', validators=[Required()])
     content = TextAreaField(u'内容*', validators=[Required()])

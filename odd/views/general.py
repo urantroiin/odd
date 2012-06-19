@@ -127,6 +127,12 @@ def register():
     success(ret);
     return redirect(url_for('user.home'))
 
+@mod.route('/howtoaddtag', methods=['GET'])
+def howtoaddtag():
+    '''
+   如何添加tag
+    '''
+    return render_template('question/howtoaddtag.html')
 # forms
 def BeTrue(msg):
         def _BeTrue(form, field):

@@ -25,7 +25,7 @@
             <a class="edit small" href="javascript:;">修改</a>
         </small>
         <form class="edit-form" action="{{ url_for('tag.desc', id=tag.id) }}" method="post">
-            <textarea class="edit-item" name="desc"></textarea>
+            <textarea class="edit-item" style="width:500px;height:31px" name="desc"></textarea>
             <input type="submit" value="修改" />
             <a class="edit-cancel small" href="javascript:;">取消</a>
         </form>

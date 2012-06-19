@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+
+
+<html>
+    <head>
+
+        <meta charset="utf8">
+
+        <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}"/>
+        <link rel="stylesheet" href="{{ url_for('static', filename='textboxlist/TextboxList.css') }}"/>
+        <link rel="stylesheet" href="{{ url_for('static', filename='textboxlist/TextboxList.Autocomplete.css') }}"/>
+        <link rel="stylesheet/less" type="text/css" href="{{ url_for('static', filename='bootstrap/less/custom.less') }}">
+
+        <script src="{{ url_for('static', filename='jquery-1.7.2.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='jquery.form.js') }}"></script>
+        <script src="{{ url_for('static', filename='less-1.3.0.min.js') }}" ></script>
+        <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}" ></script>
+        <script src="{{ url_for('static', filename='textboxlist/GrowingInput.js') }}" ></script>
+        <script src="{{ url_for('static', filename='textboxlist/TextboxList.js') }}" ></script>
+        <script src="{{ url_for('static', filename='textboxlist/TextboxList.Autocomplete.js') }}" ></script>
+        <script src="{{ url_for('static', filename='textboxlist/TextboxList.Autocomplete.Custom.js') }}" ></script>
+
+        <script>
+            function trim(str){
+                return str.replace(/(^\s*)|(\s*$)/g, "");
+            }
+
+            function fail(request){
+                alert('您的操作没有成功')
+            }
+
+            function success(data){
+                if(data.errno=='FAIL'){
+                    alert('您的操作没有成功')
+                    return
+                }
+                window.location.reload(true)
+            }
+
+            $(function(){
+                $('.editable').hover(function(){
+                    $('.edit', this).fadeIn('fast');
+                    },function(){
+                    $('.edit', this).fadeOut('fast');
+                });
+
+                $('.edit-form').ajaxForm({
+                    complete: success
+                });
+            });
+
+        </script>
+        <style>
+            #btm{position:absolute;top:135%;left:20.5%}
+        </style>
+    </head>
+
+
+    <body>
+
+
+        <div class="container">
+            <div class="navbar ">
+                <div class="navbar-inner">
+
+                    <!--here is the logo -->    
+
+                    <a href="http://www.offerduoduo.com"><img src="/static/img/intro-picture/l.jpg" height="35px"></a>
+
+
+                    <!--here is the version infomation and the pulldown tool bar-->
+
+
+
+                    <ul class="nav pull-right">
+                        <li class="navbar-text">
+                        版本：Beta-1.1
+                        <li class="icon-ok"></li>
+
+                        </li>
+
+                        <li class="dropdown">
+                        <a href="#" class="dropdown-toggle"data-toggle="dropdown">更多<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <a href="{{ url_for('general.help') }}">帮助 </a>
+                            <a href="{{ url_for('general.advice') }}">宝贵意见</a>
+                            <a href="{{ url_for('general.aboutus') }}">关于我们 </a>
+                            <a href="{{ url_for('general.joinus') }}">加入我们 </a>
+                        </ul>
+                    </ul>
+
+
+                </div>
+            </div>
+        </div>
+
+        {% block slide %}{% endblock %}
+
+        {% block poster %}{% endblock %}
+
+        {% block register %}{% endblock %}
+
+        {% block advice %}{% endblock %}
+
+        {% block help %}{% endblock %}
+
+        {% block aboutus %}{% endblock %}
+
+        {% block joinus %}{% endblock %}
+
+        {% block protocal %}{% endblock %}
+	
+	 {% block content %}{% endblock %}
+
+	
+        
+
+    </body>
+    </htvml>

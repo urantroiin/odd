@@ -13,13 +13,19 @@
     {{ tag_info(tag, current_user.tag_is_followed(tag)) }}
 {% endif %}
 
+
 {% from 'import/topic.html' import normal_question %}
+
+
 <section class="span12">
+
 {% for q in questions %}
     <hr>
     {{ normal_question(q, current_user) }}
 {% endfor %}
+
 </section>
+
 
 </section>
 

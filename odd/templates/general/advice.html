@@ -1,0 +1,28 @@
+{% extends 'layout(mainp).html' %}
+{% block help%}
+<head>   
+    <style type="text/css">
+        a{color:white;}
+        body {background-image: url(/static/img/intro-picture/bgyj.jpg);background-attachment:fixed; background-repeat:no-repeat;background-position:center;}
+        #email {
+            font-family:"times new roman";
+            font-size:25px;
+            color:white;
+            position:absolute; top:31.5%;left:44%;}
+        #qq{position:absolute;top:39%;left:45%}
+
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="span12">
+
+            <div id="email" ><a href="mailto:offerduoduo@sina.com?subject=comments"     style="font-color:white">offerduoduo@sina.com</a></div>
+            <div id="qq"> <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=1935168600&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:1935168600:41 &r=0.6172033315524459" alt="Offer多多期待您的建议" title="Offer多多期待您的建议"></a></div>
+       
+       
+        </div>
+    </div>
+</body>
+{% endblock%}

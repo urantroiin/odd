@@ -56,7 +56,7 @@
 <hr>
 
 <section class="fav-tags side-box thumbnail clearfix">
-    <header class="border-small"><h5>珍藏的标签</h5></header>
+    <header class="border-small"><h5>我关注的群组</h5></header>
     <p class="simple-p">
         {% for tf in current_user.tag_follows %}
         <a class="tag" href="{{ url_for('tag.index', tag=tf.tag) }}"><span class="label label-info">{{ tf.tag }}</span></a>
